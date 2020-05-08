@@ -59,6 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SG_PLATFORM_WINDOWS;SG_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);SG_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Schmog\vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -73,6 +74,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SG_PLATFORM_WINDOWS;SG_BUILD_DLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);SG_PLATFORM_WINDOWS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Schmog\vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,12 +84,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Schmog\Log.h" />
     <ClInclude Include="src\Schmog.h" />
     <ClInclude Include="src\Schmog\Application.h" />
     <ClInclude Include="src\Schmog\Core.h" />
     <ClInclude Include="src\Schmog\EntryPoint.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Schmog\Log.cpp" />
     <ClCompile Include="src\Schmog\Application.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
