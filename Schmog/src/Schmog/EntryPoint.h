@@ -10,8 +10,7 @@ extern std::shared_ptr<Schmog::Application>  Schmog::CreateApplication();
 int main(int argc, char** argv)
 {
 	Schmog::Log::Init();
-	Schmog::Log::getCoreLogger()->info("Initialized core log");
-	Schmog::Log::getClientLogger()->info("Initialized client log");
+	SG_CORE_INFO("Logger started");
 
 	auto app = Schmog::CreateApplication();
 	app->Run();
