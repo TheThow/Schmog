@@ -2,7 +2,7 @@
 
 #ifdef SG_PLATFORM_WINDOWS
 	
-#include <memory>
+
 
 
 extern std::shared_ptr<Schmog::Application>  Schmog::CreateApplication();

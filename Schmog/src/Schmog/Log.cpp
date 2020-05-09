@@ -1,3 +1,4 @@
+#include "sgpch.h"
 #include "Log.h"
 
 namespace Schmog {

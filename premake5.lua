@@ -17,6 +17,9 @@ project "Schmog"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	
+	pchheader "sgpch.h"
+	pchsource "%{prj.name}/src/sgpch.cpp"
 
 	files
 	{
@@ -26,6 +29,7 @@ project "Schmog"
 
 	includedirs
 	{
+		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include"
 	}
 

@@ -1,6 +1,8 @@
 #pragma once
 #include "Core.h"
-#include <memory>
+#include "Log.h"
+
+
 
 namespace Schmog {
 
