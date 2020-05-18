@@ -8,13 +8,20 @@ workspace "Schmog"
 		"Dist"
 	}
 	
+	flags
+	{
+		"MultiProcessorCompile"
+	}
+	
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution dir)
 IncludeDir = {}
 IncludeDir["GLFW"] = "Schmog/vendor/GLFW/include"
+IncludeDir["Glad"] = "Schmog/vendor/Glad/include"
 
 include "Schmog/vendor/GLFW"
+include "Schmog/vendor/Glad"
 
 project "Schmog"
 	location "Schmog"
@@ -37,12 +44,14 @@ project "Schmog"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 	
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -54,7 +63,8 @@ project "Schmog"
 		defines 
 		{
 			"SG_PLATFORM_WINDOWS",
-			"SG_BUILD_DLL"
+			"SG_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
@@ -64,17 +74,14 @@ project "Schmog"
 
 	filter "configurations:Debug"
 		defines "SG_DEBUG"
-		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "SG_RELEASE"
-		buildoptions "/MD"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "SG_DIST"
-		buildoptions "/MD"
 		optimize "On"
 
 
@@ -117,15 +124,12 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "SG_DEBUG"
-		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "SG_RELEASE"
-		buildoptions "/MD"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "SG_DIST"
-		buildoptions "/MD"
 		optimize "On"

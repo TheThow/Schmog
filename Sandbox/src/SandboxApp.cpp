@@ -26,7 +26,6 @@ public:
 	{
 		auto gameLayer = std::make_shared<ExampleLayer>();
 		PushLayer(gameLayer);
-		PopLayer(gameLayer);
 	}
 
 	~Sandbox() 
