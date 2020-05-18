@@ -13,6 +13,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Schmog/Log.h"
+
 #ifdef SG_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif

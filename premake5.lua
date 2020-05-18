@@ -10,6 +10,12 @@ workspace "Schmog"
 	
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution dir)
+IncludeDir = {}
+IncludeDir["GLFW"] = "Schmog/vendor/GLFW/include"
+
+include "Schmog/vendor/GLFW"
+
 project "Schmog"
 	location "Schmog"
 	kind "SharedLib"
@@ -30,7 +36,14 @@ project "Schmog"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+	
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -51,14 +64,17 @@ project "Schmog"
 
 	filter "configurations:Debug"
 		defines "SG_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "SG_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "SG_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 
@@ -101,12 +117,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "SG_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "SG_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "SG_DIST"
+		buildoptions "/MD"
 		optimize "On"
