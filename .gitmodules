@@ -4,3 +4,6 @@
 [submodule "Schmog/vendor/GLFW"]
 	path = Schmog/vendor/GLFW
 	url = https://github.com/TheCherno/glfw.git
+[submodule "Schmog/vendor/imgui"]
+	path = Schmog/vendor/imgui
+	url = https://github.com/TheCherno/imgui.git

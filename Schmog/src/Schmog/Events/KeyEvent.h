@@ -59,4 +59,23 @@ namespace Schmog {
 		EVENT_CLASS_TYPE(KeyReleased)
 
 	};
+
+	class SCHMOG_API KeyTypedEvent : public KeyEvent
+	{
+
+	public:
+		KeyTypedEvent(int keycode, int repeatCount)
+			: KeyEvent(keycode) {}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
+
+
+	};
 }

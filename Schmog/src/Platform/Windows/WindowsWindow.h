@@ -18,6 +18,9 @@ namespace Schmog {
 		inline unsigned int GetWidth() const override { return m_Data.Width; }
 		inline unsigned int GetHeight() const override { return m_Data.Height; }
 
+		inline void SetWidth(unsigned int width) override {  m_Data.Width = width; }
+		inline void SetHeight(unsigned int height) override { m_Data.Height = height; }
+
 		// Window attributes
 		inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;

@@ -6,5 +6,8 @@
 #include "Schmog/Log.h"
 #include "Schmog/Layer.h"
 
+#include "Schmog/ImGui/ImGuiLayer.h"
+
+
 // ------ ENTRY POINT ------
 #include "Schmog/EntryPoint.h"

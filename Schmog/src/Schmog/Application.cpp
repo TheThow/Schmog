@@ -6,13 +6,16 @@
 
 namespace Schmog {
 
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
+	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
+		SG_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
+
 		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		m_Window->SetEventCallback(SG_BIND_EVENT_FN(Application::OnEvent));
 	}
 
 	Application::~Application() 
@@ -25,7 +28,8 @@ namespace Schmog {
 		//SG_CORE_TRACE("{0}", e);
 
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowCloseEvent>(SG_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(SG_BIND_EVENT_FN(Application::OnWindowResize));
 
 		if (!e.Handled)
 		{
@@ -50,12 +54,25 @@ namespace Schmog {
 		m_LayerStack.PopLayer(layer);
 	}
 
+	void Application::PushOverlay(std::shared_ptr<Layer> layer)
+	{
+		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
+	}
+
+
+	void Application::PopOverlay(std::shared_ptr<Layer> layer)
+	{
+		layer->OnDetach();
+		m_LayerStack.PopOverlay(layer);
+	}
+
 
 	void Application::Run()
 	{
 		while (m_Running)
 		{
-			glClearColor(1, 0, 1, 1);
+			glClearColor(0.2f, 0.6f, 1.0f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (auto ptr = m_LayerStack.Begin(); ptr < m_LayerStack.End(); ptr++)
@@ -72,5 +89,11 @@ namespace Schmog {
 	{
 		m_Running = false;
 		return true;
+	}
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		m_Window->SetWidth(e.GetWidth());
+		m_Window->SetHeight(e.GetHeight());
+		return false;
 	}
 }

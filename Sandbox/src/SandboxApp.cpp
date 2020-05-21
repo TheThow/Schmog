@@ -24,8 +24,8 @@ class Sandbox : public Schmog::Application
 public: 
 	Sandbox()
 	{
-		auto gameLayer = std::make_shared<ExampleLayer>();
-		PushLayer(gameLayer);
+		PushLayer(std::make_shared<ExampleLayer>());
+		PushOverlay(std::make_shared<Schmog::ImGuiLayer>());
 	}
 
 	~Sandbox() 

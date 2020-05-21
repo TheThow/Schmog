@@ -105,6 +105,15 @@ namespace Schmog {
 				}
 			});
 
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode)
+			{
+				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+				KeyTypedEvent keyTypedEvent(keycode, 0);
+				data.EventCallback(keyTypedEvent);
+
+			});
+
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
 			{
 				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
