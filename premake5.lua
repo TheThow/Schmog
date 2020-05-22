@@ -1,5 +1,6 @@
 workspace "Schmog"
 	architecture "x64"
+	startproject "Sandbox"
 	
 	configurations
 	{
@@ -21,15 +22,19 @@ IncludeDir["GLFW"] = "Schmog/vendor/GLFW/include"
 IncludeDir["Glad"] = "Schmog/vendor/Glad/include"
 IncludeDir["ImGui"] = "Schmog/vendor/imgui"
 
+group "Dependencies"
 include "Schmog/vendor/GLFW"
 include "Schmog/vendor/Glad"
 include "Schmog/vendor/imgui"
+
+group ""
 
 
 project "Schmog"
 	location "Schmog"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "Off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -62,7 +67,6 @@ project "Schmog"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines 
@@ -74,19 +78,22 @@ project "Schmog"
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 
 	filter "configurations:Debug"
 		defines "SG_DEBUG"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "SG_RELEASE"
+		runtime "Release"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "SG_DIST"
+		runtime "Release"
 		optimize "On"
 
 
@@ -95,6 +102,7 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "Off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -118,7 +126,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines 
@@ -129,12 +136,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "SG_DEBUG"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "SG_RELEASE"
+		runtime "Release"
 		optimize "On"
 		
 	filter "configurations:Dist"
 		defines "SG_DIST"
+		runtime "Release"
 		optimize "On"
