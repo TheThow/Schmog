@@ -6,7 +6,7 @@
 
 namespace Schmog {
 
-	std::shared_ptr<Input> Input::s_Instance = std::make_shared<WindowsInput>();
+	Input* Input::s_Instance = new WindowsInput();
 
 	bool WindowsInput::isKeyPressedImpl(int keycode)
 	{

@@ -25,8 +25,6 @@ namespace Schmog {
 
 	void Application::OnEvent(Event& e)
 	{
-		//SG_CORE_TRACE("{0}", e);
-
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(SG_BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(SG_BIND_EVENT_FN(Application::OnWindowResize));

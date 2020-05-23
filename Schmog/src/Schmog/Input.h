@@ -10,14 +10,17 @@ namespace Schmog {
 	{
 	public:
 		struct SCHMOG_API MousePosition {
-			float x, y;
+			float x{ 0.0f }, y{ 0.0f };
 		};
+		
 
 	public:
-		inline static bool IsKeyPressed(int keycode) { return s_Instance->isKeyPressedImpl(keycode); }
-		inline static bool IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedImpl(button); }
+		virtual ~Input() = default;
 
-		inline static MousePosition GetMousePosition() { return s_Instance->GetMousePositionImpl(); }
+		static bool IsKeyPressed(int keycode) { return s_Instance->isKeyPressedImpl(keycode); }
+		static bool IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedImpl(button); }
+
+		static MousePosition GetMousePosition() { return s_Instance->GetMousePositionImpl(); }
 
 	protected:
 		virtual bool isKeyPressedImpl(int keycode) = 0;
@@ -27,7 +30,7 @@ namespace Schmog {
 
 
 	private:
-		static std::shared_ptr<Input> s_Instance;
+		static Input* s_Instance;
 	};
 
 

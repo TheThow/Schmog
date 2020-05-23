@@ -10,6 +10,11 @@ public:
 	{
 
 	}
+
+	void OnUpdate()
+	{
+
+	}
 		
 
 	void OnEvent(Schmog::Event& e)

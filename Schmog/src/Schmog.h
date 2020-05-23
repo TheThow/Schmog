@@ -6,6 +6,10 @@
 #include "Schmog/Log.h"
 #include "Schmog/Layer.h"
 
+#include "Schmog/Input.h"
+#include "Schmog/KeyCodes.h"
+#include "Schmog/MouseButtonCodes.h"
+
 #include "Schmog/ImGui/ImGuiLayer.h"
 
 
