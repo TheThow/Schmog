@@ -21,6 +21,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Schmog/vendor/GLFW/include"
 IncludeDir["Glad"] = "Schmog/vendor/Glad/include"
 IncludeDir["ImGui"] = "Schmog/vendor/imgui"
+IncludeDir["glm"] = "Schmog/vendor/glm"
 
 group "Dependencies"
 include "Schmog/vendor/GLFW"
@@ -54,7 +55,8 @@ project "Schmog"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 	
 	links
@@ -116,7 +118,8 @@ project "Sandbox"
 	includedirs
 	{
 		"Schmog/vendor/spdlog/include",
-		"Schmog/src"
+		"Schmog/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links
