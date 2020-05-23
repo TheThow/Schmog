@@ -176,4 +176,5 @@ namespace Schmog {
 		return m_Data.VSync;
 	}
 
+
 }
