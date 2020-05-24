@@ -1,7 +1,7 @@
 #include <Schmog.h>
 #include <memory>
 
-//#include <imgui/imgui.h>
+#include <imgui/imgui.h>
 
 
 class ExampleLayer : public Schmog::Layer
@@ -19,9 +19,9 @@ public:
 
 	void OnImGuiRender() override
 	{
-		//ImGui::Begin("Test");
-		//ImGui::Text("Hello World");
-		//ImGui::End();
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World");
+		ImGui::End();
 	}
 		
 
