@@ -1,11 +1,15 @@
 #pragma once
 
 #ifdef SG_PLATFORM_WINDOWS
-	#ifdef SG_BUILD_DLL
-		#define SCHMOG_API  __declspec(dllexport)
-	#else
-		#define SCHMOG_API __declspec(dllimport)
-	#endif 
+	#if SG_DYNAMIC_LINK
+		#ifdef SG_BUILD_DLL
+			#define SCHMOG_API  __declspec(dllexport)
+		#else
+			#define SCHMOG_API __declspec(dllimport)
+		#endif 
+	#else 
+		#define SCHMOG_API
+	#endif
 #else
 	#error Only Windows is supported
 #endif
@@ -25,4 +29,6 @@
 #define BIT(x) (1 << x)
 
 #define SG_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+
 

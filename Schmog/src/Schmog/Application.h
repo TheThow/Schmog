@@ -1,9 +1,14 @@
 #pragma once
 
+#include "Core.h"
+
 #include "Window.h"
-#include "Schmog/Events/ApplicationEvent.h"
 #include "Layer.h"
 #include "LayerStack.h"
+#include "Schmog/Events/Event.h"
+#include "Schmog/Events/ApplicationEvent.h"
+
+#include "Schmog/ImGui/ImGuiLayer.h"
 
 
 namespace Schmog {
@@ -33,6 +38,8 @@ namespace Schmog {
 
 	private:
 		std::unique_ptr<Window> m_Window;
+		std::shared_ptr<ImGuiLayer> m_ImGuiLayer;
+
 		bool m_Running = true;
 
 		bool OnWindowClose(WindowCloseEvent& e);

@@ -1,6 +1,8 @@
 #include <Schmog.h>
 #include <memory>
 
+//#include <imgui/imgui.h>
+
 
 class ExampleLayer : public Schmog::Layer
 {
@@ -13,6 +15,13 @@ public:
 	void OnUpdate()
 	{
 
+	}
+
+	void OnImGuiRender() override
+	{
+		//ImGui::Begin("Test");
+		//ImGui::Text("Hello World");
+		//ImGui::End();
 	}
 		
 
@@ -29,7 +38,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(std::make_shared<ExampleLayer>());
-		PushOverlay(std::make_shared<Schmog::ImGuiLayer>());
 	}
 
 	~Sandbox() 

@@ -17,6 +17,8 @@ namespace Schmog {
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
 
+		virtual void OnImGuiRender() {}
+
 	protected:
 		std::string m_DebugName;
 	};

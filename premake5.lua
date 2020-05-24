@@ -8,11 +8,7 @@ workspace "Schmog"
 		"Release",
 		"Dist"
 	}
-	
-	flags
-	{
-		"MultiProcessorCompile"
-	}
+
 	
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -33,9 +29,10 @@ group ""
 
 project "Schmog"
 	location "Schmog"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "Off"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -47,6 +44,11 @@ project "Schmog"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
+	}
+	
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	includedirs
@@ -63,12 +65,11 @@ project "Schmog"
 	{
 		"GLFW",
 		"Glad",
-		"opengl32.lib",
-		"ImGui"
+		"ImGui",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 		defines 
@@ -78,25 +79,21 @@ project "Schmog"
 			"GLFW_INCLUDE_NONE"
 		}
 
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
-		}
 
 	filter "configurations:Debug"
 		defines "SG_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "SG_RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 		
 	filter "configurations:Dist"
 		defines "SG_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 
 
@@ -104,7 +101,8 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
-	staticruntime "Off"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -119,6 +117,7 @@ project "Sandbox"
 	{
 		"Schmog/vendor/spdlog/include",
 		"Schmog/src",
+		"Schmog/vendor",
 		"%{IncludeDir.glm}"
 	}
 
@@ -128,7 +127,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 		defines 
@@ -140,14 +138,14 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "SG_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "SG_RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 		
 	filter "configurations:Dist"
 		defines "SG_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"

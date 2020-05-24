@@ -4,7 +4,6 @@
 namespace Schmog {
 
 	LayerStack::LayerStack()
-		: m_LayerInsert(0)
 	{
 	}
 
@@ -45,14 +44,5 @@ namespace Schmog {
 		}
 	}
 
-	inline std::vector<std::shared_ptr<Layer>>::iterator LayerStack::Begin()
-	{
-		return m_Layers.begin();
-	}
-
-	inline std::vector<std::shared_ptr<Layer>>::iterator LayerStack::End()
-	{
-		return m_Layers.end();
-	}
 
 }
