@@ -19,6 +19,11 @@ namespace Schmog {
 		glfwMakeContextCurrent(m_windowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		SG_CORE_ASSERT(status, "Failed to initialize glad!");
+
+		SG_CORE_INFO("-- OpenGL Info --");
+		SG_CORE_INFO("Vendor: {0}", glGetString(GL_VENDOR));
+		SG_CORE_INFO("Renderer: {0}", glGetString(GL_RENDERER));
+		SG_CORE_INFO("Version: {0}", glGetString(GL_VERSION));
 	}
 
 	void OpenGLContext::SwapBuffers()
