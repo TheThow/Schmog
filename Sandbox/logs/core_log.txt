@@ -1,0 +1,6 @@
+[2020-05-28 23:39:01.463] [SCHMOG] [info] Logger started
+[2020-05-28 23:39:01.465] [SCHMOG] [info] Creating window Schmog Engine (1280, 720)
+[2020-05-28 23:39:02.185] [SCHMOG] [info] -- OpenGL Info --
+[2020-05-28 23:39:02.186] [SCHMOG] [info] Vendor: NVIDIA Corporation
+[2020-05-28 23:39:02.186] [SCHMOG] [info] Renderer: GeForce GTX 970/PCIe/SSE2
+[2020-05-28 23:39:02.187] [SCHMOG] [info] Version: 4.6.0 NVIDIA 432.00

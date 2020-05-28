@@ -13,8 +13,8 @@ namespace Schmog {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None: SG_CORE_ASSERT(false, "RendererAPI:None not supported");  return nullptr;
-		case RendererAPI::OpenGL: return new OpenGLShader(vertexSrc, fragmentSrc);
+		case RendererAPI::API::None: SG_CORE_ASSERT(false, "RendererAPI:None not supported");  return nullptr;
+		case RendererAPI::API::OpenGL: return new OpenGLShader(vertexSrc, fragmentSrc);
 		}
 
 		SG_CORE_ASSERT(false, "Unknown RendererAPI");

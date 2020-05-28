@@ -11,8 +11,8 @@ namespace Schmog {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None: SG_CORE_ASSERT(false, "RendererAPI:None not supported");  return nullptr;
-		case RendererAPI::OpenGL: return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+		case RendererAPI::API::None: SG_CORE_ASSERT(false, "RendererAPI:None not supported");  return nullptr;
+		case RendererAPI::API::OpenGL: return std::make_shared<OpenGLVertexBuffer>(vertices, size);
 		}
 
 		SG_CORE_ASSERT(false, "Unknown RendererAPI");
@@ -23,8 +23,8 @@ namespace Schmog {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None: SG_CORE_ASSERT(false, "RendererAPI:None not supported");  return nullptr;
-		case RendererAPI::OpenGL: return std::make_shared<OpenGLIndexBuffer>(indices, count);
+		case RendererAPI::API::None: SG_CORE_ASSERT(false, "RendererAPI:None not supported");  return nullptr;
+		case RendererAPI::API::OpenGL: return std::make_shared<OpenGLIndexBuffer>(indices, count);
 		}
 
 		SG_CORE_ASSERT(false, "Unknown RendererAPI");

@@ -1,7 +1,7 @@
 #include "sgpch.h"
 #include "Application.h"
 
-#include "glad/glad.h"
+#include "Schmog/Renderer/Renderer.h"
 
 
 namespace Schmog {
@@ -75,9 +75,7 @@ namespace Schmog {
 		};
 		std::shared_ptr<IndexBuffer> squareIB = IndexBuffer::Create(indices2, 6);
 		m_SquareVA->SetIndexBuffer(squareIB);
-		
 
-		//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
 		std::string vertexSrc = R"(
@@ -115,7 +113,7 @@ namespace Schmog {
 		)";
 
 
-		std::string vertexSrc2 = R"(
+		std::string squareVertexSrc = R"(
 			#version 330 core
 
 			layout(location = 0) in vec3 a_Position;
@@ -130,7 +128,7 @@ namespace Schmog {
 
 		)";
 
-		std::string fragmentSrc2 = R"(
+		std::string squareFragmentSrc = R"(
 			#version 330 core
 
 			layout(location = 0) out vec4 o_Color;
@@ -146,7 +144,7 @@ namespace Schmog {
 		)";
 
 		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
-		m_Shader2.reset(Shader::Create(vertexSrc2, fragmentSrc2));
+		m_Shader2.reset(Shader::Create(squareVertexSrc, squareFragmentSrc));
 	}
 
 	Application::~Application() 
@@ -201,16 +199,20 @@ namespace Schmog {
 	{
 		while (m_Running)
 		{
-			glClearColor(0.1f, 0.1f, 0.1f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+
+			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+			RenderCommand::Clear();
+
+			Renderer::BeginScene();
 
 			m_Shader2->Bind();
-			m_SquareVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_SquareVA);
 
 			m_Shader->Bind();
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
+
 
 			for (auto ptr = m_LayerStack.begin(); ptr < m_LayerStack.end(); ptr++)
 			{
