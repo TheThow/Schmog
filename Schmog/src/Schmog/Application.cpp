@@ -1,13 +1,13 @@
 #include "sgpch.h"
 #include "Application.h"
-
-#include "Schmog/Renderer/Renderer.h"
+#include "Platform/Platform.h"
 
 
 namespace Schmog {
 
 
 	Application* Application::s_Instance = nullptr;
+	const float Application::DELTA_TIME = 0.0166f;
 
 
 	Application::Application()
@@ -20,6 +20,9 @@ namespace Schmog {
 
 		m_ImGuiLayer = std::make_shared<ImGuiLayer>();
 		PushOverlay(m_ImGuiLayer);
+
+		m_LastFrameTime = Platform::GetTime();
+		m_Window->SetVSync(false);
 	}
 
 	Application::~Application() 
@@ -74,22 +77,31 @@ namespace Schmog {
 	{
 		while (m_Running)
 		{
+			float time = (float) Platform::GetTime();
+			Timestep timestep = time - m_LastFrameTime;
+			m_LastFrameTime = time;
 
+			m_Accumulator += timestep;
 
-			for (auto ptr = m_LayerStack.begin(); ptr < m_LayerStack.end(); ptr++)
+			while (m_Accumulator >= DELTA_TIME)
 			{
-				(*ptr)->OnUpdate();
+				for (auto ptr = m_LayerStack.begin(); ptr < m_LayerStack.end(); ptr++)
+				{
+					(*ptr)->OnUpdate();
+				}
+
+				m_ImGuiLayer->Begin();
+				for (auto ptr = m_LayerStack.begin(); ptr < m_LayerStack.end(); ptr++)
+				{
+					(*ptr)->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
+
+				m_Window->OnUpdate();
+
+				m_Accumulator -= DELTA_TIME;
 			}
 
-			m_ImGuiLayer->Begin();
-			for (auto ptr = m_LayerStack.begin(); ptr < m_LayerStack.end(); ptr++)
-			{
-				(*ptr)->OnImGuiRender();
-			}
-			m_ImGuiLayer->End();
-
-			m_Window->OnUpdate();
-			
 		}
 	}
 
@@ -100,8 +112,7 @@ namespace Schmog {
 	}
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
-		m_Window->SetWidth(e.GetWidth());
-		m_Window->SetHeight(e.GetHeight());
+		m_Window->OnWindowResize();
 		return false;
 	}
 }

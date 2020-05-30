@@ -166,6 +166,15 @@ namespace Schmog {
 		m_Context->SwapBuffers();
 	}
 
+	void WindowsWindow::OnWindowResize()
+	{
+		int width, height;
+		glfwGetWindowSize(m_Window, &width, &height);
+		SetWidth(width);
+		SetHeight(height);
+		m_Context->SetViewPort(width, height);
+	}
+
 	void WindowsWindow::SetVSync(bool enabled)
 	{
 		if (enabled)

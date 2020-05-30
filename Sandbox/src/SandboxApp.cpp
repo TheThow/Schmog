@@ -8,7 +8,7 @@ class ExampleLayer : public Schmog::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example")
+		: Layer("Example"), m_CamPos(0.0f)
 	{
 		using namespace Schmog;
 		m_VertexArray = VertexArray::Create();
@@ -145,6 +145,25 @@ public:
 
 	void OnUpdate()
 	{
+		if (Schmog::Input::IsKeyPressed(SG_KEY_DOWN))
+		{
+			m_CamPos.y -= m_CamSpeed;
+		}
+		if (Schmog::Input::IsKeyPressed(SG_KEY_UP))
+		{
+			m_CamPos.y += m_CamSpeed;
+		}
+		if (Schmog::Input::IsKeyPressed(SG_KEY_LEFT))
+		{
+			m_CamPos.x -= m_CamSpeed;
+		}
+		if (Schmog::Input::IsKeyPressed(SG_KEY_RIGHT))
+		{
+			m_CamPos.x += m_CamSpeed;
+		}
+
+		m_Camera->SetPosition(m_CamPos);
+
 		Schmog::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Schmog::RenderCommand::Clear();
 
@@ -165,35 +184,9 @@ public:
 	}
 		
 
-	bool OnKeyPressed(Schmog::KeyPressedEvent& e)
-	{
-		if (e.GetKeyCode() == SG_KEY_LEFT)
-		{
-			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(-0.1f, 0.0f, 0.0f));
-		}
-		if (e.GetKeyCode() == SG_KEY_RIGHT)
-		{
-			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(0.1f, 0.0f, 0.0f));
-		}
-		if (e.GetKeyCode() == SG_KEY_UP)
-		{
-			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(0.0f, 0.1f, 0.0f));
-		}
-		if (e.GetKeyCode() == SG_KEY_DOWN)
-		{
-			m_Camera->SetPosition(m_Camera->GetPosition() - glm::vec3(0.0f, -0.1f, 0.0f));
-		}
-
-
-		return false;
-	}
-
 	void OnEvent(Schmog::Event& e)
 	{
 		//SG_TRACE("{0} - {1}", m_DebugName, e);
-		
-		Schmog::EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<Schmog::KeyPressedEvent>(SG_BIND_EVENT_FN(ExampleLayer::OnKeyPressed));
 	}
 
 
@@ -205,6 +198,9 @@ private:
 	std::shared_ptr<Schmog::VertexArray> m_VertexArray;
 	std::shared_ptr<Schmog::VertexArray> m_SquareVA;
 	std::shared_ptr<Schmog::OrthographicCamera> m_Camera;
+
+	glm::vec3 m_CamPos;
+	float m_CamSpeed = 0.1f;
 };
 
 

@@ -13,6 +13,8 @@
 #include "Schmog/Renderer/Buffer.h"
 #include "Schmog/Renderer/VertexArray.h"
 
+#include "Schmog/Core/Timestep.h"
+
 
 namespace Schmog {
 
@@ -37,7 +39,9 @@ namespace Schmog {
 		inline static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
 
-
+	private:
+		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
 		std::unique_ptr<Window> m_Window;
@@ -45,12 +49,14 @@ namespace Schmog {
 
 		bool m_Running = true;
 
-		bool OnWindowClose(WindowCloseEvent& e);
-		bool OnWindowResize(WindowResizeEvent& e);
-
 		LayerStack m_LayerStack;
 
+		float m_LastFrameTime;
+		float m_Accumulator = 0.0f;
+
+	private:
 		static Application* s_Instance;
+		static const float DELTA_TIME;
 	};
 
 	// TO BE DEFINED IN CLIENT
