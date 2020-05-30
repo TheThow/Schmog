@@ -10,6 +10,7 @@
 #include "Schmog/KeyCodes.h"
 #include "Schmog/MouseButtonCodes.h"
 
+#include "Schmog/Renderer/Renderer.h"
 
 
 

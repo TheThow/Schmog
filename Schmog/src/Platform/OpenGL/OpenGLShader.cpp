@@ -2,6 +2,7 @@
 #include "OpenGLShader.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.inl>
 
 namespace Schmog {
 
@@ -108,6 +109,24 @@ namespace Schmog {
 	void OpenGLShader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	void OpenGLShader::SetUniform(const std::string& name, glm::mat4& matrix)
+	{
+		auto loc = GetUniformLocation(name);
+		SG_CORE_ASSERT(loc != -1, "Uniform" + name + " does not exist");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
+	}
+
+	int OpenGLShader::GetUniformLocation(const std::string& name)
+	{
+		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+		{
+			return m_UniformLocationCache[name];
+		}
+		auto loc = glGetUniformLocation(m_RendererID, name.c_str());
+		m_UniformLocationCache[name] = loc;
+		return loc;
 	}
 
 }
