@@ -26,7 +26,7 @@ namespace Schmog {
 }
 
 // Core log macros
-#define SG_CORE_FATAL(...)		::Schmog::Log::getCoreLogger()->fatal(__VA_ARGS__)
+#define SG_CORE_CRITICAL(...)	::Schmog::Log::getCoreLogger()->critical(__VA_ARGS__)
 #define SG_CORE_ERROR(...)		::Schmog::Log::getCoreLogger()->error(__VA_ARGS__)
 #define SG_CORE_WARN(...)		::Schmog::Log::getCoreLogger()->warn(__VA_ARGS__)
 #define SG_CORE_INFO(...)		::Schmog::Log::getCoreLogger()->info(__VA_ARGS__)
@@ -34,7 +34,7 @@ namespace Schmog {
 
 
 // Client log macros
-#define SG_FATAL(...)			::Schmog::Log::getClientLogger()->fatal(__VA_ARGS__)
+#define SG_CRITICAL(...)		::Schmog::Log::getClientLogger()->critical(__VA_ARGS__)
 #define SG_ERROR(...)			::Schmog::Log::getClientLogger()->error(__VA_ARGS__)
 #define SG_WARN(...)			::Schmog::Log::getClientLogger()->warn(__VA_ARGS__)
 #define SG_INFO(...)			::Schmog::Log::getClientLogger()->info(__VA_ARGS__)

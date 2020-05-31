@@ -111,7 +111,7 @@ namespace Schmog {
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::SetUniform(const std::string& name, glm::mat4& matrix)
+	void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix)
 	{
 		auto loc = GetUniformLocation(name);
 		SG_CORE_ASSERT(loc != -1, "Uniform" + name + " does not exist");

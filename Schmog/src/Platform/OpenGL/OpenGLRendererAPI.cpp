@@ -6,6 +6,37 @@
 
 namespace Schmog {
 
+	void OpenGLMessageCallback(
+		unsigned source,
+		unsigned type,
+		unsigned id,
+		unsigned severity,
+		int length,
+		const char* message,
+		const void* userParam)
+	{
+		switch (severity)
+		{
+		case GL_DEBUG_SEVERITY_HIGH:         SG_CORE_CRITICAL("OpenGL: {0}", message); return;
+		case GL_DEBUG_SEVERITY_MEDIUM:       SG_CORE_ERROR("OpenGL: {0}", message); return;
+		case GL_DEBUG_SEVERITY_LOW:          SG_CORE_WARN("OpenGL: {0}", message); return;
+		case GL_DEBUG_SEVERITY_NOTIFICATION: SG_CORE_TRACE("OpenGL: {0}", message); return;
+		}
+
+		SG_CORE_ASSERT(false, "Unknown severity level!");
+	}
+
+
+	void OpenGLRendererAPI::Init()
+	{
+#ifdef SG_DEBUG
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(OpenGLMessageCallback, nullptr);
+
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
+#endif
+	}
 
 	void OpenGLRendererAPI::SetClearColor(const glm::vec4& color)
 	{

@@ -2,13 +2,14 @@
 #include <memory>
 
 #include <imgui/imgui.h>
+#include "glm/gtc/matrix_transform.hpp"
 
 
 class ExampleLayer : public Schmog::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_CamPos(0.0f)
+		: Layer("Example"), m_CamPos(0.0f), m_SquareTransform(glm::mat4(1.0f))
 	{
 		using namespace Schmog;
 		m_VertexArray = VertexArray::Create();
@@ -75,13 +76,14 @@ public:
 			layout(location = 1) in vec4 a_Color;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
 			out vec4 v_Color;
 
 			void main()
 			{
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 				v_Position = a_Position;
 				v_Color = a_Color;
 			}
@@ -111,12 +113,13 @@ public:
 			layout(location = 0) in vec3 a_Position;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
 
 			void main()
 			{
-				gl_Position = u_ViewProjection * vec4(a_Position + 0.25, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 				v_Position = a_Position;
 			}
 
@@ -132,7 +135,7 @@ public:
 
 			void main()
 			{
-				o_Color = vec4(0.8,0.0,0.8, 1.0);
+				o_Color = vec4(0.8, 0.0, 0.8, 1.0);
 			}
 
 		)";
@@ -162,6 +165,8 @@ public:
 			m_CamPos.x += m_CamSpeed;
 		}
 
+		m_SquareRot += m_SquareRotSpeed;
+
 		m_Camera->SetPosition(m_CamPos);
 
 		Schmog::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
@@ -169,7 +174,15 @@ public:
 
 		Schmog::Renderer::BeginScene(m_Camera);
 
-		Schmog::Renderer::Submit(m_Shader2, m_SquareVA);
+		auto rot = glm::rotate(glm::mat4(1.0f), glm::radians(m_SquareRot), glm::vec3(0, 0, 1));
+		auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+		for (int i = 0; i < 4; i++)
+		{
+			m_SquareTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-0.75 + 0.5*i, 0.5, 0)) * rot * scale;
+			Schmog::Renderer::Submit(m_Shader2, m_SquareVA, m_SquareTransform);
+		}
+		
 
 		Schmog::Renderer::Submit(m_Shader, m_VertexArray);
 
@@ -201,6 +214,9 @@ private:
 
 	glm::vec3 m_CamPos;
 	float m_CamSpeed = 0.1f;
+	glm::mat4 m_SquareTransform;
+	float m_SquareRot = 0.0f;
+	float m_SquareRotSpeed = 2.0f;
 };
 
 
