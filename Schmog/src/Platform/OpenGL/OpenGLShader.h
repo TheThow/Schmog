@@ -16,7 +16,8 @@ namespace Schmog {
 		virtual void Unbind() const override;
 
 		virtual void SetUniform(const std::string& name, const glm::mat4& matrix) override;
-		virtual int GetUniformLocation(const std::string& name) override;
+		virtual void SetUniform(const std::string& name, const glm::vec4& vec) override;
+		virtual int GetUniformLocation(const std::string& name);
 
 	private:
 		uint32_t m_RendererID = 0;

@@ -14,9 +14,9 @@ namespace Schmog {
 		virtual void Unbind() const = 0;
 
 		virtual void SetUniform(const std::string& name, const glm::mat4& matrix) = 0;
-		virtual int GetUniformLocation(const std::string& name) = 0;
+		virtual void SetUniform(const std::string& name, const glm::vec4& vec) = 0;
 
-		static Shader* Create(const std::string& vertexSrc, const std::string& fragmentSrc);
+		static std::shared_ptr<Shader> Create(const std::string& vertexSrc, const std::string& fragmentSrc);
 
 	};
 

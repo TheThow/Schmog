@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Events/Event.h"
+#include "Schmog/Events/Event.h"
 
 
 namespace Schmog {

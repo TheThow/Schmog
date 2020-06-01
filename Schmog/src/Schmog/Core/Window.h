@@ -3,7 +3,7 @@
 
 #include "sgpch.h"
 
-#include "Schmog/Core.h"
+#include "Schmog/Core/Core.h"
 #include "Schmog/Events/Event.h"
 
 namespace Schmog {

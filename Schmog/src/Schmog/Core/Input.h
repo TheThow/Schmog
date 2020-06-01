@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Schmog/Core.h"
+#include "Schmog/Core/Core.h"
 #include <memory>
 
 namespace Schmog {

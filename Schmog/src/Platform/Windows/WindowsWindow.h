@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Schmog/Window.h"
+#include "Schmog/Core/Window.h"
 #include "Schmog/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

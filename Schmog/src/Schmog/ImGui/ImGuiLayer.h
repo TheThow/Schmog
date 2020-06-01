@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Schmog/Layer.h"
+#include "Schmog/Core/Layer.h"
 #include "Schmog/Events/MouseEvent.h"
 #include "Schmog/Events/KeyEvent.h"
 #include "Schmog/Events/ApplicationEvent.h"

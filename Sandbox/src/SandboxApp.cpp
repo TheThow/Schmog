@@ -2,7 +2,9 @@
 #include <memory>
 
 #include <imgui/imgui.h>
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <glm/gtc/type_ptr.inl>
 
 
 class ExampleLayer : public Schmog::Layer
@@ -79,13 +81,11 @@ public:
 			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
-			out vec4 v_Color;
 
 			void main()
 			{
 				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 				v_Position = a_Position;
-				v_Color = a_Color;
 			}
 
 		)";
@@ -96,52 +96,18 @@ public:
 			layout(location = 0) out vec4 o_Color;
 
 			in vec3 v_Position;
-			in vec4 v_Color;
+			uniform vec4 u_Color;
 
 
 			void main()
 			{
-				o_Color = v_Color;
+				o_Color = u_Color;
 			}
 
 		)";
 
 
-		std::string squareVertexSrc = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 a_Position;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec3 v_Position;
-
-			void main()
-			{
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-				v_Position = a_Position;
-			}
-
-		)";
-
-		std::string squareFragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 o_Color;
-
-			in vec3 v_Position;
-
-
-			void main()
-			{
-				o_Color = vec4(0.8, 0.0, 0.8, 1.0);
-			}
-
-		)";
-
-		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
-		m_Shader2.reset(Shader::Create(squareVertexSrc, squareFragmentSrc));
+		m_Shader = Shader::Create(vertexSrc, fragmentSrc);
 
 		m_Camera = std::make_shared<OrthographicCamera>(-1.6f, 1.6f, -.9f, .9f);
 	}
@@ -175,16 +141,33 @@ public:
 		Schmog::Renderer::BeginScene(m_Camera);
 
 		auto rot = glm::rotate(glm::mat4(1.0f), glm::radians(m_SquareRot), glm::vec3(0, 0, 1));
-		auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+		auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.2f));
 
-		for (int i = 0; i < 4; i++)
+
+
+		m_Shader->Bind();
+
+		for (int y = -10; y <= 10; y++)
 		{
-			m_SquareTransform = glm::translate(glm::mat4(1.0f), glm::vec3(-0.75 + 0.5*i, 0.5, 0)) * rot * scale;
-			Schmog::Renderer::Submit(m_Shader2, m_SquareVA, m_SquareTransform);
+			for (int x = -10; x <= 10; x++)
+			{
+				m_SquareTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.22 * x, 0.22 * y, 0)) * rot * scale;
+				if ((x+y) % 2 == 0)
+				{
+					m_Shader->SetUniform("u_Color", glm::vec4(m_Color1, 1.0f));
+				}
+				else
+				{
+					m_Shader->SetUniform("u_Color", glm::vec4(m_Color2, 1.0f));
+				}
+				Schmog::Renderer::Submit(m_Shader, m_SquareVA, m_SquareTransform);
+			}
+
 		}
+
 		
 
-		Schmog::Renderer::Submit(m_Shader, m_VertexArray);
+		//Schmog::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Schmog::Renderer::EndScene();
 	}
@@ -192,7 +175,8 @@ public:
 	void OnImGuiRender() override
 	{
 		ImGui::Begin("Test");
-		ImGui::Text("Hello World");
+		ImGui::ColorEdit3("Color 1", glm::value_ptr(m_Color1));
+		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_Color2));
 		ImGui::End();
 	}
 		
@@ -206,7 +190,6 @@ public:
 
 private:
 	std::shared_ptr<Schmog::Shader> m_Shader;
-	std::shared_ptr<Schmog::Shader> m_Shader2;
 
 	std::shared_ptr<Schmog::VertexArray> m_VertexArray;
 	std::shared_ptr<Schmog::VertexArray> m_SquareVA;
@@ -217,6 +200,9 @@ private:
 	glm::mat4 m_SquareTransform;
 	float m_SquareRot = 0.0f;
 	float m_SquareRotSpeed = 2.0f;
+
+	glm::vec3 m_Color1 = { 0.8f, 0.2f, 0.8f};
+	glm::vec3 m_Color2 = { 0.2f, 0.3f, 0.8f};
 };
 
 

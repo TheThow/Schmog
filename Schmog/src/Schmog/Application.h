@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Core.h"
+#include "Core/Core.h"
 
-#include "Window.h"
-#include "Layer.h"
-#include "LayerStack.h"
+#include "Core/Window.h"
+#include "Core/Layer.h"
+#include "Core/LayerStack.h"
 #include "Schmog/Events/Event.h"
 #include "Schmog/Events/ApplicationEvent.h"
 

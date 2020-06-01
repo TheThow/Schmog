@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef SG_PLATFORM_WINDOWS
 	#if SG_DYNAMIC_LINK
 		#ifdef SG_BUILD_DLL
@@ -31,4 +33,9 @@
 #define SG_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
 
+namespace Schmog {
 
+	template<typename T>
+	using Shared = std::shared_ptr<T>;
+
+}

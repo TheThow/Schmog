@@ -118,6 +118,13 @@ namespace Schmog {
 		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
+	void OpenGLShader::SetUniform(const std::string& name, const glm::vec4& vec)
+	{
+		auto loc = GetUniformLocation(name);
+		SG_CORE_ASSERT(loc != -1, "Uniform" + name + " does not exist");
+		glUniform4f(loc, vec[0], vec[1], vec[2], vec[3]);
+	}
+
 	int OpenGLShader::GetUniformLocation(const std::string& name)
 	{
 		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())

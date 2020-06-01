@@ -1,5 +1,5 @@
 #pragma once
-#include "Schmog/Input.h"
+#include "Schmog/Core/Input.h"
 
 namespace Schmog {
 
