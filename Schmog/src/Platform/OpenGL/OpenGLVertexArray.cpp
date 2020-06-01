@@ -55,7 +55,6 @@ namespace Schmog
 		SG_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "No vertex buffer layout specified");
 
 		uint32_t index = 0;
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 		const auto& layout = vertexBuffer->GetLayout();
 		for (const auto& element : layout)
 		{

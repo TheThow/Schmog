@@ -121,7 +121,12 @@ namespace Schmog {
 	void OpenGLShader::SetUniform(const std::string& name, const glm::vec4& vec)
 	{
 		auto loc = GetUniformLocation(name);
-		SG_CORE_ASSERT(loc != -1, "Uniform" + name + " does not exist");
+		if (loc == -1)
+		{
+			//SG_WARN("Uniform " + name + " does not exist");
+			return;
+		}
+
 		glUniform4f(loc, vec[0], vec[1], vec[2], vec[3]);
 	}
 
