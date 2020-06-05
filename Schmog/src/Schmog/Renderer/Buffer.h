@@ -32,7 +32,7 @@ namespace Schmog {
 			case ShaderDataType::Bool:			return 1;
 		}
 
-		SG_ASSERT(false, "Unknown Shader Data Type");
+		SG_CORE_ASSERT(false, "Unknown Shader Data Type");
 		return 0;
 	}
 

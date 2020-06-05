@@ -10,6 +10,11 @@ namespace Schmog {
 	class RenderCommand
 	{
 	public:
+		static void Init()
+		{
+			s_RendererAPI->Init();
+		}
+
 		static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
 		{
 			s_RendererAPI->DrawIndexed(vertexArray);

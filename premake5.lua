@@ -18,6 +18,7 @@ IncludeDir["GLFW"] = "Schmog/vendor/GLFW/include"
 IncludeDir["Glad"] = "Schmog/vendor/Glad/include"
 IncludeDir["ImGui"] = "Schmog/vendor/imgui"
 IncludeDir["glm"] = "Schmog/vendor/glm"
+IncludeDir["stb_image"] = "Schmog/vendor/stb_image"
 
 group "Dependencies"
 include "Schmog/vendor/GLFW"
@@ -43,7 +44,9 @@ project "Schmog"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h"
 	}
 	
 	defines
@@ -58,7 +61,8 @@ project "Schmog"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 	
 	links

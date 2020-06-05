@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "Platform/Platform.h"
 
+#include "Schmog/Renderer/Renderer.h"
+
 
 namespace Schmog {
 
@@ -12,11 +14,13 @@ namespace Schmog {
 
 	Application::Application()
 	{
-		SG_ASSERT(!s_Instance, "Application already exists!");
+		SG_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(SG_BIND_EVENT_FN(Application::OnEvent));
+
+		Renderer::Init();
 
 		m_ImGuiLayer = std::make_shared<ImGuiLayer>();
 		PushOverlay(m_ImGuiLayer);

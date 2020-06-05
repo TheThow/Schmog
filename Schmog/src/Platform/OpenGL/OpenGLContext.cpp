@@ -7,11 +7,10 @@
 namespace Schmog {
 
 
-
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
 		: m_windowHandle(windowHandle)
 	{
-		SG_ASSERT(windowHandle, "Window handle is null");
+		SG_CORE_ASSERT(windowHandle, "Window handle is null");
 	}
 
 	void OpenGLContext::Init()

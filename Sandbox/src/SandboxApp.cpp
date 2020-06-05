@@ -49,16 +49,17 @@ public:
 
 		m_SquareVA = VertexArray::Create();
 
-		float vertices2[4 * 3] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.5f, 0.5f, 0.0f,
-			-0.5f, 0.5f, 0.0f
+		float vertices2[4 * 5] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f, 0.5f, 0.0f, 0.0f, 1.0f
 		};
 		std::shared_ptr<VertexBuffer> squareVB = VertexBuffer::Create(vertices2, sizeof(vertices2));
 
 		squareVB->SetLayout({
-			{ ShaderDataType::Float3, "a_Position"}
+			{ ShaderDataType::Float3, "a_Position"},
+			{ ShaderDataType::Float2, "a_TexCoords"}
 			});
 
 		m_SquareVA->AddVertexBuffer(squareVB);
@@ -70,46 +71,14 @@ public:
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 
-
-		std::string vertexSrc = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec3 v_Position;
-
-			void main()
-			{
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-				v_Position = a_Position;
-			}
-
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 o_Color;
-
-			in vec3 v_Position;
-			uniform vec4 u_Color;
-
-
-			void main()
-			{
-				o_Color = u_Color;
-			}
-
-		)";
-
-
-		m_Shader = Shader::Create(vertexSrc, fragmentSrc);
+		m_TexShader = Shader::Create("assets/shaders/Texture.glsl");
 
 		m_Camera = std::make_shared<OrthographicCamera>(-1.6f, 1.6f, -.9f, .9f);
+
+		m_Texture = Schmog::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_Texture->Bind(0);
+		m_TexShader->Bind();
+		m_TexShader->SetUniform("u_Texture", 0);
 	}
 
 	void OnUpdate()
@@ -131,7 +100,7 @@ public:
 			m_CamPos.x += m_CamSpeed;
 		}
 
-		m_SquareRot += m_SquareRotSpeed;
+		//m_SquareRot += m_SquareRotSpeed;
 
 		m_Camera->SetPosition(m_CamPos);
 
@@ -140,34 +109,26 @@ public:
 
 		Schmog::Renderer::BeginScene(m_Camera);
 
+		float fac = 0.5;
+
 		auto rot = glm::rotate(glm::mat4(1.0f), glm::radians(m_SquareRot), glm::vec3(0, 0, 1));
-		auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.2f));
+		auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(fac));
 
 
-
-		m_Shader->Bind();
+		m_TexShader->Bind();
+		m_Texture->Bind();
 
 		for (int y = -10; y <= 10; y++)
 		{
 			for (int x = -10; x <= 10; x++)
 			{
-				m_SquareTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.22 * x, 0.22 * y, 0)) * rot * scale;
-				if ((x+y) % 2 == 0)
-				{
-					m_Shader->SetUniform("u_Color", glm::vec4(m_Color1, 1.0f));
-				}
-				else
-				{
-					m_Shader->SetUniform("u_Color", glm::vec4(m_Color2, 1.0f));
-				}
-				Schmog::Renderer::Submit(m_Shader, m_SquareVA, m_SquareTransform);
+				m_SquareTransform = rot * glm::translate(glm::mat4(1.0f), glm::vec3(fac * x, fac * y, 0)) * scale;
+				m_TexShader->SetUniform("u_Color", glm::vec4(m_Color1, 1.0f));
+				m_Texture->Bind();
+				Schmog::Renderer::Submit(m_TexShader, m_SquareVA, m_SquareTransform);
 			}
 
 		}
-
-		
-
-		//Schmog::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Schmog::Renderer::EndScene();
 	}
@@ -175,8 +136,7 @@ public:
 	void OnImGuiRender() override
 	{
 		ImGui::Begin("Test");
-		ImGui::ColorEdit3("Color 1", glm::value_ptr(m_Color1));
-		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_Color2));
+		ImGui::ColorEdit3("Color", glm::value_ptr(m_Color1));
 		ImGui::End();
 	}
 		
@@ -189,7 +149,9 @@ public:
 
 
 private:
-	std::shared_ptr<Schmog::Shader> m_Shader;
+	std::shared_ptr<Schmog::Shader> m_TexShader;
+
+	std::shared_ptr<Schmog::Texture2D> m_Texture;
 
 	std::shared_ptr<Schmog::VertexArray> m_VertexArray;
 	std::shared_ptr<Schmog::VertexArray> m_SquareVA;
@@ -203,6 +165,8 @@ private:
 
 	glm::vec3 m_Color1 = { 0.8f, 0.2f, 0.8f};
 	glm::vec3 m_Color2 = { 0.2f, 0.3f, 0.8f};
+
+
 };
 
 
