@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.inl>
 
 #include <fstream>
+#include <filesystem>
 
 namespace Schmog {
 
@@ -16,12 +17,21 @@ namespace Schmog {
 	}
 
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
 		Compile(sources);
+		SetName(name);
+	}
+
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& filepath)
+	{
+		std::string source = ReadFile(filepath);
+		auto sources = Preprocess(source);
+		Compile(sources);
+		SetName(name);
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& filepath)
@@ -29,6 +39,10 @@ namespace Schmog {
 		std::string source = ReadFile(filepath);
 		auto sources = Preprocess(source);
 		Compile(sources);
+
+		//assets/shaders/Texture.glsl -> Texture
+		std::filesystem::path path = filepath;
+		SetName(path.stem().string());
 	}
 
 
@@ -74,6 +88,12 @@ namespace Schmog {
 		auto loc = glGetUniformLocation(m_RendererID, name.c_str());
 		m_UniformLocationCache[name] = loc;
 		return loc;
+	}
+
+	void OpenGLShader::SetName(const std::string& name)
+	{
+		m_Name = name;
+		glObjectLabel(GL_PROGRAM, m_RendererID, -1, name.c_str());
 	}
 
 

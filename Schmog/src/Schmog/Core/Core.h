@@ -36,6 +36,6 @@
 namespace Schmog {
 
 	template<typename T>
-	using Shared = std::shared_ptr<T>;
+	using SharedRef = std::shared_ptr<T>;
 
 }

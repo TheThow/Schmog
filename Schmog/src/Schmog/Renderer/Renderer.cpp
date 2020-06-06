@@ -10,9 +10,9 @@ namespace Schmog {
 		RenderCommand::Init();
 	}
 
-	void Renderer::BeginScene(const std::shared_ptr<OrthographicCamera> camera)
+	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
-		s_SceneData->ViewProjectionMatrix = camera->GetVP();
+		s_SceneData->ViewProjectionMatrix = camera.GetVP();
 	}
 
 	void Renderer::EndScene()

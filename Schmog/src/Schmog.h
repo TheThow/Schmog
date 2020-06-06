@@ -18,8 +18,8 @@
 #include "Schmog/Renderer/Texture.h"
 #include "Schmog/Renderer/VertexArray.h"
 
-
 #include "Schmog/Renderer/Camera.h"
+#include "Schmog/Renderer/CameraController.h"
 
 #include "Schmog/Core/Timestep.h"
 

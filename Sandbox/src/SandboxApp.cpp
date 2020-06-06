@@ -11,7 +11,7 @@ class ExampleLayer : public Schmog::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_CamPos(0.0f), m_SquareTransform(glm::mat4(1.0f))
+		: Layer("Example"), m_SquareTransform(glm::mat4(1.0f)), m_Camera(16.f / 9.f)
 	{
 		using namespace Schmog;
 		m_VertexArray = VertexArray::Create();
@@ -70,44 +70,25 @@ public:
 		std::shared_ptr<IndexBuffer> squareIB = IndexBuffer::Create(indices2, 6);
 		m_SquareVA->SetIndexBuffer(squareIB);
 
-
-		m_TexShader = Shader::Create("assets/shaders/Texture.glsl");
-
-		m_Camera = std::make_shared<OrthographicCamera>(-1.6f, 1.6f, -.9f, .9f);
+		m_ShaderLib = std::make_shared<Schmog::ShaderLibrary>();
+		auto texShader = m_ShaderLib->Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Schmog::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_Texture->Bind(0);
-		m_TexShader->Bind();
-		m_TexShader->SetUniform("u_Texture", 0);
+		texShader->Bind();
+		texShader->SetUniform("u_Texture", 0);
 	}
 
 	void OnUpdate()
 	{
-		if (Schmog::Input::IsKeyPressed(SG_KEY_DOWN))
-		{
-			m_CamPos.y -= m_CamSpeed;
-		}
-		if (Schmog::Input::IsKeyPressed(SG_KEY_UP))
-		{
-			m_CamPos.y += m_CamSpeed;
-		}
-		if (Schmog::Input::IsKeyPressed(SG_KEY_LEFT))
-		{
-			m_CamPos.x -= m_CamSpeed;
-		}
-		if (Schmog::Input::IsKeyPressed(SG_KEY_RIGHT))
-		{
-			m_CamPos.x += m_CamSpeed;
-		}
+		//Update
+		m_Camera.OnUpdate();
 
-		//m_SquareRot += m_SquareRotSpeed;
-
-		m_Camera->SetPosition(m_CamPos);
-
+		//Render
 		Schmog::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Schmog::RenderCommand::Clear();
 
-		Schmog::Renderer::BeginScene(m_Camera);
+		Schmog::Renderer::BeginScene(m_Camera.GetCamera());
 
 		float fac = 0.5;
 
@@ -115,7 +96,8 @@ public:
 		auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(fac));
 
 
-		m_TexShader->Bind();
+		auto texShader = m_ShaderLib->Get("Texture");
+		texShader->Bind();
 		m_Texture->Bind();
 
 		for (int y = -10; y <= 10; y++)
@@ -123,9 +105,9 @@ public:
 			for (int x = -10; x <= 10; x++)
 			{
 				m_SquareTransform = rot * glm::translate(glm::mat4(1.0f), glm::vec3(fac * x, fac * y, 0)) * scale;
-				m_TexShader->SetUniform("u_Color", glm::vec4(m_Color1, 1.0f));
+				texShader->SetUniform("u_Color", glm::vec4(m_Color1, 1.0f));
 				m_Texture->Bind();
-				Schmog::Renderer::Submit(m_TexShader, m_SquareVA, m_SquareTransform);
+				Schmog::Renderer::Submit(texShader, m_SquareVA, m_SquareTransform);
 			}
 
 		}
@@ -143,22 +125,23 @@ public:
 
 	void OnEvent(Schmog::Event& e)
 	{
+		m_Camera.OnEvent(e);
 		//SG_TRACE("{0} - {1}", m_DebugName, e);
 	}
 
 
 
 private:
-	std::shared_ptr<Schmog::Shader> m_TexShader;
+	std::shared_ptr<Schmog::ShaderLibrary> m_ShaderLib;
 
 	std::shared_ptr<Schmog::Texture2D> m_Texture;
 
 	std::shared_ptr<Schmog::VertexArray> m_VertexArray;
 	std::shared_ptr<Schmog::VertexArray> m_SquareVA;
-	std::shared_ptr<Schmog::OrthographicCamera> m_Camera;
 
-	glm::vec3 m_CamPos;
-	float m_CamSpeed = 0.1f;
+
+	Schmog::OrthographicCameraController m_Camera;
+
 	glm::mat4 m_SquareTransform;
 	float m_SquareRot = 0.0f;
 	float m_SquareRotSpeed = 2.0f;

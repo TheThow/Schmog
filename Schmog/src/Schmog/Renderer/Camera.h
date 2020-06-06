@@ -16,8 +16,10 @@ namespace Schmog {
 		const glm::mat4& GetViewMatrix() const { return m_View; }
 
 		// Needs to be abstracted for different graphics in future
-		glm::mat4 GetVP() const { return m_Projection * m_View; }
+		glm::mat4 GetVP() const { return m_ViewProjection; }
+		
 
+		void SetProjection(float left, float right, float bottom, float top);
 		void SetPosition(const glm::vec3 pos) { m_Position = pos; RecalculateViewMatrix(); }
 		void SetRotation(float rotation) { m_Rotation = rotation; RecalculateViewMatrix(); }
 
@@ -30,6 +32,7 @@ namespace Schmog {
 	private:
 		glm::mat4 m_View;
 		glm::mat4 m_Projection;
+		glm::mat4 m_ViewProjection;
 
 		glm::vec3 m_Position;
 		float m_Rotation = 0.0f;
