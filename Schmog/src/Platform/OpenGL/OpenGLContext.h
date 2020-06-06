@@ -16,7 +16,6 @@ namespace Schmog {
 
 		void Init() override;
 		void SwapBuffers() override;
-		void SetViewPort(int width, int height) override;
 
 	private:
 		GLFWwindow* m_windowHandle;

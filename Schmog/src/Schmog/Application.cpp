@@ -116,7 +116,14 @@ namespace Schmog {
 	}
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
-		m_Window->OnWindowResize();
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 		return false;
 	}
 }

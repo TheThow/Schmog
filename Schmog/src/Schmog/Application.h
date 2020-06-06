@@ -48,6 +48,7 @@ namespace Schmog {
 		std::shared_ptr<ImGuiLayer> m_ImGuiLayer;
 
 		bool m_Running = true;
+		bool m_Minimized = false;
 
 		LayerStack m_LayerStack;
 

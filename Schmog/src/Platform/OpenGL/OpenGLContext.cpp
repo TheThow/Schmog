@@ -30,9 +30,4 @@ namespace Schmog {
 		glfwSwapBuffers(m_windowHandle);
 	}
 
-	void OpenGLContext::SetViewPort(int width, int height)
-	{
-		glViewport(0, 0, width, height);
-	}
-
 }

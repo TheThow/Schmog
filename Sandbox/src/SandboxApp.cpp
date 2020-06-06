@@ -126,6 +126,7 @@ public:
 	void OnEvent(Schmog::Event& e)
 	{
 		m_Camera.OnEvent(e);
+
 		//SG_TRACE("{0} - {1}", m_DebugName, e);
 	}
 
