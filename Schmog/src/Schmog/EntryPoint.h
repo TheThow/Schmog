@@ -1,8 +1,6 @@
 #pragma once
 
 #ifdef SG_PLATFORM_WINDOWS
-	
-
 
 
 extern std::shared_ptr<Schmog::Application>  Schmog::CreateApplication();

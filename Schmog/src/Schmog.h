@@ -4,7 +4,7 @@
 
 #include "Schmog/Application.h"
 #include "Schmog/Core/Layer.h"
-#include "Schmog/Log.h"
+#include "Schmog/Core/Log.h"
 
 #include "Schmog/Core/Input.h"
 #include "Schmog/Core/KeyCodes.h"

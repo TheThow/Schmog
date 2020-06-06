@@ -24,7 +24,7 @@ namespace Schmog {
 			s_CoreLogger->flush_on(spdlog::level::trace);
 #else 
 			s_CoreLogger->set_level(spdlog::level::warn);
-			s_CoreLogger->flush_on(spdlog::level::error);
+			s_CoreLogger->flush_on(spdlog::level::err);
 #endif
 
 		}
@@ -47,7 +47,7 @@ namespace Schmog {
 			s_ClientLogger->flush_on(spdlog::level::trace);
 #else 
 			s_ClientLogger->set_level(spdlog::level::warn);
-			s_ClientLogger->flush_on(spdlog::level::error);
+			s_ClientLogger->flush_on(spdlog::level::err);
 #endif
 		}
 
