@@ -81,7 +81,7 @@ namespace Schmog {
 	{
 		std::unordered_map<GLenum, std::string> shaderSources;
 
-		static const char* typeToken = "#type";
+		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
 		size_t pos = source.find(typeToken);
 
@@ -106,8 +106,12 @@ namespace Schmog {
 	{
 		GLuint program = glCreateProgram();
 		m_RendererID = program;
-		std::vector<GLint> shaderIds;
-		shaderIds.reserve(shaderSources.size());
+		//std::vector<GLint> shaderIds;
+		//shaderIds.reserve(shaderSources.size());
+		SG_CORE_ASSERT(shaderSources.size() <= 4, "Max 4 shaders supported at one time");
+		std::array<GLint, 4> shaderIds;
+		unsigned short shaderIdCounter = 0;
+
 
 		for (auto& kv : shaderSources)
 		{
@@ -140,7 +144,8 @@ namespace Schmog {
 			}
 
 			glAttachShader(program, shader);
-			shaderIds.push_back(shader);
+			shaderIds[shaderIdCounter] = shader;
+			shaderIdCounter++;
 		}
 
 
@@ -160,9 +165,9 @@ namespace Schmog {
 
 			glDeleteProgram(program);
 
-			for (auto& id : shaderIds)
+			for (unsigned short i = 0; i < shaderIdCounter; i++)
 			{
-				glDeleteShader(id);
+				glDeleteShader(shaderIds[i]);
 			}
 
 
@@ -172,9 +177,9 @@ namespace Schmog {
 			return;
 		}
 
-		for (auto& id : shaderIds)
+		for (unsigned short i = 0; i < shaderIdCounter; i++)
 		{
-			glDetachShader(program, id);
+			glDetachShader(program, shaderIds[i]);
 		}
 		
 		m_RendererID = program;
@@ -184,7 +189,7 @@ namespace Schmog {
 	{
 		std::string result;
 
-		std::ifstream in(filepath, std::ios::in, std::ios::binary);
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		SG_CORE_ASSERT(in, "File not found: " + filepath);
 
 		in.seekg(0, std::ios::end);
