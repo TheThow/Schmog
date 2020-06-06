@@ -8,9 +8,6 @@ namespace Schmog {
 
 	void Log::Init()
 	{
-		//spdlog::set_pattern("%^[%T] %n: %v%$");
-		//s_CoreLogger = spdlog::stdout_color_mt("SCHMOG");
-		//s_CoreLogger->set_level(spdlog::level::trace);
 
 		{
 			std::vector<spdlog::sink_ptr> sinks;
@@ -23,17 +20,12 @@ namespace Schmog {
 			s_CoreLogger->set_level(spdlog::level::trace);
 			s_CoreLogger->flush_on(spdlog::level::trace);
 #else 
-			s_CoreLogger->set_level(spdlog::level::warn);
+			s_CoreLogger->set_level(spdlog::level::info);
 			s_CoreLogger->flush_on(spdlog::level::err);
 #endif
 
 		}
 
-
-
-		//spdlog::set_pattern("%^[%T] %n: %v%$");
-		//s_ClientLogger = spdlog::stdout_color_mt("APP");
-		//s_ClientLogger->set_level(spdlog::level::trace);
 
 		{
 			std::vector<spdlog::sink_ptr> sinks;
@@ -46,7 +38,7 @@ namespace Schmog {
 			s_ClientLogger->set_level(spdlog::level::trace);
 			s_ClientLogger->flush_on(spdlog::level::trace);
 #else 
-			s_ClientLogger->set_level(spdlog::level::warn);
+			s_ClientLogger->set_level(spdlog::level::info);
 			s_ClientLogger->flush_on(spdlog::level::err);
 #endif
 		}
