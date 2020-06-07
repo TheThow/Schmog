@@ -1,4 +1,7 @@
 #include <Schmog.h>
+// ------ ENTRY POINT ------
+#include "Schmog/EntryPoint.h"
+
 #include <memory>
 
 #include <imgui/imgui.h>
@@ -6,6 +9,7 @@
 
 #include <glm/gtc/type_ptr.inl>
 
+#include "Sandbox2D.h"
 
 class ExampleLayer : public Schmog::Layer
 {
@@ -159,7 +163,8 @@ class Sandbox : public Schmog::Application
 public: 
 	Sandbox()
 	{
-		PushLayer(std::make_shared<ExampleLayer>());
+		//PushLayer(std::make_shared<ExampleLayer>());
+		PushLayer(std::make_shared<Sandbox2D>());
 	}
 
 	~Sandbox() 

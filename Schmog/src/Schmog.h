@@ -23,7 +23,3 @@
 
 #include "Schmog/Core/Timestep.h"
 
-
-
-// ------ ENTRY POINT ------
-#include "Schmog/EntryPoint.h"
