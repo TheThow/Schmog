@@ -1,12 +1,16 @@
 [submodule "Schmog/vendor/spdlog"]
 	path = Schmog/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+	branch = v1.x
 [submodule "Schmog/vendor/GLFW"]
 	path = Schmog/vendor/GLFW
 	url = https://github.com/TheCherno/glfw.git
+	branch = master
 [submodule "Schmog/vendor/imgui"]
 	path = Schmog/vendor/imgui
 	url = https://github.com/TheCherno/imgui.git
+	branch = docking
 [submodule "Schmog/vendor/glm"]
 	path = Schmog/vendor/glm
 	url = https://github.com/g-truc/glm.git
+	branch = master

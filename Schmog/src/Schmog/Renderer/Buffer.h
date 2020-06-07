@@ -41,10 +41,10 @@ namespace Schmog {
 		ShaderDataType Type;
 		std::string Name;
 		uint32_t Size;
-		uint32_t Offset;
+		size_t Offset;
 		bool Normalized;
 
-		BufferLayoutEntry() {}
+		BufferLayoutEntry() = default;
 
 		BufferLayoutEntry(ShaderDataType type, const std::string& name, bool normalized = false)
 			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
@@ -78,7 +78,7 @@ namespace Schmog {
 	{
 	public:
 
-		BufferLayout() {}
+		BufferLayout() = default;
 
 		BufferLayout(const std::initializer_list<BufferLayoutEntry>& init)
 			: m_Elements(init) 
@@ -99,7 +99,7 @@ namespace Schmog {
 
 		void CalculateOffsetAndStride()
 		{
-			uint32_t offset = 0;
+			size_t offset = 0;
 			m_Stride = 0;
 			for (auto& element : m_Elements)
 			{

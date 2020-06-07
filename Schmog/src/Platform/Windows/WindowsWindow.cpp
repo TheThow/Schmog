@@ -11,7 +11,7 @@
 
 namespace Schmog {
 
-	static bool s_GLFWInitialized = false;
+	static uint8_t s_GLFWCount = 0;
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
@@ -39,20 +39,20 @@ namespace Schmog {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-		
-
 		SG_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-		if (!s_GLFWInitialized)
+		if (s_GLFWCount == 0)
 		{
-			// TODO: glfwTerminate on system shutdown
+			SG_CORE_INFO("GLFW Init");
+
 			int success = glfwInit();
 			SG_CORE_ASSERT(success, "Could not intialize GLFW!");
 
 			glfwSetErrorCallback(GLFWErrorCallback);
 
-			s_GLFWInitialized = true;
 		}
+
+		s_GLFWCount += 1;
 
 #if defined(SG_DEBUG)
 		if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
@@ -161,6 +161,13 @@ namespace Schmog {
 	void WindowsWindow::Shutdown()
 	{
 		glfwDestroyWindow(m_Window);
+		s_GLFWCount -= 1;
+
+		if (s_GLFWCount == 0)
+		{
+			SG_CORE_INFO("GLFW terminate");
+			glfwTerminate();
+		}
 	}
 
 	void WindowsWindow::OnUpdate()

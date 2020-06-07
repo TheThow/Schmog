@@ -25,7 +25,7 @@ namespace Schmog {
 		m_ImGuiLayer = std::make_shared<ImGuiLayer>();
 		PushOverlay(m_ImGuiLayer);
 
-		m_LastFrameTime = Platform::GetTime();
+		m_LastFrameTime = static_cast<float>(Platform::GetTime());
 		m_Window->SetVSync(false);
 	}
 

@@ -14,6 +14,7 @@ namespace Schmog {
 		if (type == "fragment" || type == "pixel") return GL_FRAGMENT_SHADER;
 
 		SG_CORE_ASSERT(false, "Unknown shader type: " + type);
+		return 0;
 	}
 
 
@@ -200,6 +201,7 @@ namespace Schmog {
 		for (unsigned short i = 0; i < shaderIdCounter; i++)
 		{
 			glDetachShader(program, shaderIds[i]);
+			glDeleteShader(shaderIds[i]);
 		}
 		
 		m_RendererID = program;

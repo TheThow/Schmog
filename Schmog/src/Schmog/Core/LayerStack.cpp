@@ -9,7 +9,10 @@ namespace Schmog {
 
 	LayerStack::~LayerStack()
 	{
-
+		for (auto& layer : m_Layers)
+		{
+			layer->OnDetach();
+		}
 	}
 
 	void LayerStack::PushLayer(std::shared_ptr<Layer> layer)
