@@ -1,7 +1,6 @@
 #include <Schmog.h>
 // ------ ENTRY POINT ------
 #include "Schmog/EntryPoint.h"
-
 #include <memory>
 
 #include <imgui/imgui.h>
@@ -81,6 +80,7 @@ public:
 		m_Texture->Bind(0);
 		texShader->Bind();
 		texShader->SetUniform("u_Texture", 0);
+		texShader->SetUniform("u_UseTexture", 1);
 	}
 
 	void OnUpdate()

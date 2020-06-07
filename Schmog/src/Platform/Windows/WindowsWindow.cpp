@@ -35,11 +35,11 @@ namespace Schmog {
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
-		m_Data.Title = props.Title;
-		m_Data.Width = props.Width;
-		m_Data.Height = props.Height;
+		m_Data.title = props.title;
+		m_Data.width = props.width;
+		m_Data.height = props.height;
 
-		SG_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+		SG_CORE_INFO("Creating window {0} ({1}, {2})", props.title, props.width, props.height);
 
 		if (s_GLFWCount == 0)
 		{
@@ -59,7 +59,7 @@ namespace Schmog {
 			glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
 
-		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		m_Window = glfwCreateWindow((int)props.width, (int)props.height, m_Data.title.c_str(), nullptr, nullptr);
 
 		m_Context = std::make_shared<OpenGLContext>(m_Window);
 		m_Context->Init();
@@ -72,18 +72,18 @@ namespace Schmog {
 			{
 				WindowData data = *(WindowData*) glfwGetWindowUserPointer(window);
 
-				data.Width = width;
-				data.Height = height;
+				data.width = width;
+				data.height = height;
 
 				WindowResizeEvent windowEvent(width, height);
-				data.EventCallback(windowEvent);
+				data.eventCallback(windowEvent);
 			});
 
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 			{
 				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
 				WindowCloseEvent windowEvent;
-				data.EventCallback(windowEvent);
+				data.eventCallback(windowEvent);
 			});
 
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scanCode, int action, int mods)
@@ -95,19 +95,19 @@ namespace Schmog {
 					case GLFW_PRESS:
 					{
 						KeyPressedEvent keyPressedEvent(key, 0);
-						data.EventCallback(keyPressedEvent);
+						data.eventCallback(keyPressedEvent);
 						break;
 					}
 					case GLFW_RELEASE:
 					{
 						KeyReleasedEvent keyReleasedEvent(key);
-						data.EventCallback(keyReleasedEvent);
+						data.eventCallback(keyReleasedEvent);
 						break;
 					}
 					case GLFW_REPEAT:
 					{
 						KeyPressedEvent keyRepeatEvent(key, 1);
-						data.EventCallback(keyRepeatEvent);
+						data.eventCallback(keyRepeatEvent);
 						break;
 					}
 				}
@@ -118,7 +118,7 @@ namespace Schmog {
 				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
 
 				KeyTypedEvent keyTypedEvent(keycode, 0);
-				data.EventCallback(keyTypedEvent);
+				data.eventCallback(keyTypedEvent);
 
 			});
 
@@ -131,13 +131,13 @@ namespace Schmog {
 					case GLFW_PRESS:
 					{
 						MouseButtonPressedEvent event(button);
-						data.EventCallback(event);
+						data.eventCallback(event);
 						break;
 					}
 					case GLFW_RELEASE:
 					{
 						MouseButtonReleasedEvent event(button);
-						data.EventCallback(event);
+						data.eventCallback(event);
 						break;
 					}
 				}
@@ -147,14 +147,14 @@ namespace Schmog {
 			{
 				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
 				MouseScrolledEvent event((float) xOffset, (float) yOffset);
-				data.EventCallback(event);
+				data.eventCallback(event);
 			});
 
 		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos)
 			{
 				WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
 				MouseMovedEvent event((float)xPos, (float)yPos);
-				data.EventCallback(event);
+				data.eventCallback(event);
 			});
 	}
 
@@ -183,12 +183,12 @@ namespace Schmog {
 		else
 			glfwSwapInterval(0);
 
-		m_Data.VSync = enabled;
+		m_Data.vSync = enabled;
 	}
 
 	bool WindowsWindow::IsVSync() const
 	{
-		return m_Data.VSync;
+		return m_Data.vSync;
 	}
 
 

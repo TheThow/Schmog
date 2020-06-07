@@ -26,6 +26,8 @@ public:
 private:
 	Schmog::OrthographicCameraController m_Camera;
 
+	std::shared_ptr<Schmog::Texture2D> m_Texture;
+
 
 	// Temp
 	std::shared_ptr<Schmog::Shader> m_Shader;

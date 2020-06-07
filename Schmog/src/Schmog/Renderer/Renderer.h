@@ -25,7 +25,7 @@ namespace Schmog {
 
 		struct SceneData
 		{
-			glm::mat4 ViewProjectionMatrix;
+			glm::mat4 viewProjectionMatrix;
 		};
 
 		static SceneData* s_SceneData;

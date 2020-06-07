@@ -1,5 +1,6 @@
 #include "sgpch.h"
 #include "Renderer.h"
+#include "Renderer2D.h"
 
 namespace Schmog {
 
@@ -8,6 +9,7 @@ namespace Schmog {
 	void Renderer::Init()
 	{
 		RenderCommand::Init();
+		Renderer2D::Init();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
@@ -17,7 +19,7 @@ namespace Schmog {
 
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
-		s_SceneData->ViewProjectionMatrix = camera.GetVP();
+		s_SceneData->viewProjectionMatrix = camera.GetVP();
 	}
 
 	void Renderer::EndScene()
@@ -27,7 +29,7 @@ namespace Schmog {
 	void Renderer::Submit(const std::shared_ptr<Shader> shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
 		shader->Bind();
-		shader->SetUniform("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
+		shader->SetUniform("u_ViewProjection", s_SceneData->viewProjectionMatrix);
 		shader->SetUniform("u_Transform", transform);
 
 		vertexArray->Bind(),

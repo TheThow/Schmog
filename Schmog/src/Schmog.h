@@ -11,6 +11,7 @@
 #include "Schmog/Core/MouseButtonCodes.h"
 
 #include "Schmog/Renderer/Renderer.h"
+#include "Schmog/Renderer/Renderer2D.h"
 #include "Schmog/Renderer/RenderCommand.h"
 
 #include "Schmog/Renderer/Buffer.h"

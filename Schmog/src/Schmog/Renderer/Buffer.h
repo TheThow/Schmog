@@ -38,23 +38,23 @@ namespace Schmog {
 
 	struct BufferLayoutEntry
 	{
-		ShaderDataType Type;
-		std::string Name;
-		uint32_t Size;
-		size_t Offset;
-		bool Normalized;
+		ShaderDataType type;
+		std::string name;
+		uint32_t size;
+		size_t offset;
+		bool normalized;
 
 		BufferLayoutEntry() = default;
 
 		BufferLayoutEntry(ShaderDataType type, const std::string& name, bool normalized = false)
-			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
+			: name(name), type(type), size(ShaderDataTypeSize(type)), offset(0), normalized(normalized)
 		{
 
 		}
 
 		uint32_t GetComponentCount() const
 		{
-			switch (Type)
+			switch (type)
 			{
 				case ShaderDataType::Float:   return 1;
 				case ShaderDataType::Float2:  return 2;
@@ -103,9 +103,9 @@ namespace Schmog {
 			m_Stride = 0;
 			for (auto& element : m_Elements)
 			{
-				element.Offset = offset;
-				offset += element.Size;
-				m_Stride += element.Size;
+				element.offset = offset;
+				offset += element.size;
+				m_Stride += element.size;
 			}
 		}
 
