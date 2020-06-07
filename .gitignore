@@ -10,3 +10,5 @@ Sandbox/assets/
 *.vcxproj
 *.vcxproj.filters
 *.log
+
+Sandbox/imgui.ini
