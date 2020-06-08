@@ -21,6 +21,12 @@ namespace Schmog {
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const glm::vec4& color = glm::vec4(1.0f), float rotation = 0.0f);
 	};
 
+	struct Renderer2DQuadParameters 
+	{
+		const glm::vec4 color;
+		float rotation;
+	};
+
 
 }
 

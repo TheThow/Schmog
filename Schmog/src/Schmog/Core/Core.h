@@ -32,6 +32,8 @@
 
 #define SG_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
+#define SG_PROFILE 1
+
 
 namespace Schmog {
 
@@ -39,3 +41,4 @@ namespace Schmog {
 	using SharedRef = std::shared_ptr<T>;
 
 }
+

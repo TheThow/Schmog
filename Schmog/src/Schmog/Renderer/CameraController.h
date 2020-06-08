@@ -30,7 +30,7 @@ namespace Schmog {
 		OrthographicCamera m_Camera;
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		float m_CameraRotation = 0.0f;
-		float m_CameraTranslationSpeed = 0.1f, m_CameraRotationSpeed = 1.0f;
+		float m_CameraTranslationSpeed = 0.05f, m_CameraRotationSpeed = 1.0f;
 	};
 
 }

@@ -16,19 +16,19 @@ namespace Schmog {
 
 	void OrthographicCameraController::OnUpdate()
 	{
-		if (Input::IsKeyPressed(SG_KEY_DOWN))
+		if (Input::IsKeyPressed(KeyCode::Down))
 		{
 			m_CameraPosition.y -= m_CameraTranslationSpeed;
 		}
-		if (Input::IsKeyPressed(SG_KEY_UP))
+		if (Input::IsKeyPressed(KeyCode::Up))
 		{
 			m_CameraPosition.y += m_CameraTranslationSpeed;
 		}
-		if (Input::IsKeyPressed(SG_KEY_LEFT))
+		if (Input::IsKeyPressed(KeyCode::Left))
 		{
 			m_CameraPosition.x -= m_CameraTranslationSpeed;
 		}
-		if (Input::IsKeyPressed(SG_KEY_RIGHT))
+		if (Input::IsKeyPressed(KeyCode::Right))
 		{
 			m_CameraPosition.x += m_CameraTranslationSpeed;
 		}

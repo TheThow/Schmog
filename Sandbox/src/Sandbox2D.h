@@ -26,6 +26,7 @@ public:
 private:
 	Schmog::OrthographicCameraController m_Camera;
 
+
 	std::shared_ptr<Schmog::Texture2D> m_Texture;
 
 
@@ -35,5 +36,12 @@ private:
 	glm::vec3 m_Color1 = { 0.8f, 0.2f, 0.8f };
 	std::shared_ptr<Schmog::VertexArray> m_VA;
 
+private:
+	struct ProfileResult
+	{
+		const char* Name;
+		float Time;
+	};
+	std::vector<ProfileResult> m_ProfileResults;
 };
 
