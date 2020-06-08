@@ -36,6 +36,8 @@ private:
 	glm::vec3 m_Color1 = { 0.8f, 0.2f, 0.8f };
 	std::shared_ptr<Schmog::VertexArray> m_VA;
 
+	float m_TilingFactor = 1.0f;
+
 private:
 	struct ProfileResult
 	{

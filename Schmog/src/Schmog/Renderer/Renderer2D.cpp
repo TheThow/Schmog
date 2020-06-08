@@ -67,31 +67,41 @@ namespace Schmog {
 	{
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float rotation)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Renderer2DQuadProperties& parameters)
 	{
-		DrawQuad(glm::vec3(position, 0), size, color, rotation);
+		DrawQuad(glm::vec3(position, 0), size, parameters);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, float rotation)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, Renderer2DQuadProperties& parameters)
 	{
-		DrawQuad(position, size, s_Data->whiteTexture, color, rotation);
+		DrawQuad(position, size, s_Data->whiteTexture, parameters);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const glm::vec4& color, float rotation)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters)
 	{
-		DrawQuad(glm::vec3(position, 0), size, texture, color, rotation);
+		DrawQuad(glm::vec3(position, 0), size, texture, parameters);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const glm::vec4& color, float rotation)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters)
 	{
 		texture->Bind(0);
 
-		s_Data->shader->SetUniform("u_Color", color);
+		s_Data->shader->SetUniform("u_Color", parameters.color);
 		s_Data->shader->SetUniform("u_Texture", 0);
+		s_Data->shader->SetUniform("u_TilingFactor", parameters.tilingFactor);
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size, 1.0f });
-		auto rot = glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0, 0, 1));
-		s_Data->shader->SetUniform("u_Transform", transform * rot);
+
+		//Rotation is expensive
+		if (!parameters.rotation)
+		{
+			s_Data->shader->SetUniform("u_Transform", transform);
+		}
+		else
+		{
+			auto rot = glm::rotate(glm::mat4(1.0f), parameters.rotation, glm::vec3(0, 0, 1));
+			s_Data->shader->SetUniform("u_Transform", transform * rot);
+		}
 
 		s_Data->vertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Data->vertexArray);

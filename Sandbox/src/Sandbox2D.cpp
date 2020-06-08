@@ -35,7 +35,17 @@ void Sandbox2D::OnUpdate()
 		{
 			for (int x = -2; x <= 2; x++)
 			{
-				Schmog::Renderer2D::DrawQuad({ fac * 1.1 * x, fac * 1.1 * y }, { fac, fac }, m_Texture, { m_Color1, 1.0f });
+				Schmog::Renderer2DQuadProperties params{
+					{m_Color1, 1.0f},
+					0.0f,
+					m_TilingFactor
+				};
+
+				Schmog::Renderer2D::DrawQuad({ fac * 1.1 * x, fac * 1.1 * y }, 
+												{ fac, fac }, 
+												m_Texture, 
+												params
+											);		
 			}
 		}
 	}
@@ -49,15 +59,7 @@ void Sandbox2D::OnImGuiRender()
 {
 	ImGui::Begin("Test");
 	ImGui::ColorEdit3("Color", glm::value_ptr(m_Color1));
-
-	for (auto& result : m_ProfileResults)
-	{
-		char label[50];
-		strcpy(label, "%.3fms ");
-		strcat(label, result.Name);
-		ImGui::Text(label, result.Time);
-	}
-	m_ProfileResults.clear();
+	ImGui::SliderFloat("Tiling", &m_TilingFactor, 0.1f, 10.f);
 
 	ImGui::End();
 }

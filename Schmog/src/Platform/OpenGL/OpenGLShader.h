@@ -20,6 +20,7 @@ namespace Schmog {
 		virtual void SetUniform(const std::string& name, const glm::mat4& matrix) override;
 		virtual void SetUniform(const std::string& name, const glm::vec4& vec) override;
 		virtual void SetUniform(const std::string& name, const int value) override;
+		virtual void SetUniform(const std::string& name, const float value) override;
 
 		virtual int GetUniformLocation(const std::string& name);
 
