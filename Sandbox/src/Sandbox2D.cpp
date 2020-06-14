@@ -31,9 +31,9 @@ void Sandbox2D::OnUpdate()
 
 	float fac = 0.5f;
 	{
-		for (int y = -2; y <= 2; y++)
+		for (int y = -10; y <= 10; y++)
 		{
-			for (int x = -2; x <= 2; x++)
+			for (int x = -10; x <= 10; x++)
 			{
 				Schmog::Renderer2DQuadProperties params{
 					{m_Color1, 1.0f},
@@ -60,6 +60,10 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Begin("Test");
 	ImGui::ColorEdit3("Color", glm::value_ptr(m_Color1));
 	ImGui::SliderFloat("Tiling", &m_TilingFactor, 0.1f, 10.f);
+
+	ImGui::Text("");
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 	ImGui::End();
 }

@@ -10,61 +10,134 @@
 
 namespace Schmog {
 
-	struct Renderer2DStorage
+	struct QuadVertex
 	{
-		std::shared_ptr<VertexArray> vertexArray;
-		std::shared_ptr<Shader> shader;
-		std::shared_ptr<Texture2D> whiteTexture;
+		glm::vec3 position;
+		glm::vec4 color;
+		glm::vec2 texCoord;
+		float texIndex;
+		float tilingFactor;
 	};
 
-	static std::unique_ptr<Renderer2DStorage> s_Data;
+	struct Renderer2DData
+	{
+		const uint32_t MAX_QUADS = 10000;
+		const uint32_t MAX_VERTICES = MAX_QUADS * 4;
+		const uint32_t MAX_INDICES = MAX_QUADS * 6;
+		static const uint32_t MAX_TEXTURE_SLOTS = 32; // TODO
+
+		std::shared_ptr<VertexArray> vertexArray;
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		std::shared_ptr<Shader> shader;
+		std::shared_ptr<Texture2D> whiteTexture;
+
+		uint32_t quadIndexCount = 0;
+		QuadVertex* quadVertexBufferBase = nullptr;
+		QuadVertex* quadVertexBufferPtr = nullptr;
+
+		std::array<std::shared_ptr<Texture2D>, MAX_TEXTURE_SLOTS> textureSlots;
+		uint32_t textureSlotIndex = 1; // 0 = white
+
+		glm::vec4 quadVertexPositions[4];
+	};
+
+	static Renderer2DData s_Data;
+
+
 
 	void Renderer2D::Init()
 	{
-		s_Data.reset(new Renderer2DStorage());
-		s_Data->vertexArray = VertexArray::Create();
+		s_Data.vertexArray = VertexArray::Create();
 
-		float vertices2[4 * 5] = {
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			0.5f,  -0.5f, 0.0f, 1.0f, 0.0f,
-			0.5f,  0.5f,  0.0f, 1.0f, 1.0f,
-			-0.5f, 0.5f,  0.0f, 0.0f, 1.0f
-		};
-		std::shared_ptr<VertexBuffer> vb = VertexBuffer::Create(vertices2, sizeof(vertices2));
-
-		vb->SetLayout({
+		BufferLayout vbLayout = {
 			{ ShaderDataType::Float3, "a_Position"},
-			{ ShaderDataType::Float2, "a_TexCoord"}
-			});
-
-		s_Data->vertexArray->AddVertexBuffer(vb);
-		uint32_t indices2[6] = {
-			0,1,2,
-			2,3,0
+			{ ShaderDataType::Float4, "a_Color"},
+			{ ShaderDataType::Float2, "a_TexCoord"},
+			{ ShaderDataType::Float, "a_TexIndex"},
+			{ ShaderDataType::Float, "a_TilingFactor"}
 		};
-		std::shared_ptr<IndexBuffer> ib = IndexBuffer::Create(indices2, 6);
-		s_Data->vertexArray->SetIndexBuffer(ib);
+		s_Data.vertexBuffer = VertexBuffer::Create(s_Data.MAX_VERTICES * sizeof(QuadVertex));
+		s_Data.vertexBuffer->SetLayout(vbLayout);
+		s_Data.vertexArray->AddVertexBuffer(s_Data.vertexBuffer);
 
-		s_Data->shader = Shader::Create("assets/shaders/Texture.glsl");
+		s_Data.quadVertexBufferBase = new QuadVertex[s_Data.MAX_VERTICES];
 
-		s_Data->whiteTexture = Texture2D::Create(1, 1);
+
+		uint32_t* quadIndices = new uint32_t[s_Data.MAX_INDICES];
+		uint32_t offset = 0;
+		for (uint32_t i = 0; i < s_Data.MAX_INDICES; i += 6)
+		{
+			quadIndices[i + 0] = offset + 0;
+			quadIndices[i + 1] = offset + 1;
+			quadIndices[i + 2] = offset + 2;
+
+			quadIndices[i + 3] = offset + 2;
+			quadIndices[i + 4] = offset + 3;
+			quadIndices[i + 5] = offset + 0;
+
+			offset += 4;
+		}
+
+
+
+		std::shared_ptr<IndexBuffer> ib = IndexBuffer::Create(quadIndices, s_Data.MAX_INDICES);
+		s_Data.vertexArray->SetIndexBuffer(ib);
+		delete[] quadIndices;
+
+		s_Data.shader = Shader::Create("assets/shaders/Texture.glsl");
+
+		s_Data.whiteTexture = Texture2D::Create(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
-		s_Data->whiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+		s_Data.whiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+
+		int samplers[s_Data.MAX_TEXTURE_SLOTS];
+		for (uint32_t i = 0; i < s_Data.MAX_TEXTURE_SLOTS; i++)
+			samplers[i] = i;
+
+		s_Data.shader->Bind();
+		s_Data.shader->SetUniform("u_TilingFactor", 1.0f);
+		s_Data.shader->SetUniformArray("u_Texture", samplers, s_Data.MAX_TEXTURE_SLOTS);
+
+		s_Data.textureSlots[0] = s_Data.whiteTexture;
+
+		s_Data.quadVertexPositions[0] = glm::vec4(-0.5f, -0.5f, 0.0f, 1.0f);
+		s_Data.quadVertexPositions[1] = glm::vec4(0.5f, -0.5f, 0.0f, 1.0f);
+		s_Data.quadVertexPositions[2] = glm::vec4(0.5f, 0.5f, 0.0f, 1.0f);
+		s_Data.quadVertexPositions[3] = glm::vec4(-0.5f, 0.5f, 0.0f, 1.0f);
 	}
 
 	void Renderer2D::Shutdown()
 	{
-		s_Data.reset();
+
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera camera)
 	{
-		s_Data->shader->Bind();
-		s_Data->shader->SetUniform("u_ViewProjection", camera.GetVP());
+		s_Data.shader->Bind();
+		s_Data.shader->SetUniform("u_ViewProjection", camera.GetVP());
+
+		s_Data.quadVertexBufferPtr = s_Data.quadVertexBufferBase;
+		s_Data.quadIndexCount = 0;
+
+		s_Data.textureSlotIndex = 1;
 	}
 
 	void Renderer2D::EndScene()
 	{
+		uint32_t dataSize = (uint8_t*) s_Data.quadVertexBufferPtr - (uint8_t*) s_Data.quadVertexBufferBase;
+		s_Data.vertexBuffer->SetData(s_Data.quadVertexBufferBase, dataSize);
+		Flush();
+	}
+
+	void Renderer2D::Flush()
+	{
+		for (uint32_t i = 0; i < s_Data.textureSlotIndex; i++)
+		{
+			s_Data.textureSlots[i]->Bind(i);
+		}
+
+		s_Data.vertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data.vertexArray, s_Data.quadIndexCount);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Renderer2DQuadProperties& parameters)
@@ -74,7 +147,7 @@ namespace Schmog {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, Renderer2DQuadProperties& parameters)
 	{
-		DrawQuad(position, size, s_Data->whiteTexture, parameters);
+		DrawQuad(position, size, s_Data.whiteTexture, parameters);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters)
@@ -84,27 +157,60 @@ namespace Schmog {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters)
 	{
-		texture->Bind(0);
+		float textureIndex = 0.0f;
 
-		s_Data->shader->SetUniform("u_Color", parameters.color);
-		s_Data->shader->SetUniform("u_Texture", 0);
-		s_Data->shader->SetUniform("u_TilingFactor", parameters.tilingFactor);
+		for (uint32_t i = 0; i < s_Data.textureSlotIndex; i++)
+		{
+			if (*s_Data.textureSlots[i].get() == *texture.get())
+				textureIndex = i;
+		}
+
+		if (textureIndex == 0.0f)
+		{
+			textureIndex = (float) s_Data.textureSlotIndex;
+			s_Data.textureSlots[s_Data.textureSlotIndex] = texture;
+			s_Data.textureSlotIndex += 1;
+		}
+
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size, 1.0f });
 
 		//Rotation is expensive
-		if (!parameters.rotation)
-		{
-			s_Data->shader->SetUniform("u_Transform", transform);
-		}
-		else
-		{
+		if (parameters.rotation) {
 			auto rot = glm::rotate(glm::mat4(1.0f), parameters.rotation, glm::vec3(0, 0, 1));
-			s_Data->shader->SetUniform("u_Transform", transform * rot);
+			transform = transform * rot;
 		}
 
-		s_Data->vertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Data->vertexArray);
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[0];
+		s_Data.quadVertexBufferPtr->color = parameters.color;
+		s_Data.quadVertexBufferPtr->texCoord = { 0.0f, 0.0f };
+		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = parameters.tilingFactor;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[1];
+		s_Data.quadVertexBufferPtr->color = parameters.color;
+		s_Data.quadVertexBufferPtr->texCoord = { 1.0f, 0.0f };
+		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = parameters.tilingFactor;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[2];
+		s_Data.quadVertexBufferPtr->color = parameters.color;
+		s_Data.quadVertexBufferPtr->texCoord = { 1.0f, 1.0f };
+		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = parameters.tilingFactor;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[3];
+		s_Data.quadVertexBufferPtr->color = parameters.color;
+		s_Data.quadVertexBufferPtr->texCoord = { 0.0f, 1.0f };
+		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = parameters.tilingFactor;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadIndexCount += 6;
 	}
 
 }

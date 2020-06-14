@@ -22,6 +22,8 @@ namespace Schmog {
 		virtual void SetUniform(const std::string& name, const int value) override;
 		virtual void SetUniform(const std::string& name, const float value) override;
 
+		virtual void SetUniformArray(const std::string& name, const int* values, const uint32_t count) override;
+
 		virtual int GetUniformLocation(const std::string& name);
 
 		virtual void SetName(const std::string& name) override;

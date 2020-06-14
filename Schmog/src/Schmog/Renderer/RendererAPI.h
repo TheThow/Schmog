@@ -25,7 +25,7 @@ namespace Schmog {
 
 		virtual void SetVP(glm::mat4 vp) = 0;
 
-		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) = 0;
+		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
 
 		static API GetAPI() { return s_API; }
 

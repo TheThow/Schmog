@@ -18,6 +18,9 @@ namespace Schmog {
 		virtual void SetUniform(const std::string& name, const int value) = 0;
 		virtual void SetUniform(const std::string& name, const float value) = 0;
 
+		virtual void SetUniformArray(const std::string& name, const int* values, const uint32_t count) = 0;
+
+
 
 		virtual void SetName(const std::string& name) = 0;
 		virtual const std::string& GetName() const = 0;
