@@ -29,6 +29,9 @@ namespace Schmog {
 
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters);
+
+	private:
+		static void ResetData();
 	};
 
 

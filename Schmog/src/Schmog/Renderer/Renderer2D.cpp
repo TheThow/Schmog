@@ -21,9 +21,9 @@ namespace Schmog {
 
 	struct Renderer2DData
 	{
-		const uint32_t MAX_QUADS = 10000;
-		const uint32_t MAX_VERTICES = MAX_QUADS * 4;
-		const uint32_t MAX_INDICES = MAX_QUADS * 6;
+		static const uint32_t MAX_QUADS = 10000;
+		static const uint32_t MAX_VERTICES = MAX_QUADS * 4;
+		static const uint32_t MAX_INDICES = MAX_QUADS * 6;
 		static const uint32_t MAX_TEXTURE_SLOTS = 32; // TODO
 
 		std::shared_ptr<VertexArray> vertexArray;
@@ -116,10 +116,7 @@ namespace Schmog {
 		s_Data.shader->Bind();
 		s_Data.shader->SetUniform("u_ViewProjection", camera.GetVP());
 
-		s_Data.quadVertexBufferPtr = s_Data.quadVertexBufferBase;
-		s_Data.quadIndexCount = 0;
-
-		s_Data.textureSlotIndex = 1;
+		ResetData();
 	}
 
 	void Renderer2D::EndScene()
@@ -140,6 +137,14 @@ namespace Schmog {
 		RenderCommand::DrawIndexed(s_Data.vertexArray, s_Data.quadIndexCount);
 	}
 
+	void Renderer2D::ResetData()
+	{
+		s_Data.quadVertexBufferPtr = s_Data.quadVertexBufferBase;
+		s_Data.quadIndexCount = 0;
+
+		s_Data.textureSlotIndex = 1;
+	}
+
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Renderer2DQuadProperties& parameters)
 	{
 		DrawQuad(glm::vec3(position, 0), size, parameters);
@@ -157,6 +162,12 @@ namespace Schmog {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters)
 	{
+		if (s_Data.quadIndexCount >= s_Data.MAX_INDICES)
+		{
+			EndScene();
+			ResetData();
+		}
+
 		float textureIndex = 0.0f;
 
 		for (uint32_t i = 0; i < s_Data.textureSlotIndex; i++)
@@ -178,7 +189,7 @@ namespace Schmog {
 		//Rotation is expensive
 		if (parameters.rotation) {
 			auto rot = glm::rotate(glm::mat4(1.0f), parameters.rotation, glm::vec3(0, 0, 1));
-			transform = transform * rot;
+			transform *= rot;
 		}
 
 
