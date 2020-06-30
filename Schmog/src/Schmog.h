@@ -24,5 +24,6 @@
 
 #include "Schmog/Core/Timestep.h"
 
+#include "Schmog/Game/ParticleSystem.h"
 
 

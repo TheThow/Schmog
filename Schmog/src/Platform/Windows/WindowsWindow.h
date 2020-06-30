@@ -17,11 +17,11 @@ namespace Schmog {
 
 		void OnUpdate() override;
 
-		unsigned int GetWidth() const override { return m_Data.width; }
-		unsigned int GetHeight() const override { return m_Data.height; }
+		unsigned int GetWidth() const override { return m_Data.Width; }
+		unsigned int GetHeight() const override { return m_Data.Height; }
 
-		void SetWidth(unsigned int width) override {  m_Data.width = width; }
-		void SetHeight(unsigned int height) override { m_Data.height = height; }
+		void SetWidth(unsigned int width) override {  m_Data.Width = width; }
+		void SetHeight(unsigned int height) override { m_Data.Height = height; }
 
 		// Window attributes
 		void SetEventCallback(const EventCallbackFn& callback) override { m_Data.eventCallback = callback; }
@@ -40,9 +40,9 @@ namespace Schmog {
 
 		struct WindowData
 		{
-			std::string title = "Default";
-			unsigned int width = 0, height = 0;
-			bool vSync = false;
+			std::string Title = "Default";
+			unsigned int Width = 0, Height = 0;
+			bool VSync = false;
 
 			EventCallbackFn eventCallback;
 		};

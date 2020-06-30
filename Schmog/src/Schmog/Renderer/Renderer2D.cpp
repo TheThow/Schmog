@@ -21,7 +21,7 @@ namespace Schmog {
 
 	struct Renderer2DData
 	{
-		static const uint32_t MAX_QUADS = 10000;
+		static const uint32_t MAX_QUADS = 100000;
 		static const uint32_t MAX_VERTICES = MAX_QUADS * 4;
 		static const uint32_t MAX_INDICES = MAX_QUADS * 6;
 		static const uint32_t MAX_TEXTURE_SLOTS = 32; // TODO
@@ -39,6 +39,8 @@ namespace Schmog {
 		uint32_t textureSlotIndex = 1; // 0 = white
 
 		glm::vec4 quadVertexPositions[4];
+
+		Renderer2D::Statistics stats;
 	};
 
 	static Renderer2DData s_Data;
@@ -122,6 +124,12 @@ namespace Schmog {
 	void Renderer2D::EndScene()
 	{
 		uint32_t dataSize = (uint8_t*) s_Data.quadVertexBufferPtr - (uint8_t*) s_Data.quadVertexBufferBase;
+
+		if (dataSize == 0)
+		{
+			return;
+		}
+
 		s_Data.vertexBuffer->SetData(s_Data.quadVertexBufferBase, dataSize);
 		Flush();
 	}
@@ -135,6 +143,17 @@ namespace Schmog {
 
 		s_Data.vertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Data.vertexArray, s_Data.quadIndexCount);
+	}
+
+	void Renderer2D::ResetStats()
+	{
+		s_Data.stats.drawCalls = 0;
+		s_Data.stats.quadCount = 0;
+	}
+
+	Renderer2D::Statistics Renderer2D::GetStats()
+	{
+		return s_Data.stats;
 	}
 
 	void Renderer2D::ResetData()
@@ -187,41 +206,58 @@ namespace Schmog {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size, 1.0f });
 
 		//Rotation is expensive
-		if (parameters.rotation) {
-			auto rot = glm::rotate(glm::mat4(1.0f), parameters.rotation, glm::vec3(0, 0, 1));
+		if (parameters.Rotation) {
+			auto rot = glm::rotate(glm::mat4(1.0f), parameters.Rotation, glm::vec3(0, 0, 1));
 			transform *= rot;
 		}
 
 
 		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[0];
-		s_Data.quadVertexBufferPtr->color = parameters.color;
+		s_Data.quadVertexBufferPtr->color = parameters.Color;
 		s_Data.quadVertexBufferPtr->texCoord = { 0.0f, 0.0f };
 		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
-		s_Data.quadVertexBufferPtr->tilingFactor = parameters.tilingFactor;
+		s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[1];
-		s_Data.quadVertexBufferPtr->color = parameters.color;
+		s_Data.quadVertexBufferPtr->color = parameters.Color;
 		s_Data.quadVertexBufferPtr->texCoord = { 1.0f, 0.0f };
 		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
-		s_Data.quadVertexBufferPtr->tilingFactor = parameters.tilingFactor;
+		s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[2];
-		s_Data.quadVertexBufferPtr->color = parameters.color;
+		s_Data.quadVertexBufferPtr->color = parameters.Color;
 		s_Data.quadVertexBufferPtr->texCoord = { 1.0f, 1.0f };
 		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
-		s_Data.quadVertexBufferPtr->tilingFactor = parameters.tilingFactor;
+		s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[3];
-		s_Data.quadVertexBufferPtr->color = parameters.color;
+		s_Data.quadVertexBufferPtr->color = parameters.Color;
 		s_Data.quadVertexBufferPtr->texCoord = { 0.0f, 1.0f };
 		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
-		s_Data.quadVertexBufferPtr->tilingFactor = parameters.tilingFactor;
+		s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
 	}
+
+	void Renderer2D::DrawParticles(std::vector<ParticleSystem::Particle>& particles, uint32_t maxIndex)
+	{
+		for (uint32_t i = 0; i < maxIndex; i += Renderer2DData::MAX_QUADS)
+		{
+			uint32_t count = std::min(maxIndex, Renderer2DData::MAX_QUADS);
+
+			uint8_t* start = (uint8_t*) &particles[i];
+			uint8_t* end = (uint8_t*) &particles[count];
+
+			uint32_t dataSize = end - start;
+			s_Data.vertexBuffer->SetData(start, dataSize);
+			s_Data.quadIndexCount = count*6;
+			Flush();
+		}
+	}
+
 
 }

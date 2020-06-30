@@ -12,6 +12,9 @@
 	#else 
 		#define SCHMOG_API
 	#endif
+
+	#define NOMINMAX   
+
 #else
 	#error Only Windows is supported
 #endif

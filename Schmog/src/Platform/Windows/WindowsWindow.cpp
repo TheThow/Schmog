@@ -35,11 +35,11 @@ namespace Schmog {
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
-		m_Data.title = props.title;
-		m_Data.width = props.width;
-		m_Data.height = props.height;
+		m_Data.Title = props.Title;
+		m_Data.Width = props.Width;
+		m_Data.Height = props.Height;
 
-		SG_CORE_INFO("Creating window {0} ({1}, {2})", props.title, props.width, props.height);
+		SG_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (s_GLFWCount == 0)
 		{
@@ -59,7 +59,7 @@ namespace Schmog {
 			glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
 
-		m_Window = glfwCreateWindow((int)props.width, (int)props.height, m_Data.title.c_str(), nullptr, nullptr);
+		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
 		m_Context = std::make_shared<OpenGLContext>(m_Window);
 		m_Context->Init();
@@ -72,8 +72,8 @@ namespace Schmog {
 			{
 				WindowData data = *(WindowData*) glfwGetWindowUserPointer(window);
 
-				data.width = width;
-				data.height = height;
+				data.Width = width;
+				data.Height = height;
 
 				WindowResizeEvent windowEvent(width, height);
 				data.eventCallback(windowEvent);
@@ -183,12 +183,12 @@ namespace Schmog {
 		else
 			glfwSwapInterval(0);
 
-		m_Data.vSync = enabled;
+		m_Data.VSync = enabled;
 	}
 
 	bool WindowsWindow::IsVSync() const
 	{
-		return m_Data.vSync;
+		return m_Data.VSync;
 	}
 
 

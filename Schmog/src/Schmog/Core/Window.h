@@ -10,14 +10,14 @@ namespace Schmog {
 
 	struct WindowProps
 	{
-		std::string title;
-		unsigned int width;
-		unsigned int height;
+		std::string Title;
+		unsigned int Width;
+		unsigned int Height;
 
 		WindowProps(const std::string& title = "Schmog Engine",
 					unsigned int width = 1280,
 					unsigned int height = 720)
-			: title(title), width(width), height(height)
+			: Title(title), Width(width), Height(height)
 		{
 		}
 	};

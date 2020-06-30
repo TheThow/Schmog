@@ -23,11 +23,16 @@ public:
 	void OnImGuiRender() override;
 	void OnEvent(Schmog::Event& e) override;
 
+	bool OnMouseClicked(Schmog::MouseButtonPressedEvent& e);
+
 private:
 	Schmog::OrthographicCameraController m_Camera;
 
 
 	std::shared_ptr<Schmog::Texture2D> m_Texture;
+
+	std::shared_ptr<Schmog::ParticleSystem> m_ParticleSystem = std::make_shared<Schmog::ParticleSystem>();
+	Schmog::ParticleSystem::ParticleProperties m_ParticleProps;
 
 
 	// Temp
@@ -37,13 +42,5 @@ private:
 	std::shared_ptr<Schmog::VertexArray> m_VA;
 
 	float m_TilingFactor = 1.0f;
-
-private:
-	struct ProfileResult
-	{
-		const char* Name;
-		float Time;
-	};
-	std::vector<ProfileResult> m_ProfileResults;
 };
 
