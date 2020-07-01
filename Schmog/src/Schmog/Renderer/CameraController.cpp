@@ -44,13 +44,18 @@ namespace Schmog {
 		dispatcher.Dispatch<WindowResizeEvent>(SG_BIND_EVENT_FN(OrthographicCameraController::OnWindowResizeEvent));
 	}
 
+	void OrthographicCameraController::SetZoomLevel(float level)
+	{
+		m_ZoomLevel = level;
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+	}
+
 	bool OrthographicCameraController::OnMouseScrolledEvent(MouseScrolledEvent& e)
 	{
 		m_ZoomLevel += e.GetYOffset() * -0.25f;
-
 		m_ZoomLevel = std::clamp(m_ZoomLevel, 0.25f, 100.0f);
-
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		
 		return false;
 	}
 

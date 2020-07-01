@@ -22,6 +22,8 @@ namespace Schmog {
 
 		Renderer::Init();
 
+		m_ParticleSystem = std::make_shared<ParticleSystem>();
+
 		m_ImGuiLayer = std::make_shared<ImGuiLayer>();
 		PushOverlay(m_ImGuiLayer);
 
@@ -93,6 +95,8 @@ namespace Schmog {
 				{
 					(*ptr)->OnUpdate();
 				}
+
+				m_ParticleSystem->OnUpdate();
 
 				m_ImGuiLayer->Begin();
 				for (auto ptr = m_LayerStack.begin(); ptr < m_LayerStack.end(); ptr++)

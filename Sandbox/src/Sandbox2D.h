@@ -31,7 +31,7 @@ private:
 
 	std::shared_ptr<Schmog::Texture2D> m_Texture;
 
-	std::shared_ptr<Schmog::ParticleSystem> m_ParticleSystem = std::make_shared<Schmog::ParticleSystem>();
+	std::shared_ptr<Schmog::ParticleSystem> m_ParticleSystem = Schmog::Application::Get().GetParticleSystem();
 	Schmog::ParticleSystem::ParticleProperties m_ParticleProps;
 
 

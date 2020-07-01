@@ -21,11 +21,14 @@ void Sandbox2D::OnAttach()
 	m_ParticleProps.EndSize = 0.0f;
 	m_ParticleProps.LifeTime = 120;
 	m_ParticleProps.Speed = { 0.0f, 0.0f };
-	m_ParticleProps.SpeedRandom = { 0.2f };
+	m_ParticleProps.SpeedRandom = { 0.1f };
 	m_ParticleProps.Position = { 0.0f, 0.0f, 0.0f };
+	m_ParticleProps.PositionRandom = 0.1f;
 	m_ParticleProps.Rotation = 0.0f;
 	m_ParticleProps.RotationRandom = 1.0f;
 	m_ParticleProps.RotationSpeed = 0.1f;
+
+	m_Camera.SetZoomLevel(20.0f);
 }
 
 void Sandbox2D::OnDetach()
@@ -35,7 +38,6 @@ void Sandbox2D::OnDetach()
 void Sandbox2D::OnUpdate()
 {
 	m_Camera.OnUpdate();
-	m_ParticleSystem->OnUpdate();
 
 	//Render
 	Schmog::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
@@ -69,14 +71,14 @@ void Sandbox2D::OnUpdate()
 	if (Schmog::Input::IsMouseButtonPressed(Schmog::MouseCode::Button0))
 	{
 		auto mpos = Schmog::Input::GetMousePosition();
-		int width = Schmog::Application::Get().GetWindow().GetWidth();
-		int height = Schmog::Application::Get().GetWindow().GetHeight();
+		float width = (float) Schmog::Application::Get().GetWindow().GetWidth();
+		float height = (float) Schmog::Application::Get().GetWindow().GetHeight();
 
-		int x = (mpos.x - width / 2) / width * m_Camera.GetZoomLevel() * 16.f/9.f * 2;
-		int y = (height/2 - mpos.y) / height * m_Camera.GetZoomLevel() * 2;
+		float x = ((float)mpos.x - width / 2.f) / width * m_Camera.GetZoomLevel() * m_Camera.GetAspectRatio() * 2.f;
+		float y = (height/2.f - (float)mpos.y) / height * m_Camera.GetZoomLevel() * 2.f;
 
 		m_ParticleProps.Position = { x, y, 0.0f };
-		m_ParticleSystem->Emit(m_ParticleProps, 5);
+		m_ParticleSystem->Emit(m_ParticleProps, 10);
 	}
 
 	Schmog::Renderer2D::BeginScene(m_Camera.GetCamera());

@@ -16,6 +16,7 @@ public:
 	ExampleLayer()
 		: Layer("Example"), m_SquareTransform(glm::mat4(1.0f)), m_Camera(16.f / 9.f)
 	{
+		
 	}
 
 	void OnUpdate()

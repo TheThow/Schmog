@@ -14,6 +14,7 @@
 #include "Schmog/Renderer/VertexArray.h"
 
 #include "Schmog/Core/Timestep.h"
+#include "Schmog/Game/ParticleSystem.h"
 
 
 namespace Schmog {
@@ -36,8 +37,9 @@ namespace Schmog {
 		void PushOverlay(std::shared_ptr<Layer> layer);
 		void PopOverlay(std::shared_ptr<Layer> layer);
 
-		inline static Application& Get() { return *s_Instance; }
-		inline Window& GetWindow() { return *m_Window; }
+		static Application& Get() { return *s_Instance; }
+		Window& GetWindow() { return *m_Window; }
+		std::shared_ptr<ParticleSystem> GetParticleSystem() { return m_ParticleSystem; }
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
@@ -46,6 +48,8 @@ namespace Schmog {
 	private:
 		std::unique_ptr<Window> m_Window;
 		std::shared_ptr<ImGuiLayer> m_ImGuiLayer;
+
+		std::shared_ptr<ParticleSystem> m_ParticleSystem;
 
 		bool m_Running = true;
 		bool m_Minimized = false;
