@@ -128,6 +128,10 @@ namespace Schmog {
 
 		m_Minimized = false;
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		m_Window->SetWidth(e.GetWidth());
+		m_Window->SetHeight(e.GetHeight());
+
 		return false;
 	}
 }

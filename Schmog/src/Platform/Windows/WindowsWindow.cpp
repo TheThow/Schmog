@@ -71,10 +71,6 @@ namespace Schmog {
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
 			{
 				WindowData data = *(WindowData*) glfwGetWindowUserPointer(window);
-
-				data.Width = width;
-				data.Height = height;
-
 				WindowResizeEvent windowEvent(width, height);
 				data.eventCallback(windowEvent);
 			});
