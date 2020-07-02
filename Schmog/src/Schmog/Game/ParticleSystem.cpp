@@ -56,7 +56,7 @@ namespace Schmog {
 			props.Speed *= props.Damping;
 
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), props.Position)
-				* glm::rotate(glm::mat4(1.0f), props.Rotation, glm::vec3(0, 0, 1)) * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
+				 * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
 
 			glm::vec4* vertexPositionPointer = &vertexPositions.BottomLeft;
 			
