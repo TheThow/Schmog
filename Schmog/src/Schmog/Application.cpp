@@ -115,7 +115,7 @@ namespace Schmog {
 			}
 
 			float time_passed_since_update = (float)Platform::GetTime() - m_LastFrameTime;
-			if (time_passed_since_update < DELTA_TIME - 0.0011f)
+			if (time_passed_since_update < DELTA_TIME - 0.00011f)
 			{
 				std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long>((DELTA_TIME - time_passed_since_update - 0.0001f) * 1000)));
 			}
