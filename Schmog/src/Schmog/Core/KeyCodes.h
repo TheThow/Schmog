@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Schmog {
-	typedef enum class KeyCode : uint16_t
+	enum class KeyCode : uint16_t
 	{
 		// From glfw3.h
 		Space = 32,
@@ -134,7 +134,12 @@ namespace Schmog {
 		RightAlt = 346,
 		RightSuper = 347,
 		Menu = 348
-	} Key;
+	};
+
+	inline KeyCode ConvertKeyToKeyCode(int key)
+	{
+		return static_cast<KeyCode>(key);
+	}
 
 	inline std::ostream& operator<<(std::ostream& os, KeyCode keyCode)
 	{

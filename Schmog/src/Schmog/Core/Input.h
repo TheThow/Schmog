@@ -21,13 +21,13 @@ namespace Schmog {
 		virtual ~Input() = default;
 
 		static bool IsKeyPressed(KeyCode keycode) { return s_Instance->isKeyPressedImpl(keycode); }
-		static bool IsMouseButtonPressed(MouseCode button) { return s_Instance->IsMouseButtonPressedImpl(button); }
+		static bool IsMouseButtonPressed(MouseButtonCode button) { return s_Instance->IsMouseButtonPressedImpl(button); }
 
 		static MousePosition GetMousePosition() { return s_Instance->GetMousePositionImpl(); }
 
 	protected:
 		virtual bool isKeyPressedImpl(KeyCode keycode) = 0;
-		virtual bool IsMouseButtonPressedImpl(MouseCode button) = 0;
+		virtual bool IsMouseButtonPressedImpl(MouseButtonCode button) = 0;
 
 		virtual MousePosition GetMousePositionImpl() = 0;
 

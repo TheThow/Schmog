@@ -1,5 +1,6 @@
 #pragma once
 #include "Event.h"
+#include "Schmog/Core/KeyCodes.h"
 
 
 namespace Schmog {
@@ -8,15 +9,15 @@ namespace Schmog {
 	{
 
 	public:
-		inline int GetKeyCode() const { return m_KeyCode; }
+		inline KeyCode GetKeyCode() const { return m_KeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
 	protected:
 		KeyEvent(int keycode)
-			: m_KeyCode(keycode) {}
+			: m_KeyCode(ConvertKeyToKeyCode(keycode)) {}
 
-		int m_KeyCode;
+		KeyCode m_KeyCode;
 	};
 
 	class SCHMOG_API KeyPressedEvent : public KeyEvent

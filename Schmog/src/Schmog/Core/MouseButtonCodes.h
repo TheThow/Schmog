@@ -2,7 +2,7 @@
 
 namespace Schmog
 {
-	typedef enum class MouseCode : uint16_t
+	enum class MouseButtonCode : uint16_t
 	{
 		// From glfw3.h
 		Button0 = 0,
@@ -18,9 +18,14 @@ namespace Schmog
 		ButtonLeft = Button0,
 		ButtonRight = Button1,
 		ButtonMiddle = Button2
-	} Mouse;
+	};
 
-	inline std::ostream& operator<<(std::ostream& os, MouseCode mouseCode)
+	inline MouseButtonCode ConvertButtonToMouseButtonCode(int button)
+	{
+		return static_cast<MouseButtonCode>(button);
+	}
+
+	inline std::ostream& operator<<(std::ostream& os, MouseButtonCode mouseCode)
 	{
 		os << static_cast<int32_t>(mouseCode);
 		return os;

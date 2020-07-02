@@ -7,7 +7,7 @@ namespace Schmog {
 	{
 	protected:
 		virtual bool isKeyPressedImpl(KeyCode keycode) override;
-		virtual bool IsMouseButtonPressedImpl(MouseCode button) override;
+		virtual bool IsMouseButtonPressedImpl(MouseButtonCode button) override;
 
 		virtual MousePosition GetMousePositionImpl() override;
 	};

@@ -1,5 +1,6 @@
 #pragma once
 #include "Event.h"
+#include "Schmog/Core/MouseButtonCodes.h"
 
 
 
@@ -59,14 +60,14 @@ namespace Schmog {
 	{
 
 	public:
-		inline int GetMouseButton() const { return m_Button; }
+		inline MouseButtonCode GetMouseButton() const { return m_Button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	protected:
 		MouseButtonEvent(int button)
-			: m_Button(button) {}
+			: m_Button(ConvertButtonToMouseButtonCode(button)) {}
 
-		int m_Button;
+		MouseButtonCode m_Button;
 
 	};
 
