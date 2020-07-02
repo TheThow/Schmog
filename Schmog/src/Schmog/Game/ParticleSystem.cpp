@@ -20,8 +20,8 @@ namespace Schmog {
 
 	ParticleSystem::ParticleSystem()
 	{
-		m_ParticleDrawData.resize(100000, {});
-		m_ParticleProps.resize(100000, {});
+		m_ParticleDrawData.resize(1000000, {});
+		m_ParticleProps.resize(1000000, {});
 	}
 
 	ParticleSystem::~ParticleSystem()
@@ -53,9 +53,10 @@ namespace Schmog {
 
 			props.Position += glm::vec3(props.Speed, 0.0f);
 			props.Rotation += props.RotationSpeed;
+			props.Speed *= props.Damping;
 
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), props.Position)
-				* glm::rotate(glm::mat4(1.0f), props.Rotation, glm::vec3(0, 0, 1)) * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
+				*  glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
 
 			glm::vec4* vertexPositionPointer = &vertexPositions.BottomLeft;
 			
@@ -82,6 +83,12 @@ namespace Schmog {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), props.Position)
 			* glm::scale(glm::mat4(1.0f), { props.StartSize, props.StartSize, 1.0f });
 
+
+		if (m_ParticleDrawData.size() < m_ParticleIndex)
+		{
+			m_ParticleDrawData.resize(m_ParticleDrawData.size() + 100000);
+			m_ParticleProps.resize(m_ParticleDrawData.size() + 100000);
+		}
 
 		for (int i = 0; i < count; i++)
 		{

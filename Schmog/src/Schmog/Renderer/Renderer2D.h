@@ -33,7 +33,8 @@ namespace Schmog {
 
 		static void DrawParticles(std::vector<ParticleSystem::Particle>& particles, uint32_t maxIndex);
 
-		// Stats
+		// 
+
 		struct Statistics
 		{
 			uint32_t drawCalls = 0;

@@ -143,6 +143,7 @@ namespace Schmog {
 
 		s_Data.vertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Data.vertexArray, s_Data.quadIndexCount);
+		s_Data.stats.drawCalls += 1;
 	}
 
 	void Renderer2D::ResetStats()
@@ -241,21 +242,25 @@ namespace Schmog {
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
+
+		s_Data.stats.quadCount += 1;
 	}
 
 	void Renderer2D::DrawParticles(std::vector<ParticleSystem::Particle>& particles, uint32_t maxIndex)
 	{
 		for (uint32_t i = 0; i < maxIndex; i += Renderer2DData::MAX_QUADS)
 		{
-			uint32_t count = std::min(maxIndex, Renderer2DData::MAX_QUADS);
+			uint32_t count = std::min(maxIndex - i, Renderer2DData::MAX_QUADS);
 
 			uint8_t* start = (uint8_t*) &particles[i];
-			uint8_t* end = (uint8_t*) &particles[count];
+			uint8_t* end = (uint8_t*) &particles[i + count];
 
 			uint32_t dataSize = end - start;
 			s_Data.vertexBuffer->SetData(start, dataSize);
 			s_Data.quadIndexCount = count*6;
 			Flush();
+
+			s_Data.stats.quadCount += count;
 		}
 	}
 

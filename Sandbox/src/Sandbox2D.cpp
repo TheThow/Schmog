@@ -19,7 +19,7 @@ void Sandbox2D::OnAttach()
 	m_ParticleProps.StartSize = 0.5f, 
 	m_ParticleProps.SizeRandom = 0.3f,
 	m_ParticleProps.EndSize = 0.0f;
-	m_ParticleProps.LifeTime = 120*2;
+	m_ParticleProps.LifeTime = 120*4;
 	m_ParticleProps.Speed = { 0.0f, 0.0f };
 	m_ParticleProps.SpeedRandom = { 0.4f };
 	m_ParticleProps.Position = { 0.0f, 0.0f, 0.0f };
@@ -70,18 +70,18 @@ void Sandbox2D::OnUpdate()
 
 	//Schmog::Renderer2D::EndScene();
 
-	if (Schmog::Input::IsMouseButtonPressed(Schmog::MouseButtonCode::Button0))
-	{
-		auto mpos = Schmog::Input::GetMousePosition();
-		float width = (float) Schmog::Application::Get().GetWindow().GetWidth();
-		float height = (float) Schmog::Application::Get().GetWindow().GetHeight();
+	//if (Schmog::Input::IsMouseButtonPressed(Schmog::MouseButtonCode::Button0))
+	//{
+	//	auto mpos = Schmog::Input::GetMousePosition();
+	//	float width = (float) Schmog::Application::Get().GetWindow().GetWidth();
+	//	float height = (float) Schmog::Application::Get().GetWindow().GetHeight();
 
-		float x = ((float)mpos.x - width / 2.f) / width * m_Camera.GetZoomLevel() * m_Camera.GetAspectRatio() * 2.f;
-		float y = (height/2.f - (float)mpos.y) / height * m_Camera.GetZoomLevel() * 2.f;
+	//	float x = ((float)mpos.x - width / 2.f) / width * m_Camera.GetZoomLevel() * m_Camera.GetAspectRatio() * 2.f;
+	//	float y = (height/2.f - (float)mpos.y) / height * m_Camera.GetZoomLevel() * 2.f;
 
-		m_ParticleProps.Position = { x, y, 0.0f };
-		m_ParticleSystem->Emit(m_ParticleProps, 1001);
-	}
+	//	m_ParticleProps.Position = { x, y, 0.0f };
+	//	m_ParticleSystem->Emit(m_ParticleProps, 1000);
+	//}
 
 	Schmog::Renderer2D::BeginScene(m_Camera.GetCamera());
 
@@ -112,10 +112,10 @@ void Sandbox2D::OnImGuiRender()
 
 bool Sandbox2D::OnMouseClicked(Schmog::MouseButtonPressedEvent& e)
 {
-	//if (e.GetMouseButton() == static_cast<uint32_t>(Schmog::MouseCode::ButtonLeft))
-	//{
-	//	m_ParticleSystem->Emit(m_ParticleProps, 5);
-	//}
+	if (e.GetMouseButton() == Schmog::MouseButtonCode::ButtonLeft)
+	{
+		m_ParticleSystem->Emit(m_ParticleProps, 10000);
+	}
 
 	return false;
 }

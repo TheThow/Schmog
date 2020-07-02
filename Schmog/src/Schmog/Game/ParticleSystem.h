@@ -24,6 +24,8 @@ namespace Schmog {
 			glm::vec2 Speed = { 0.0f, 0.0f };
 			float SpeedRandom = 0.0f;
 
+			glm::vec2 Damping = { 0.0f, 0.0f };
+
 			float Rotation = 0.0f;
 			float RotationSpeed = 0.0f;
 			float RotationRandom = 0.0f;
@@ -73,6 +75,7 @@ namespace Schmog {
 
 			glm::vec3 Position = { 0.0f, 0.0f, 0.0f };
 			glm::vec2 Speed = { 0.0f, 0.0f };
+			glm::vec2 Damping = { 1.0f, 1.0f };
 
 			float Rotation = 0.0f;
 			float RotationSpeed = 0.0f;
@@ -94,8 +97,8 @@ namespace Schmog {
 			}
 
 			ParticleInternalProperties(ParticleProperties& props)
-				: StartColor(props.StartColor), EndColor(props.EndColor),
-				RotationSpeed(props.RotationSpeed) , EndSize(props.EndSize), LifeTime(props.LifeTime), CurrentLifeTime(props.LifeTime)
+				: StartColor(props.StartColor), EndColor(props.EndColor), RotationSpeed(props.RotationSpeed),
+				 EndSize(props.EndSize), Damping(props.Damping), LifeTime(props.LifeTime), CurrentLifeTime(props.LifeTime)
 			{
 				Position = props.Position + glm::vec3((Random::Float() - 0.5f) * props.PositionRandom, (Random::Float() - 0.5f) * props.PositionRandom, 0.0f);
 				StartSize = props.StartSize + (Random::Float() - 0.5f) * props.SizeRandom;
