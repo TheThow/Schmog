@@ -101,7 +101,7 @@ void Sandbox2D::OnImGuiRender()
 	auto stats = Schmog::Renderer2D::GetStats();
 
 	ImGui::Text("Draw Calls: %i", stats.drawCalls); 
-	ImGui::Text("Quad: %i", stats.quadCount);
+	ImGui::Text("Quads: %i", stats.quadCount);
 
 	ImGui::Text("");
 
@@ -114,7 +114,12 @@ bool Sandbox2D::OnMouseClicked(Schmog::MouseButtonPressedEvent& e)
 {
 	if (e.GetMouseButton() == Schmog::MouseButtonCode::ButtonLeft)
 	{
-		m_ParticleSystem->Emit(m_ParticleProps, 10000);
+		m_ParticleSystem->Emit(m_ParticleProps, 100000);
+	}
+
+	if (e.GetMouseButton() == Schmog::MouseButtonCode::ButtonRight)
+	{
+		m_ParticleSystem->Emit(m_ParticleProps, 90000);
 	}
 
 	return false;

@@ -38,10 +38,22 @@ namespace Schmog {
 		};
 
 
+		//struct Vertex
+		//{
+		//	glm::vec3 Position = { 0.0f, 0.0f, 0.0f};
+		//	glm::vec4 Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		//	glm::vec2 TexCoord = { 0.0f, 0.0f };
+		//	float TexIndex = 0;
+		//	float TilingFactor = 1.0f;
+		//};
+
 		struct Vertex
 		{
-			glm::vec3 Position = { 0.0f, 0.0f, 0.0f};
+			glm::vec2 Translation = { 0.0f, 0.0f };
+			float ZCoordinate = 0.0f;
+			float Rotation = 0.0f;
 			glm::vec4 Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			glm::vec2 Scale = { 0.0f, 0.0f };
 			glm::vec2 TexCoord = { 0.0f, 0.0f };
 			float TexIndex = 0;
 			float TilingFactor = 1.0f;
@@ -51,7 +63,6 @@ namespace Schmog {
 		{
 			std::array<Vertex, 4> vertices;
 		};
-
 
 
 	public:

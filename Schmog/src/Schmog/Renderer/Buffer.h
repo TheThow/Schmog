@@ -7,6 +7,7 @@ namespace Schmog {
 	{
 		None = 0,
 		Float, Float2, Float3, Float4,
+		HalfFloat, HalfFloat2, HalfFloat3, HalfFloat4,
 		Mat3, Mat4,
 		Int, Int2, Int3, Int4,
 		Bool
@@ -17,12 +18,17 @@ namespace Schmog {
 		switch (type)
 		{
 			case ShaderDataType::Float:			return 4;
-			case ShaderDataType::Float2:		return 4*2;
-			case ShaderDataType::Float3:		return 4*3;
-			case ShaderDataType::Float4:		return 4*4;
+			case ShaderDataType::Float2:		return 4 * 2;
+			case ShaderDataType::Float3:		return 4 * 3;
+			case ShaderDataType::Float4:		return 4 * 4;
 
-			case ShaderDataType::Mat3:			return 4*3*3;
-			case ShaderDataType::Mat4:			return 4*4*4;
+			case ShaderDataType::HalfFloat:		return 2;
+			case ShaderDataType::HalfFloat2:	return 2 * 2;
+			case ShaderDataType::HalfFloat3:	return 2 * 3;
+			case ShaderDataType::HalfFloat4:	return 2 * 4;
+
+			case ShaderDataType::Mat3:			return 4 * 3 * 3;
+			case ShaderDataType::Mat4:			return 4 * 4 * 4;
 
 			case ShaderDataType::Int:			return 4;
 			case ShaderDataType::Int2:			return 4 * 2;

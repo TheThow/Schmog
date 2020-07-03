@@ -12,11 +12,14 @@ namespace Schmog {
 
 	struct QuadVertex
 	{
-		glm::vec3 position;
-		glm::vec4 color;
-		glm::vec2 texCoord;
-		float texIndex;
-		float tilingFactor;
+		glm::vec2 Translation = { 0.0f, 0.0f };
+		float ZCoordinate = 0.0f;
+		float Rotation = 0.0f;
+		glm::vec4 Color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glm::vec2 Scale = { 0.0f, 0.0f };
+		glm::vec2 TexCoord = { 0.0f, 0.0f };
+		float TexIndex = 0;
+		float TilingFactor = 1.0f;
 	};
 
 	struct Renderer2DData
@@ -52,8 +55,11 @@ namespace Schmog {
 		s_Data.vertexArray = VertexArray::Create();
 
 		BufferLayout vbLayout = {
-			{ ShaderDataType::Float3, "a_Position"},
+			{ ShaderDataType::Float2, "a_Translation"},
+			{ ShaderDataType::Float, "a_ZCoordinate"},
+			{ ShaderDataType::Float, "a_Rotation"},
 			{ ShaderDataType::Float4, "a_Color"},
+			{ ShaderDataType::Float2, "a_Scale"},
 			{ ShaderDataType::Float2, "a_TexCoord"},
 			{ ShaderDataType::Float, "a_TexIndex"},
 			{ ShaderDataType::Float, "a_TilingFactor"}
@@ -86,7 +92,7 @@ namespace Schmog {
 		s_Data.vertexArray->SetIndexBuffer(ib);
 		delete[] quadIndices;
 
-		s_Data.shader = Shader::Create("assets/shaders/Texture.glsl");
+		s_Data.shader = Shader::Create("assets/shaders/2DQuadTexture.glsl");
 
 		s_Data.whiteTexture = Texture2D::Create(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
@@ -213,33 +219,33 @@ namespace Schmog {
 		}
 
 
-		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[0];
-		s_Data.quadVertexBufferPtr->color = parameters.Color;
-		s_Data.quadVertexBufferPtr->texCoord = { 0.0f, 0.0f };
-		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
-		s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
-		s_Data.quadVertexBufferPtr++;
+		//s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[0];
+		//s_Data.quadVertexBufferPtr->color = parameters.Color;
+		//s_Data.quadVertexBufferPtr->texCoord = { 0.0f, 0.0f };
+		//s_Data.quadVertexBufferPtr->texIndex = textureIndex;
+		//s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
+		//s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[1];
-		s_Data.quadVertexBufferPtr->color = parameters.Color;
-		s_Data.quadVertexBufferPtr->texCoord = { 1.0f, 0.0f };
-		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
-		s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
-		s_Data.quadVertexBufferPtr++;
+		//s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[1];
+		//s_Data.quadVertexBufferPtr->color = parameters.Color;
+		//s_Data.quadVertexBufferPtr->texCoord = { 1.0f, 0.0f };
+		//s_Data.quadVertexBufferPtr->texIndex = textureIndex;
+		//s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
+		//s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[2];
-		s_Data.quadVertexBufferPtr->color = parameters.Color;
-		s_Data.quadVertexBufferPtr->texCoord = { 1.0f, 1.0f };
-		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
-		s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
-		s_Data.quadVertexBufferPtr++;
+		//s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[2];
+		//s_Data.quadVertexBufferPtr->color = parameters.Color;
+		//s_Data.quadVertexBufferPtr->texCoord = { 1.0f, 1.0f };
+		//s_Data.quadVertexBufferPtr->texIndex = textureIndex;
+		//s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
+		//s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[3];
-		s_Data.quadVertexBufferPtr->color = parameters.Color;
-		s_Data.quadVertexBufferPtr->texCoord = { 0.0f, 1.0f };
-		s_Data.quadVertexBufferPtr->texIndex = textureIndex;
-		s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
-		s_Data.quadVertexBufferPtr++;
+		//s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[3];
+		//s_Data.quadVertexBufferPtr->color = parameters.Color;
+		//s_Data.quadVertexBufferPtr->texCoord = { 0.0f, 1.0f };
+		//s_Data.quadVertexBufferPtr->texIndex = textureIndex;
+		//s_Data.quadVertexBufferPtr->tilingFactor = parameters.TilingFactor;
+		//s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
 

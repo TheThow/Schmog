@@ -8,20 +8,10 @@
 
 namespace Schmog {
 
-	struct VertexPositions
-	{
-		glm::vec4 BottomLeft = glm::vec4(-0.5f, -0.5f, 0.0f, 1.0f);
-		glm::vec4 BottomRight = glm::vec4(0.5f, -0.5f, 0.0f, 1.0f);
-		glm::vec4 TopRight = glm::vec4(0.5f, 0.5f, 0.0f, 1.0f);
-		glm::vec4 TopLeft = glm::vec4(-0.5f, 0.5f, 0.0f, 1.0f);
-	} vertexPositions;
-
-
-
 	ParticleSystem::ParticleSystem()
 	{
-		m_ParticleDrawData.resize(1000000, {});
-		m_ParticleProps.resize(1000000, {});
+		m_ParticleDrawData.resize(1000000);
+		m_ParticleProps.resize(1000000);
 	}
 
 	ParticleSystem::~ParticleSystem()
@@ -50,20 +40,15 @@ namespace Schmog {
 			float size = glm::lerp(props.EndSize, props.StartSize, lifeRatio);
 			glm::vec4 color = glm::lerp(props.EndColor, props.StartColor, lifeRatio);
 
-
 			props.Position += glm::vec3(props.Speed, 0.0f);
 			props.Rotation += props.RotationSpeed;
 			props.Speed *= props.Damping;
 
-			glm::mat4 transform = glm::translate(glm::mat4(1.0f), props.Position)
-				 * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
-
-			glm::vec4* vertexPositionPointer = &vertexPositions.BottomLeft;
-			
-
 			for (uint32_t vi = 0; vi < 4; vi++)
 			{
-				particle.vertices[vi].Position = transform * vertexPositionPointer[vi];
+				particle.vertices[vi].Translation.x = props.Position.x;
+				particle.vertices[vi].Translation.y = props.Position.y;
+				particle.vertices[vi].Rotation = props.Rotation;
 				particle.vertices[vi].Color = color;
 			}
 
@@ -80,11 +65,7 @@ namespace Schmog {
 
 	void ParticleSystem::Emit(ParticleProperties& props, uint32_t count)
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), props.Position)
-			* glm::scale(glm::mat4(1.0f), { props.StartSize, props.StartSize, 1.0f });
-
-
-		if (m_ParticleDrawData.size() < m_ParticleIndex)
+		if (m_ParticleDrawData.size() < m_ParticleIndex + count)
 		{
 			m_ParticleDrawData.resize(m_ParticleDrawData.size() + 100000);
 			m_ParticleProps.resize(m_ParticleDrawData.size() + 100000);
@@ -94,29 +75,41 @@ namespace Schmog {
 		{
 			m_ParticleDrawData[m_ParticleIndex].vertices = {{
 				{
-					transform * vertexPositions.BottomLeft,
+					{ props.Position.x, props.Position.y },
+					props.Position.z,
+					props.Rotation,
 					props.StartColor,
+					{ props.StartSize, props.StartSize },
 					{0.0f, 0.0f},
 					0,
 					1.0f
 				},
 				{
-					transform * vertexPositions.BottomRight,
+					{ props.Position.x, props.Position.y },
+					props.Position.z,
+					props.Rotation,
 					props.StartColor,
+					{ props.StartSize, props.StartSize },
 					{1.0f, 0.0f},
 					0,
 					1.0f
 				},
 				{
-					transform * vertexPositions.TopRight,
+					{ props.Position.x, props.Position.y },
+					props.Position.z,
+					props.Rotation,
 					props.StartColor,
+					{ props.StartSize, props.StartSize },
 					{1.0f, 1.0f},
 					0,
 					1.0f
 				},
 				{
-					transform * vertexPositions.TopLeft,
+					{ props.Position.x, props.Position.y },
+					props.Position.z,
+					props.Rotation,
 					props.StartColor,
+					{ props.StartSize, props.StartSize },
 					{0.0f, 1.0f},
 					0,
 					1.0f

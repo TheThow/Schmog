@@ -9,17 +9,23 @@ namespace Schmog
 	{
 		switch (type)
 		{
-			case Schmog::ShaderDataType::Float:    return GL_FLOAT;
-			case Schmog::ShaderDataType::Float2:   return GL_FLOAT;
-			case Schmog::ShaderDataType::Float3:   return GL_FLOAT;
-			case Schmog::ShaderDataType::Float4:   return GL_FLOAT;
-			case Schmog::ShaderDataType::Mat3:     return GL_FLOAT;
-			case Schmog::ShaderDataType::Mat4:     return GL_FLOAT;
-			case Schmog::ShaderDataType::Int:      return GL_INT;
-			case Schmog::ShaderDataType::Int2:     return GL_INT;
-			case Schmog::ShaderDataType::Int3:     return GL_INT;
-			case Schmog::ShaderDataType::Int4:     return GL_INT;
-			case Schmog::ShaderDataType::Bool:     return GL_BOOL;
+			case Schmog::ShaderDataType::Float:			return GL_FLOAT;
+			case Schmog::ShaderDataType::Float2:		return GL_FLOAT;
+			case Schmog::ShaderDataType::Float3:		return GL_FLOAT;
+			case Schmog::ShaderDataType::Float4:		return GL_FLOAT;
+
+			case Schmog::ShaderDataType::HalfFloat:		return GL_HALF_FLOAT;
+			case Schmog::ShaderDataType::HalfFloat2:	return GL_HALF_FLOAT;
+			case Schmog::ShaderDataType::HalfFloat3:	return GL_HALF_FLOAT;
+			case Schmog::ShaderDataType::HalfFloat4:	return GL_HALF_FLOAT;
+
+			case Schmog::ShaderDataType::Mat3:			return GL_FLOAT;
+			case Schmog::ShaderDataType::Mat4:			return GL_FLOAT;
+			case Schmog::ShaderDataType::Int:			return GL_INT;
+			case Schmog::ShaderDataType::Int2:			return GL_INT;
+			case Schmog::ShaderDataType::Int3:			return GL_INT;
+			case Schmog::ShaderDataType::Int4:			return GL_INT;
+			case Schmog::ShaderDataType::Bool:			return GL_BOOL;
 		}
 
 		SG_CORE_ASSERT(false, "Unknown ShaderDataType!");
