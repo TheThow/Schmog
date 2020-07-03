@@ -2,7 +2,7 @@
 .vs/
 bin/
 bin-int/
-Sandbox/assets/
+Sandbox/assets/textures
 
 # Files
 *.user
