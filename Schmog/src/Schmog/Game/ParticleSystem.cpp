@@ -56,7 +56,7 @@ namespace Schmog {
 			props.Speed *= props.Damping;
 
 			glm::mat4 transform = glm::translate(glm::mat4(1.0f), props.Position)
-				 * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
+				 * glm::rotate(glm::mat4(1.f), props.Rotation, glm::vec3(0,0,1)) * glm::scale(glm::mat4(1.0f), { size, size, 1.0f });
 
 			glm::vec4* vertexPositionPointer = &vertexPositions.BottomLeft;
 			
@@ -84,7 +84,7 @@ namespace Schmog {
 			* glm::scale(glm::mat4(1.0f), { props.StartSize, props.StartSize, 1.0f });
 
 
-		if (m_ParticleDrawData.size() < m_ParticleIndex)
+		if (m_ParticleDrawData.size() < m_ParticleIndex + count)
 		{
 			m_ParticleDrawData.resize(m_ParticleDrawData.size() + 100000);
 			m_ParticleProps.resize(m_ParticleDrawData.size() + 100000);
