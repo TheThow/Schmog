@@ -2,10 +2,10 @@
 
 #include "Camera.h"
 #include "Texture.h"
+#include "Vertex.h"
 #include "Schmog/Game/ParticleSystem.h"
 
 namespace Schmog {
-
 
 	struct Renderer2DQuadProperties
 	{
@@ -33,7 +33,8 @@ namespace Schmog {
 
 		static void DrawParticles(std::vector<ParticleSystem::Particle>& particles, uint32_t maxIndex);
 
-		// 
+		
+
 
 		struct Statistics
 		{

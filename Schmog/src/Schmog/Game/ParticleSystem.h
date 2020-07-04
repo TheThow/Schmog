@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
+#include "Schmog/Renderer/Vertex.h"
 #include "Schmog/Core/Random.h"
 
 namespace Schmog {
@@ -38,18 +39,9 @@ namespace Schmog {
 		};
 
 
-		struct Vertex
-		{
-			glm::vec3 Position = { 0.0f, 0.0f, 0.0f};
-			glm::vec4 Color = { 1.0f, 1.0f, 1.0f, 1.0f };
-			glm::vec2 TexCoord = { 0.0f, 0.0f };
-			float TexIndex = 0;
-			float TilingFactor = 1.0f;
-		};
-
 		struct Particle
 		{
-			std::array<Vertex, 4> vertices;
+			std::array<QuadVertex, 4> vertices;
 		};
 
 

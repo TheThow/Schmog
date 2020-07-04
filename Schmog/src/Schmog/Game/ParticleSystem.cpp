@@ -6,6 +6,7 @@
 #include "Schmog/Renderer/Renderer2D.h"
 
 
+
 namespace Schmog {
 
 	struct VertexPositions
@@ -15,6 +16,14 @@ namespace Schmog {
 		glm::vec4 TopRight = glm::vec4(0.5f, 0.5f, 0.0f, 1.0f);
 		glm::vec4 TopLeft = glm::vec4(-0.5f, 0.5f, 0.0f, 1.0f);
 	} vertexPositions;
+
+	struct TextureCoords
+	{
+		glm::vec2 BottomLeft = glm::vec2(0.0f, 0.0f);
+		glm::vec2 BottomRight = glm::vec2(1.0f, 0.0f);
+		glm::vec2 TopRight = glm::vec2(1.0f, 1.0f);
+		glm::vec2 TopLeft = glm::vec2(0.0f, 1.0f);
+	} textureCoords;
 
 
 
@@ -90,38 +99,19 @@ namespace Schmog {
 			m_ParticleProps.resize(m_ParticleDrawData.size() + 100000);
 		}
 
+		glm::vec2* textureCoordPointer = &textureCoords.BottomLeft;
+		glm::vec4* vertexPositionPointer = &vertexPositions.BottomLeft;
+
 		for (int i = 0; i < count; i++)
 		{
-			m_ParticleDrawData[m_ParticleIndex].vertices = {{
-				{
-					transform * vertexPositions.BottomLeft,
-					props.StartColor,
-					{0.0f, 0.0f},
-					0,
-					1.0f
-				},
-				{
-					transform * vertexPositions.BottomRight,
-					props.StartColor,
-					{1.0f, 0.0f},
-					0,
-					1.0f
-				},
-				{
-					transform * vertexPositions.TopRight,
-					props.StartColor,
-					{1.0f, 1.0f},
-					0,
-					1.0f
-				},
-				{
-					transform * vertexPositions.TopLeft,
-					props.StartColor,
-					{0.0f, 1.0f},
-					0,
-					1.0f
-				}
-			}};
+			for (int vi = 0; vi < 4; vi++)
+			{
+				m_ParticleDrawData[m_ParticleIndex].vertices[vi].Position = transform * vertexPositionPointer[vi];
+				m_ParticleDrawData[m_ParticleIndex].vertices[vi].Color = props.StartColor;
+				m_ParticleDrawData[m_ParticleIndex].vertices[vi].TexCoord = textureCoordPointer[vi];
+				m_ParticleDrawData[m_ParticleIndex].vertices[vi].TexIndex = 0;
+				m_ParticleDrawData[m_ParticleIndex].vertices[vi].TilingFactor = 1.0f;
+			}
 
 			m_ParticleProps[m_ParticleIndex] = { props };
 			m_ParticleIndex++;
