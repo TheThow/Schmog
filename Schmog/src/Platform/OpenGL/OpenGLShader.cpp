@@ -86,6 +86,12 @@ namespace Schmog {
 		glUniform1f(loc, value);
 	}
 
+	void OpenGLShader::SetUniformUnsigned(const std::string& name, const uint32_t value)
+	{
+		auto loc = GetUniformLocation(name);
+		glUniform1ui(loc, value);
+	}
+
 	void OpenGLShader::SetUniformArray(const std::string& name, const int* values, const uint32_t count)
 	{
 		auto loc = GetUniformLocation(name);

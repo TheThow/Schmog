@@ -48,9 +48,9 @@ namespace Schmog {
 		BufferLayout vbLayout = {
 			{ ShaderDataType::Float3, "a_Position"},
 			{ ShaderDataType::Float, "a_TilingFactor"},
-			{ ShaderDataType::Float4, "a_Color"},
-			{ ShaderDataType::Float2, "a_TexCoord"},
-			{ ShaderDataType::Float, "a_TexIndex"}
+			{ ShaderDataType::UInt, "a_Color"},
+			{ ShaderDataType::Float, "a_TexIndex"},
+			{ ShaderDataType::Float2, "a_TexCoord"}
 		};
 		s_Data.vertexBuffer = VertexBuffer::Create(s_Data.MAX_VERTICES * sizeof(QuadVertex));
 		s_Data.vertexBuffer->SetLayout(vbLayout);
@@ -91,8 +91,8 @@ namespace Schmog {
 			samplers[i] = i;
 
 		s_Data.shader->Bind();
-		s_Data.shader->SetUniform("u_TilingFactor", 1.0f);
 		s_Data.shader->SetUniformArray("u_Texture", samplers, s_Data.MAX_TEXTURE_SLOTS);
+		s_Data.shader->SetUniformUnsigned("u_Color", 0xFF0000FF);
 
 		s_Data.textureSlots[0] = s_Data.whiteTexture;
 
@@ -214,7 +214,7 @@ namespace Schmog {
 		for (int vi = 0; vi < 4; vi++)
 		{
 			s_Data.quadVertexBufferPtr->Position = transform * s_Data.quadVertexPositions[vi];
-			s_Data.quadVertexBufferPtr->Color = parameters.Color;
+			s_Data.quadVertexBufferPtr->Color = parameters.Color.GetHex();
 			s_Data.quadVertexBufferPtr->TexCoord = s_Data.quadTextureCoords[vi];
 			s_Data.quadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.quadVertexBufferPtr->TilingFactor = parameters.TilingFactor;

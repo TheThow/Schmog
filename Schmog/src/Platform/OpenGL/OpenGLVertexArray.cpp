@@ -20,6 +20,7 @@ namespace Schmog
 			case Schmog::ShaderDataType::Int3:     return GL_INT;
 			case Schmog::ShaderDataType::Int4:     return GL_INT;
 			case Schmog::ShaderDataType::Bool:     return GL_BOOL;
+			case Schmog::ShaderDataType::UInt:      return GL_UNSIGNED_INT;
 		}
 
 		SG_CORE_ASSERT(false, "Unknown ShaderDataType!");
@@ -59,12 +60,23 @@ namespace Schmog
 		for (const auto& element : layout)
 		{
 			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index,
-				element.GetComponentCount(),
-				ShaderDataTypeToOpenGLBaseType(element.type),
-				element.normalized ? GL_TRUE : GL_FALSE,
-				layout.GetStride(),
-				(const void*)element.offset);
+			if (element.type == Schmog::ShaderDataType::UInt)
+			{
+				glVertexAttribIPointer(index,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.type),
+					layout.GetStride(),
+					(const void*)element.offset);
+			}
+			else
+			{
+				glVertexAttribPointer(index,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.type),
+					element.normalized ? GL_TRUE : GL_FALSE,
+					layout.GetStride(),
+					(const void*)element.offset);
+			}
 			index++;
 
 		}

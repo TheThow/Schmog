@@ -4,12 +4,13 @@
 #include "Texture.h"
 #include "Vertex.h"
 #include "Schmog/Game/ParticleSystem.h"
+#include "Schmog/Game/Color.h"
 
 namespace Schmog {
 
 	struct Renderer2DQuadProperties
 	{
-		const glm::vec4 Color = glm::vec4(1.0f);
+		const RGBa Color = { 255, 255, 255, 255 };
 		float Rotation = 0.0f;
 		float TilingFactor = 1.0f;
 	};

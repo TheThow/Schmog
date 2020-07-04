@@ -13,9 +13,10 @@
 void Sandbox2D::OnAttach()
 {
 	m_Texture = Schmog::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_SpriteSheet = Schmog::Texture2D::Create("assets/textures/RPGpack_sheet.png");
 
-	m_ParticleProps.StartColor = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
-	m_ParticleProps.EndColor = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+	m_ParticleProps.StartColor = { 254, 212, 123, 255 };
+	m_ParticleProps.EndColor = { 254, 109, 41, 255 };
 	m_ParticleProps.StartSize = 0.5f, 
 	m_ParticleProps.SizeRandom = 0.3f,
 	m_ParticleProps.EndSize = 0.0f;
@@ -114,7 +115,12 @@ bool Sandbox2D::OnMouseClicked(Schmog::MouseButtonPressedEvent& e)
 {
 	if (e.GetMouseButton() == Schmog::MouseButtonCode::ButtonLeft)
 	{
-		m_ParticleSystem->Emit(m_ParticleProps, 10000);
+		m_ParticleSystem->Emit(m_ParticleProps, 20000);
+	}
+
+	if (e.GetMouseButton() == Schmog::MouseButtonCode::ButtonRight)
+	{
+		m_ParticleSystem->Emit(m_ParticleProps, 1);
 	}
 
 	return false;

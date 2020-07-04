@@ -5,6 +5,7 @@
 
 #include "Schmog/Renderer/Vertex.h"
 #include "Schmog/Core/Random.h"
+#include "Color.h"
 
 namespace Schmog {
 
@@ -16,8 +17,8 @@ namespace Schmog {
 
 		struct ParticleProperties
 		{
-			glm::vec4 StartColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-			glm::vec4 EndColor = { 1.0f, 1.0f, 1.0f, 0.0f };
+			RGBa StartColor = { 255, 255, 255, 255 };
+			RGBa EndColor = { 255, 255, 255, 255 };
 
 			glm::vec3 Position = { 0.0f, 0.0f, 0.0f };
 			float PositionRandom = 0.0f;
@@ -62,8 +63,8 @@ namespace Schmog {
 
 		struct ParticleInternalProperties
 		{
-			glm::vec4 StartColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-			glm::vec4 EndColor = { 1.0f, 1.0f, 1.0f, 0.0f };
+			RGBa StartColor = { 255, 255, 255, 255 };
+			RGBa EndColor = { 255, 255, 255, 255 };
 
 			glm::vec3 Position = { 0.0f, 0.0f, 0.0f };
 			glm::vec2 Speed = { 0.0f, 0.0f };
@@ -81,9 +82,6 @@ namespace Schmog {
 			bool Alive = false;
 
 			ParticleInternalProperties()
-				: StartColor({ 1.0f, 1.0f, 1.0f, 1.0f }), EndColor({ 0.0f, 0.0f, 0.0f, 0.0f }), Position({ 0.0f, 0.0f, 0.0f }),
-				RotationSpeed(0.0f), EndSize(0.0f), LifeTime(120), CurrentLifeTime(LifeTime),
-				StartSize(1.0f), Speed(0.0f), Rotation(0.0f)
 			{
 
 			}

@@ -8,9 +8,9 @@ namespace Schmog {
 	{
 		glm::vec3 Position;
 		float TilingFactor;
-		glm::vec4 Color;
-		glm::vec2 TexCoord;
+		uint32_t Color;
 		float TexIndex;
+		glm::vec2 TexCoord;
 	};
 
 }

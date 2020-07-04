@@ -17,6 +17,7 @@ namespace Schmog {
 		virtual void SetUniform(const std::string& name, const glm::vec4& vec) = 0;
 		virtual void SetUniform(const std::string& name, const int value) = 0;
 		virtual void SetUniform(const std::string& name, const float value) = 0;
+		virtual void SetUniformUnsigned(const std::string& name, const uint32_t value) = 0;
 
 		virtual void SetUniformArray(const std::string& name, const int* values, const uint32_t count) = 0;
 
