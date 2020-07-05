@@ -31,6 +31,7 @@ namespace Schmog {
 #define SG_CORE_WARN(...)		::Schmog::Log::getCoreLogger()->warn(__VA_ARGS__)
 #define SG_CORE_INFO(...)		::Schmog::Log::getCoreLogger()->info(__VA_ARGS__)
 #define SG_CORE_TRACE(...)		::Schmog::Log::getCoreLogger()->trace(__VA_ARGS__)
+#define SG_CORE_FLUSH()			::Schmog::Log::getCoreLogger()->flush();
 
 
 // Client log macros

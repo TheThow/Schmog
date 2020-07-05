@@ -10,6 +10,7 @@ namespace Schmog {
 		Mat3, Mat4,
 		Int, Int2, Int3, Int4,
 		UInt,
+		UByte, UByte4,
 		Bool
 	};
 
@@ -31,6 +32,9 @@ namespace Schmog {
 			case ShaderDataType::Int4:			return 4 * 4;
 
 			case ShaderDataType::UInt:			return 4;
+
+			case ShaderDataType::UByte:			return 1;
+			case ShaderDataType::UByte4:		return 4;
 
 			case ShaderDataType::Bool:			return 1;
 		}
@@ -71,6 +75,8 @@ namespace Schmog {
 				case ShaderDataType::Int4:    return 4;
 				case ShaderDataType::Bool:    return 1;
 				case ShaderDataType::UInt:    return 1;
+				case ShaderDataType::UByte:    return 1;
+				case ShaderDataType::UByte4:    return 4;
 			}
 
 			SG_CORE_ASSERT(false, "Unknown shader data type");

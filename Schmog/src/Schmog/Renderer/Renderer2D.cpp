@@ -8,13 +8,15 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Platform/Platform.h"
+
 namespace Schmog {
 
 
 
 	struct Renderer2DData
 	{
-		static const uint32_t MAX_QUADS = 100000;
+		static const uint32_t MAX_QUADS = 10000;
 		static const uint32_t MAX_VERTICES = MAX_QUADS * 4;
 		static const uint32_t MAX_INDICES = MAX_QUADS * 6;
 		static const uint32_t MAX_TEXTURE_SLOTS = 32; // TODO
@@ -47,11 +49,11 @@ namespace Schmog {
 
 		BufferLayout vbLayout = {
 			{ ShaderDataType::Float3, "a_Position"},
-			{ ShaderDataType::Float, "a_TilingFactor"},
-			{ ShaderDataType::UInt, "a_Color"},
-			{ ShaderDataType::Float, "a_TexIndex"},
-			{ ShaderDataType::Float2, "a_TexCoord"}
+			{ ShaderDataType::Float2, "a_TexCoord"},
+			{ ShaderDataType::UByte4, "a_Color", true},
+			{ ShaderDataType::UInt, "a_TexIndex"}
 		};
+
 		s_Data.vertexBuffer = VertexBuffer::Create(s_Data.MAX_VERTICES * sizeof(QuadVertex));
 		s_Data.vertexBuffer->SetLayout(vbLayout);
 		s_Data.vertexArray->AddVertexBuffer(s_Data.vertexBuffer);
@@ -75,7 +77,6 @@ namespace Schmog {
 		}
 
 
-
 		std::shared_ptr<IndexBuffer> ib = IndexBuffer::Create(quadIndices, s_Data.MAX_INDICES);
 		s_Data.vertexArray->SetIndexBuffer(ib);
 		delete[] quadIndices;
@@ -90,9 +91,9 @@ namespace Schmog {
 		for (uint32_t i = 0; i < s_Data.MAX_TEXTURE_SLOTS; i++)
 			samplers[i] = i;
 
+
 		s_Data.shader->Bind();
 		s_Data.shader->SetUniformArray("u_Texture", samplers, s_Data.MAX_TEXTURE_SLOTS);
-		s_Data.shader->SetUniformUnsigned("u_Color", 0xFF0000FF);
 
 		s_Data.textureSlots[0] = s_Data.whiteTexture;
 
@@ -214,10 +215,9 @@ namespace Schmog {
 		for (int vi = 0; vi < 4; vi++)
 		{
 			s_Data.quadVertexBufferPtr->Position = transform * s_Data.quadVertexPositions[vi];
-			s_Data.quadVertexBufferPtr->Color = parameters.Color.GetHex();
+			s_Data.quadVertexBufferPtr->Color = parameters.Color;
 			s_Data.quadVertexBufferPtr->TexCoord = s_Data.quadTextureCoords[vi];
 			s_Data.quadVertexBufferPtr->TexIndex = textureIndex;
-			s_Data.quadVertexBufferPtr->TilingFactor = parameters.TilingFactor;
 			s_Data.quadVertexBufferPtr++;
 		}
 
@@ -227,6 +227,9 @@ namespace Schmog {
 
 	void Renderer2D::DrawParticles(std::vector<ParticleSystem::Particle>& particles, uint32_t maxIndex)
 	{
+		//maxIndex = 200000;
+
+		//auto m_LastFrameTime = Platform::GetTime();
 		for (uint32_t i = 0; i < maxIndex; i += Renderer2DData::MAX_QUADS)
 		{
 			uint32_t count = std::min(maxIndex - i, Renderer2DData::MAX_QUADS);
@@ -241,6 +244,8 @@ namespace Schmog {
 
 			s_Data.stats.quadCount += count;
 		}
+		//float time_passed_since_update = (float)Platform::GetTime() - m_LastFrameTime;
+		//SG_INFO("{0}", time_passed_since_update);
 	}
 
 

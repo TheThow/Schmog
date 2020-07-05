@@ -57,7 +57,7 @@ namespace Schmog {
 
 			float lifeRatio = (float) props.CurrentLifeTime / (float) props.LifeTime;
 			float size = glm::lerp(props.EndSize, props.StartSize, lifeRatio);
-			uint32_t color = props.StartColor.Interpolate(props.EndColor, lifeRatio).GetHex();
+			RGBa color = props.StartColor.Interpolate(props.EndColor, lifeRatio);
 
 
 			props.Position += glm::vec3(props.Speed, 0.0f);
@@ -107,10 +107,9 @@ namespace Schmog {
 			for (int vi = 0; vi < 4; vi++)
 			{
 				m_ParticleDrawData[m_ParticleIndex].vertices[vi].Position = transform * vertexPositionPointer[vi];
-				m_ParticleDrawData[m_ParticleIndex].vertices[vi].Color = props.StartColor.GetHex();
+				m_ParticleDrawData[m_ParticleIndex].vertices[vi].Color = props.StartColor;
 				m_ParticleDrawData[m_ParticleIndex].vertices[vi].TexCoord = textureCoordPointer[vi];
 				m_ParticleDrawData[m_ParticleIndex].vertices[vi].TexIndex = 0;
-				m_ParticleDrawData[m_ParticleIndex].vertices[vi].TilingFactor = 1.0f;
 			}
 
 			m_ParticleProps[m_ParticleIndex] = { props };

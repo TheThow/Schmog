@@ -31,6 +31,8 @@ void Sandbox2D::OnAttach()
 	m_ParticleProps.Damping = { 0.95f, 0.95f };
 
 	m_Camera.SetZoomLevel(20.0f);
+
+	Schmog::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 }
 
 void Sandbox2D::OnDetach()
@@ -43,7 +45,6 @@ void Sandbox2D::OnUpdate()
 	m_Camera.OnUpdate();
 
 	//Render
-	Schmog::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	Schmog::RenderCommand::Clear();
 
 	//Schmog::Renderer2D::BeginScene(m_Camera.GetCamera());
