@@ -16,6 +16,7 @@
 
 #include "Schmog/Renderer/Buffer.h"
 #include "Schmog/Renderer/Shader.h"
+#include "Schmog/Game/SubTexture2D.h"
 #include "Schmog/Renderer/Texture.h"
 #include "Schmog/Renderer/VertexArray.h"
 

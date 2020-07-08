@@ -30,7 +30,7 @@ private:
 
 
 	std::shared_ptr<Schmog::Texture2D> m_Texture;
-	std::shared_ptr<Schmog::Texture2D> m_SpriteSheet;
+	std::shared_ptr<Schmog::Texture2D> m_SpriteTexture;
 
 	std::shared_ptr<Schmog::ParticleSystem> m_ParticleSystem = Schmog::Application::Get().GetParticleSystem();
 	Schmog::ParticleSystem::ParticleProperties m_ParticleProps;
@@ -43,5 +43,7 @@ private:
 	std::shared_ptr<Schmog::VertexArray> m_VA;
 
 	float m_TilingFactor = 1.0f;
+
+	std::unordered_map<char, std::shared_ptr<Schmog::SubTexture2D>> m_TextureMap;
 };
 

@@ -165,22 +165,37 @@ namespace Schmog {
 		s_Data.textureSlotIndex = 1;
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, Renderer2DQuadProperties& parameters)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Renderer2DQuadProperties& parameters)
 	{
 		DrawQuad(glm::vec3(position, 0), size, parameters);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, Renderer2DQuadProperties& parameters)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Renderer2DQuadProperties& parameters)
 	{
 		DrawQuad(position, size, s_Data.whiteTexture, parameters);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const Renderer2DQuadProperties& parameters)
 	{
 		DrawQuad(glm::vec3(position, 0), size, texture, parameters);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const Renderer2DQuadProperties& parameters)
+	{
+		AddQuad(position, size, texture, s_Data.quadTextureCoords, parameters);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<SubTexture2D> subtexture, const Renderer2DQuadProperties& parameters)
+	{
+		DrawQuad(glm::vec3(position, 0), size, subtexture, parameters);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<SubTexture2D> subtexture, const Renderer2DQuadProperties& parameters)
+	{
+		AddQuad(position, size, subtexture->GetTexture(), subtexture->GetTexCoords(), parameters);
+	}
+
+	void Renderer2D::AddQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const glm::vec2* texCoords, const Renderer2DQuadProperties& parameters)
 	{
 		if (s_Data.quadIndexCount >= s_Data.MAX_INDICES)
 		{
@@ -188,7 +203,7 @@ namespace Schmog {
 			ResetData();
 		}
 
-		float textureIndex = 0.0f;
+		int textureIndex = -1;
 
 		for (uint32_t i = 0; i < s_Data.textureSlotIndex; i++)
 		{
@@ -196,9 +211,9 @@ namespace Schmog {
 				textureIndex = i;
 		}
 
-		if (textureIndex == 0.0f)
+		if (textureIndex == -1)
 		{
-			textureIndex = (float) s_Data.textureSlotIndex;
+			textureIndex = s_Data.textureSlotIndex;
 			s_Data.textureSlots[s_Data.textureSlotIndex] = texture;
 			s_Data.textureSlotIndex += 1;
 		}
@@ -216,7 +231,7 @@ namespace Schmog {
 		{
 			s_Data.quadVertexBufferPtr->Position = transform * s_Data.quadVertexPositions[vi];
 			s_Data.quadVertexBufferPtr->Color = parameters.Color;
-			s_Data.quadVertexBufferPtr->TexCoord = s_Data.quadTextureCoords[vi];
+			s_Data.quadVertexBufferPtr->TexCoord = texCoords[vi];
 			s_Data.quadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.quadVertexBufferPtr++;
 		}
@@ -227,9 +242,6 @@ namespace Schmog {
 
 	void Renderer2D::DrawParticles(std::vector<ParticleSystem::Particle>& particles, uint32_t maxIndex)
 	{
-		//maxIndex = 200000;
-
-		//auto m_LastFrameTime = Platform::GetTime();
 		for (uint32_t i = 0; i < maxIndex; i += Renderer2DData::MAX_QUADS)
 		{
 			uint32_t count = std::min(maxIndex - i, Renderer2DData::MAX_QUADS);
@@ -244,8 +256,6 @@ namespace Schmog {
 
 			s_Data.stats.quadCount += count;
 		}
-		//float time_passed_since_update = (float)Platform::GetTime() - m_LastFrameTime;
-		//SG_INFO("{0}", time_passed_since_update);
 	}
 
 

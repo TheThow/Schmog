@@ -5,6 +5,7 @@
 #include "Vertex.h"
 #include "Schmog/Game/ParticleSystem.h"
 #include "Schmog/Game/Color.h"
+#include "Schmog/Game/SubTexture2D.h"
 
 namespace Schmog {
 
@@ -26,11 +27,14 @@ namespace Schmog {
 
 		static void Flush();
 
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, Renderer2DQuadProperties& parameters);
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, Renderer2DQuadProperties& parameters);
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Renderer2DQuadProperties& parameters);
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Renderer2DQuadProperties& parameters);
 
-		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters);
-		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, Renderer2DQuadProperties& parameters);
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const Renderer2DQuadProperties& parameters);
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const Renderer2DQuadProperties& parameters);
+
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<SubTexture2D> subtexture, const Renderer2DQuadProperties& parameters);
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<SubTexture2D> subtexture, const Renderer2DQuadProperties& parameters);
 
 		static void DrawParticles(std::vector<ParticleSystem::Particle>& particles, uint32_t maxIndex);
 
@@ -47,6 +51,7 @@ namespace Schmog {
 
 	private:
 		static void ResetData();
+		static void AddQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const glm::vec2* texCoords, const Renderer2DQuadProperties& parameters);
 	};
 
 
