@@ -54,6 +54,10 @@ void Sandbox2D::OnAttach()
 	m_Camera.SetZoomLevel(10.0f);
 
 	Schmog::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+
+	Schmog::FrameBufferSpec fbSpec;
+	fbSpec.Width = 1280;
+	fbSpec.Height = 720;
 }
 
 void Sandbox2D::OnDetach()
