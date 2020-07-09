@@ -17,8 +17,8 @@ namespace Schmog {
 
 		void OnUpdate() override;
 
-		unsigned int GetWidth() const override { return m_Data.Width; }
-		unsigned int GetHeight() const override { return m_Data.Height; }
+		uint32_t GetWidth() const override { return m_Data.Width; }
+		uint32_t GetHeight() const override { return m_Data.Height; }
 
 		void SetWidth(unsigned int width) override {  m_Data.Width = width; }
 		void SetHeight(unsigned int height) override { m_Data.Height = height; }

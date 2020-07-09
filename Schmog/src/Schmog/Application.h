@@ -22,12 +22,13 @@ namespace Schmog {
 	class SCHMOG_API Application
 	{
 	public:
-		Application();
+		Application(const std::string& name = "Schmog App");
 		virtual ~Application();
 
 		Application(const Application&) = delete;
 
 		void Run();
+		void Close();
 
 		void OnEvent(Event& e);
 

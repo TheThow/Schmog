@@ -98,6 +98,7 @@ class Sandbox : public Schmog::Application
 {
 public: 
 	Sandbox()
+		: Application("Sandbox 2D")
 	{
 		//PushLayer(std::make_shared<ExampleLayer>());
 		PushLayer(std::make_shared<Sandbox2D>());

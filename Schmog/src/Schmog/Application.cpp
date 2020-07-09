@@ -16,12 +16,12 @@ namespace Schmog {
 	const float Application::DELTA_TIME = 0.0166f;
 
 
-	Application::Application()
+	Application::Application(const std::string& name)
 	{
 		SG_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(name)));
 		m_Window->SetEventCallback(SG_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
@@ -117,6 +117,11 @@ namespace Schmog {
 			float time_passed_since_update = (float)Platform::GetTime() - m_LastFrameTime;
 			std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long>((DELTA_TIME - time_passed_since_update) * 1000)));
 		}
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
