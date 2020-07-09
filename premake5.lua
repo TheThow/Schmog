@@ -153,3 +153,57 @@ project "Sandbox"
 		defines "SG_DIST"
 		runtime "Release"
 		optimize "on"
+		
+		
+project "Scheditor"
+	location "Scheditor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"Schmog/vendor/spdlog/include",
+		"Schmog/src",
+		"Schmog/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"Schmog"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		defines 
+		{
+			"SG_PLATFORM_WINDOWS"
+		}
+
+
+	filter "configurations:Debug"
+		defines "SG_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "SG_RELEASE"
+		runtime "Release"
+		optimize "on"
+		
+	filter "configurations:Dist"
+		defines "SG_DIST"
+		runtime "Release"
+		optimize "on"
