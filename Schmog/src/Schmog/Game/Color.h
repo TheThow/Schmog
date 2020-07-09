@@ -29,5 +29,13 @@ struct RGBa
 					static_cast<uint8_t>(ratio * rgba[2] + (1 - ratio) * other.rgba[2]),
 					static_cast<uint8_t>(ratio * rgba[3] + (1 - ratio) * other.rgba[3]));
 	}
+
+	RGBa(const RGBa& other) 
+	{ 
+		rgba[0] = other.rgba[0];
+		rgba[1] = other.rgba[1];
+		rgba[2] = other.rgba[2];
+		rgba[3] = other.rgba[3];
+	} 
 	
 };

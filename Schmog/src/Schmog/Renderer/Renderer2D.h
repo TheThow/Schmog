@@ -11,7 +11,7 @@ namespace Schmog {
 
 	struct Renderer2DQuadProperties
 	{
-		const RGBa Color = { 255, 255, 255, 255 };
+		RGBa Color = { 255, 255, 255, 255 };
 		float Rotation = 0.0f;
 		float TilingFactor = 1.0f;
 	};

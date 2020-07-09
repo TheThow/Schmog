@@ -47,14 +47,20 @@ namespace Schmog {
 	void OrthographicCameraController::SetZoomLevel(float level)
 	{
 		m_ZoomLevel = level;
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		Update();
+	}
+
+	void OrthographicCameraController::OnResize(const uint32_t width, const uint32_t height)
+	{
+		m_AspectRatio = float(width) / (float) height;
+		Update();
 	}
 
 	bool OrthographicCameraController::OnMouseScrolledEvent(MouseScrolledEvent& e)
 	{
 		m_ZoomLevel += e.GetYOffset() * -0.25f;
 		m_ZoomLevel = std::clamp(m_ZoomLevel, 0.25f, 100.0f);
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		Update();
 		
 		return false;
 	}
@@ -62,8 +68,13 @@ namespace Schmog {
 	bool OrthographicCameraController::OnWindowResizeEvent(WindowResizeEvent& e)
 	{
 		m_AspectRatio = (float) e.GetWidth() / (float) e.GetHeight();
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		Update();
 		return false;
+	}
+
+	void OrthographicCameraController::Update()
+	{
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 	}
 
 

@@ -38,6 +38,8 @@ namespace Schmog {
 		void PushOverlay(std::shared_ptr<Layer> layer);
 		void PopOverlay(std::shared_ptr<Layer> layer);
 
+		std::shared_ptr<ImGuiLayer> GetImGuiLayer();
+
 		static Application& Get() { return *s_Instance; }
 		Window& GetWindow() { return *m_Window; }
 		std::shared_ptr<ParticleSystem> GetParticleSystem() { return m_ParticleSystem; }

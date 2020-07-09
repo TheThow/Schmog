@@ -82,6 +82,11 @@ namespace Schmog {
 		m_LayerStack.PopOverlay(layer);
 	}
 
+	std::shared_ptr<ImGuiLayer> Application::GetImGuiLayer()
+	{
+		return m_ImGuiLayer;
+	}
+
 
 	void Application::Run()
 	{

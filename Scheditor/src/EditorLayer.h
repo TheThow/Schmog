@@ -29,6 +29,11 @@ namespace Schmog {
 
 		std::shared_ptr<FrameBuffer> m_FrameBuffer;
 
+		glm::vec2 m_ViewportSize;
+
+		bool m_ViewportFocused;
+		bool m_ViewportHovered;
+
 	};
 
 }

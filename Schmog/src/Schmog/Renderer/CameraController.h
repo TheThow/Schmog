@@ -21,9 +21,12 @@ namespace Schmog {
 		float GetZoomLevel() const { return m_ZoomLevel; }
 		float GetAspectRatio() const { return m_AspectRatio; }
 
+		void OnResize(const uint32_t width, const uint32_t height);
+
 	private:
 		bool OnMouseScrolledEvent(MouseScrolledEvent& e);
 		bool OnWindowResizeEvent(WindowResizeEvent& e);
+		void Update();
 
 	private:
 		float m_AspectRatio;

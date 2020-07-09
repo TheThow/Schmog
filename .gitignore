@@ -3,6 +3,7 @@
 bin/
 bin-int/
 Sandbox/assets/textures
+Scheditor/assets/textures
 
 # Files
 *.user
@@ -10,5 +11,4 @@ Sandbox/assets/textures
 *.vcxproj
 *.vcxproj.filters
 *.log
-
-Sandbox/imgui.ini
+imgui.ini
