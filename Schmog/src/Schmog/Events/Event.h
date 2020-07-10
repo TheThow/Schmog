@@ -7,7 +7,6 @@
 namespace Schmog {
 
 
-
 	enum class EventType
 	{
 		None = 0,
@@ -37,6 +36,8 @@ namespace Schmog {
 	{
 	public:
 		bool Handled = false;
+
+		virtual ~Event() = default;
 
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;

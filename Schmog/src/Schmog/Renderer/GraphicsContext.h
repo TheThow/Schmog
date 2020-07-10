@@ -6,6 +6,7 @@ namespace Schmog {
 	{
 	public:
 		virtual void Init() = 0;
+		virtual ~GraphicsContext() = default;
 		virtual void SwapBuffers() = 0;
 	};
 
