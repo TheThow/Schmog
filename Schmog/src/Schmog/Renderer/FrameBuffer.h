@@ -17,6 +17,8 @@ namespace Schmog {
 	class FrameBuffer
 	{
 	public:
+		virtual ~FrameBuffer() = default;
+
 		static std::shared_ptr<FrameBuffer> Create(const FrameBufferSpec& spec);
 
 		virtual const FrameBufferSpec& GetSpecification() const = 0;
