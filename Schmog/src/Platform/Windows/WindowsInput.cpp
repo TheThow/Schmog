@@ -1,14 +1,15 @@
 #include "sgpch.h"
-#include "WindowsInput.h"
+
+#ifdef SG_PLATFORM_WINDOWS
+
+#include "Schmog/Core/Input.h"
 #include "Schmog/Application.h"
 
 #include <GLFW/glfw3.h>
 
 namespace Schmog {
 
-	Input* Input::s_Instance = new WindowsInput();
-
-	bool WindowsInput::isKeyPressedImpl(KeyCode keycode)
+	bool Input::IsKeyPressed(KeyCode keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetKey(window, static_cast<int32_t>(keycode));
@@ -16,7 +17,7 @@ namespace Schmog {
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedImpl(MouseButtonCode button)
+	bool Input::IsMouseButtonPressed(MouseButtonCode button)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetMouseButton(window, static_cast<int32_t>(button));
@@ -24,7 +25,7 @@ namespace Schmog {
 		return state == GLFW_PRESS;
 	}
 
-	Input::MousePosition WindowsInput::GetMousePositionImpl()
+	Input::MousePosition Input::GetMousePosition()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 
@@ -34,6 +35,6 @@ namespace Schmog {
 		return { (float)x, (float)y };
 	}
 
-
-
 }
+
+#endif
