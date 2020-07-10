@@ -40,7 +40,7 @@ namespace Schmog {
 
 	void ScheditorLayer::OnUpdate()
 	{
-		if (!Application::Get().GetImGuiLayer()->EventsBlocked())
+		if (m_ViewportFocused)
 		{
 			m_Camera.OnUpdate();
 		}
