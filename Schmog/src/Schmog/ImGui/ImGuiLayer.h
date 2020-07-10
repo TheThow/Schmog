@@ -19,12 +19,18 @@ namespace Schmog {
 
 		void OnAttach() override;
 		void OnDetach() override;
+		void OnEvent(Event& e) override;
 
 		void OnImGuiRender() override;
 
 		void Begin();
 		void End();
 
+		void BlockEvents(bool block) { m_BlockEvents = block; }
+		bool EventsBlocked() { return m_BlockEvents;  }
+
+	private:
+		bool m_BlockEvents = false;
 	};
 
 }

@@ -30,7 +30,8 @@ namespace Schmog {
 			0.0f,
 			1.0f
 		};
-	
+
+		m_Camera.SetZoomLevel(10.0f);
 	}
 
 	void ScheditorLayer::OnDetach()
@@ -39,10 +40,13 @@ namespace Schmog {
 
 	void ScheditorLayer::OnUpdate()
 	{
-		Schmog::Renderer2D::ResetStats();
-		Schmog::RenderCommand::Clear();
+		if (!Application::Get().GetImGuiLayer()->EventsBlocked())
+		{
+			m_Camera.OnUpdate();
+		}
 
-		m_Camera.OnUpdate();
+
+		Schmog::Renderer2D::ResetStats();
 
 		m_FrameBuffer->Bind();
 
@@ -115,7 +119,7 @@ namespace Schmog {
 		auto stats = Schmog::Renderer2D::GetStats();
 
 		ImGui::Text("Draw Calls: %i", stats.drawCalls);
-		ImGui::Text("Quad: %i", stats.quadCount);
+		ImGui::Text("Quads: %i", stats.quadCount);
 		ImGui::Text("");
 		ImGui::Text("Application average");
 		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -129,7 +133,7 @@ namespace Schmog {
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		//Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 		if (m_ViewportSize != glm::vec2(viewportPanelSize.x, viewportPanelSize.y))
 		{

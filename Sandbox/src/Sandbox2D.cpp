@@ -66,6 +66,7 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate()
 {
+
 	Schmog::Renderer2D::ResetStats();
 	m_Camera.OnUpdate();
 

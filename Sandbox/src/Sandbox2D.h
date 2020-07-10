@@ -45,5 +45,6 @@ private:
 	float m_TilingFactor = 1.0f;
 
 	std::unordered_map<char, std::shared_ptr<Schmog::SubTexture2D>> m_TextureMap;
+
 };
 
