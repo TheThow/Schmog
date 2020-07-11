@@ -7,6 +7,8 @@
 
 namespace Schmog {
 
+	static const uint32_t MAX_FRAMEBUFFER_SIZE = 16000;
+
 	OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferSpec& spec)
 		: m_FrameBufferSpec(spec)
 	{
@@ -52,8 +54,11 @@ namespace Schmog {
 
 	void OpenGLFrameBuffer::Resize(const uint32_t width, const uint32_t height)
 	{
-		m_FrameBufferSpec.Width = std::max((uint32_t) 1, width);
-		m_FrameBufferSpec.Height = std::max((uint32_t)1, height);
+		if (width < 1 || height < 1 || width > MAX_FRAMEBUFFER_SIZE || height > MAX_FRAMEBUFFER_SIZE)
+			return;
+
+		m_FrameBufferSpec.Width = width;
+		m_FrameBufferSpec.Height = height;
 		Invalidate();
 	}
 
