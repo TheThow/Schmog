@@ -155,8 +155,8 @@ project "Sandbox"
 		optimize "on"
 		
 		
-project "Scheditor"
-	location "Scheditor"
+project "Schmeditor"
+	location "Schmeditor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
