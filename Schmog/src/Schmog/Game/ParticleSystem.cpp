@@ -9,6 +9,8 @@
 
 namespace Schmog {
 
+	static const uint32_t MAX_PARTICLES = 1000000;
+
 	struct VertexPositions
 	{
 		glm::vec4 BottomLeft = glm::vec4(-0.5f, -0.5f, 0.0f, 1.0f);
@@ -29,8 +31,8 @@ namespace Schmog {
 
 	ParticleSystem::ParticleSystem()
 	{
-		m_ParticleDrawData.resize(1000000, {});
-		m_ParticleProps.resize(1000000, {});
+		m_ParticleDrawData.resize(MAX_PARTICLES, {});
+		m_ParticleProps.resize(MAX_PARTICLES, {});
 	}
 
 	ParticleSystem::~ParticleSystem()
@@ -89,15 +91,13 @@ namespace Schmog {
 
 	void ParticleSystem::Emit(ParticleProperties& props, uint32_t count)
 	{
+		if (m_ParticleDrawData.size() < (m_ParticleIndex + count))
+		{
+			return;
+		}
+
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), props.Position)
 			* glm::scale(glm::mat4(1.0f), { props.StartSize, props.StartSize, 1.0f });
-
-
-		if (m_ParticleDrawData.size() < m_ParticleIndex + count)
-		{
-			m_ParticleDrawData.resize(m_ParticleDrawData.size() + 100000);
-			m_ParticleProps.resize(m_ParticleDrawData.size() + 100000);
-		}
 
 		glm::vec2* textureCoordPointer = &textureCoords.BottomLeft;
 		glm::vec4* vertexPositionPointer = &vertexPositions.BottomLeft;

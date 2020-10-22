@@ -171,10 +171,10 @@ bool Sandbox2D::OnMouseClicked(Schmog::MouseButtonPressedEvent& e)
 //		m_ParticleSystem->Emit(m_ParticleProps, 100);
 //	}
 //
-//	if (e.GetMouseButton() == Schmog::MouseButtonCode::ButtonRight)
-//	{
-//		m_ParticleSystem->Emit(m_ParticleProps, 1);
-//	}
+	if (e.GetMouseButton() == Schmog::MouseButtonCode::ButtonRight)
+	{
+		m_ParticleSystem->Emit(m_ParticleProps, 10000);
+	}
 //
 	return false;
 }
