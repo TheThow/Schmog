@@ -17,6 +17,11 @@ namespace Schmog {
 			return m_Data[m_EntityToIndex[id]];
 		}
 
+		T& GetByIndex(uint32_t index)
+		{
+			return m_Data[index];
+		}
+
 		T& Add(uint32_t id, T& component)
 		{
 			m_Data[m_Index] = component;
