@@ -41,9 +41,8 @@ namespace Schmog {
 		template<class T>
 		void RemoveComponent(const Entity& entity)
 		{
-			auto idx = m_TypeIndex[typeid(T)];
 			static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Remove(entity.GetId());
-			m_ComponentMap[entity.GetId()] = m_ComponentMap[entity.GetId()] & ~(1 << idx);
+			RemoveComponentIndex<T>(entity);
 		}
 
 	private:
@@ -52,6 +51,13 @@ namespace Schmog {
 		{
 			auto idx = m_TypeIndex[typeid(T)];
 			m_ComponentMap[entity.GetId()] = m_ComponentMap[entity.GetId()] | (1 << idx);
+		}
+
+		template<class T>
+		void RemoveComponentIndex(const Entity& entity)
+		{
+			auto idx = m_TypeIndex[typeid(T)];
+			m_ComponentMap[entity.GetId()] = m_ComponentMap[entity.GetId()] & ~(1 << idx);
 		}
 
 	private:
