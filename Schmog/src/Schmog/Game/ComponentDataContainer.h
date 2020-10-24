@@ -36,7 +36,7 @@ namespace Schmog {
 
 			m_Index++;
 
-			return m_Data[m_Index];
+			return m_Data[m_Index - 1];
 		}
 
 		void Remove(uint32_t id)
