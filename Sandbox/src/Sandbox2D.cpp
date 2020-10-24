@@ -58,6 +58,11 @@ void Sandbox2D::OnAttach()
 	Schmog::FrameBufferSpec fbSpec;
 	fbSpec.Width = 1280;
 	fbSpec.Height = 720;
+
+	std::shared_ptr<Schmog::Scene> scene = std::make_shared<Schmog::Scene>();
+	Schmog::Entity entity = scene->CreateEntity();
+	std::cout << "HAS COMPONENT " << entity.HasComponent<Schmog::TransformComponent>() << std::endl;
+
 }
 
 void Sandbox2D::OnDetach()
@@ -173,7 +178,7 @@ bool Sandbox2D::OnMouseClicked(Schmog::MouseButtonPressedEvent& e)
 //
 	if (e.GetMouseButton() == Schmog::MouseButtonCode::ButtonRight)
 	{
-		m_ParticleSystem->Emit(m_ParticleProps, 10000);
+		m_ParticleSystem->Emit(m_ParticleProps, 1000);
 	}
 //
 	return false;

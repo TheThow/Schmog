@@ -24,6 +24,9 @@
 #include "Schmog/Renderer/Camera.h"
 #include "Schmog/Renderer/CameraController.h"
 
+#include "Schmog/Game/Scene.h"
+#include "Schmog/Game/Entity.h"
+
 #include "Schmog/Core/Timestep.h"
 
 #include "Schmog/Game/ParticleSystem.h"
