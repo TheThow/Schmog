@@ -51,6 +51,13 @@ namespace Schmog {
 			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->GetData();
 		}
 
+		template<class T>
+		ComponentDataContainer<T>& GetComponentContainer()
+		{
+			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)]);
+		}
+
+
 	private:
 		template<class T>
 		void AddComponentIndex(const Entity& entity)
