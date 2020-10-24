@@ -63,6 +63,15 @@ void Sandbox2D::OnAttach()
 	Schmog::Entity entity = scene->CreateEntity();
 	std::cout << "HAS COMPONENT " << entity.HasComponent<Schmog::TransformComponent>() << std::endl;
 
+	auto& trans = scene->GetComponents<Schmog::TransformComponent>();
+	Schmog::Entity entity2 = scene->CreateEntity();
+
+	entity.GetComponent<Schmog::TransformComponent>().Rotation = 1.0f;
+	trans[1].Rotation = 3.0f;
+
+	std::cout << "R: " << entity.GetId() << " - " << trans[0].Rotation << std::endl;
+	std::cout << "R: " << entity2.GetId()  << " - " << trans[1].Rotation << std::endl;
+
 }
 
 void Sandbox2D::OnDetach()

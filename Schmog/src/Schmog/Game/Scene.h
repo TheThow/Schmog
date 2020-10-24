@@ -45,6 +45,12 @@ namespace Schmog {
 			RemoveComponentIndex<T>(entity);
 		}
 
+		template<class T>
+		std::vector<T>& GetComponents()
+		{
+			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->GetData();
+		}
+
 	private:
 		template<class T>
 		void AddComponentIndex(const Entity& entity)

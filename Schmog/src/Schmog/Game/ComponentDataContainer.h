@@ -22,6 +22,12 @@ namespace Schmog {
 			return m_Data[index];
 		}
 
+		std::vector<T>& GetData()
+		{
+			return m_Data;
+		}
+
+
 		T& Add(uint32_t id, T& component)
 		{
 			m_Data[m_Index] = component;
@@ -46,7 +52,7 @@ namespace Schmog {
 			m_IndexToEntity[delIndex] = m_IndexToEntity[m_Index - 1];
 			m_EntityToIndex[m_IndexToEntity[delIndex]] = delIndex;
 
-			m_IndexToEntity.erase(m_Index);
+			m_IndexToEntity.erase(m_Index - 1);
 			m_EntityToIndex.erase(id);
 
 			m_Index--;
