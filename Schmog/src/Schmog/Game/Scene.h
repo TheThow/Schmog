@@ -73,11 +73,17 @@ namespace Schmog {
 			m_ComponentMap[entity.GetId()] = m_ComponentMap[entity.GetId()] & ~(1 << idx);
 		}
 
-	private:
-		static const uint32_t s_MaxEntityCount = 5000;
-		uint32_t m_EntityCount = 0;
+		bool EntityExists(Entity entity)
+		{
+			return m_EntityIds[entity.GetId()];
+		}
 
-		ComponentDataContainer<TransformComponent> m_TransformComponentData{ s_MaxEntityCount };
+	private:
+		static const uint32_t MAX_ENTITY_COUNT = 5000;
+
+		std::vector<bool> m_EntityIds;
+
+		ComponentDataContainer<TransformComponent> m_TransformComponentData{ MAX_ENTITY_COUNT };
 
 		std::unordered_map<uint32_t, uint32_t> m_ComponentMap;
 
