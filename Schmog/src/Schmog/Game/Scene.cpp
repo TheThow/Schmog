@@ -38,6 +38,7 @@ namespace Schmog {
 	{
 		m_EntityIds[entity.GetId()] = false;
 		RemoveComponent<TransformComponent>(entity);
+		RemoveComponent<SpriteRendererComponent>(entity);
 	}
 
 }

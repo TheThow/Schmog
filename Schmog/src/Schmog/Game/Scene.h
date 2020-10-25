@@ -2,6 +2,7 @@
 #include <typeindex>
 
 #include "Components/TransformComponent.h"
+#include "Components/SpriteRendererComponent.h"
 #include "ComponentDataContainer.h"
 
 namespace Schmog {
@@ -87,15 +88,18 @@ namespace Schmog {
 		std::unordered_map<uint32_t, uint32_t> m_ComponentMap;
 
 		ComponentDataContainer<TransformComponent> m_TransformComponentData{ MAX_ENTITY_COUNT };
+		ComponentDataContainer<SpriteRendererComponent> m_SpriteRendererComponentData{ MAX_ENTITY_COUNT };
 
 		std::unordered_map<std::type_index, uint32_t> m_TypeIndex =
 		{
-			{ typeid(TransformComponent), 0 }
+			{ typeid(TransformComponent), 0 },
+			{ typeid(SpriteRendererComponent), 1 }
 		};
 
 		std::unordered_map<std::type_index, void*> m_TypeStorage = 
 		{
-			{ typeid(TransformComponent), &m_TransformComponentData }
+			{ typeid(TransformComponent), &m_TransformComponentData },
+			{ typeid(SpriteRendererComponent), &m_SpriteRendererComponentData }
 		};
 	};
 
