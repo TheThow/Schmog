@@ -79,10 +79,6 @@ namespace Schmog {
 			m_ComponentMap[entity.GetId()] = m_ComponentMap[entity.GetId()] & ~(1 << idx);
 		}
 
-		bool EntityExists(Entity entity)
-		{
-			return m_EntityIds[entity.GetId()];
-		}
 
 	private:
 		static const uint32_t MAX_ENTITY_COUNT = 5000;
