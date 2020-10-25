@@ -22,6 +22,12 @@ namespace Schmog {
 			return m_Data[index];
 		}
 
+		uint32_t GetIdByIndex(uint32_t index)
+		{
+			SG_ASSERT(m_IndexToEntity.find(index) != m_IndexToEntity.end(), "Invalid index")
+			return m_IndexToEntity[index];
+		}
+
 		std::vector<T>& GetData()
 		{
 			return m_Data;

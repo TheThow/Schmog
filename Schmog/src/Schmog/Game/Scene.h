@@ -32,6 +32,12 @@ namespace Schmog {
 		}
 
 		template<class T>
+		Entity GetEntityByIndex(uint32_t index)
+		{
+			return Entity(this, static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->GetIdByIndex(index));
+		}
+
+		template<class T>
 		bool HasComponent(const Entity& entity)
 		{
 			auto idx = m_TypeIndex[typeid(T)];
@@ -82,10 +88,9 @@ namespace Schmog {
 		static const uint32_t MAX_ENTITY_COUNT = 5000;
 
 		std::vector<bool> m_EntityIds;
+		std::unordered_map<uint32_t, uint32_t> m_ComponentMap;
 
 		ComponentDataContainer<TransformComponent> m_TransformComponentData{ MAX_ENTITY_COUNT };
-
-		std::unordered_map<uint32_t, uint32_t> m_ComponentMap;
 
 		std::unordered_map<std::type_index, uint32_t> m_TypeIndex =
 		{
