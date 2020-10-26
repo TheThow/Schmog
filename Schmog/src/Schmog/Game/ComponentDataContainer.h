@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 
 namespace Schmog {
 
@@ -10,6 +12,8 @@ namespace Schmog {
 		ComponentDataContainer(uint32_t size)
 		{
 			m_Data.resize(size);
+			m_EntityToIndex.resize(size, INVALID_VALUE);
+			m_IndexToEntity.resize(size, INVALID_VALUE);
 		}
 
 		T& Get(uint32_t id)
@@ -24,7 +28,7 @@ namespace Schmog {
 
 		uint32_t GetIdByIndex(uint32_t index)
 		{
-			SG_ASSERT(m_IndexToEntity.find(index) != m_IndexToEntity.end(), "Invalid index")
+			SG_ASSERT(m_IndexToEntity[index] != INVALID_VALUE)
 			return m_IndexToEntity[index];
 		}
 
@@ -33,9 +37,10 @@ namespace Schmog {
 			return m_Data;
 		}
 
-
 		T& Add(uint32_t id, T& component)
 		{
+			SG_ASSERT(id < m_Data.size(), "Index out of bounds")
+
 			m_Data[m_Index] = component;
 			m_EntityToIndex[id] = m_Index;
 			m_IndexToEntity[m_Index] = id;
@@ -50,24 +55,27 @@ namespace Schmog {
 			if (m_Index == 0)
 				return;
 
-			if (m_EntityToIndex.find(id) == m_EntityToIndex.end())
+			if (m_EntityToIndex[id] == INVALID_VALUE)
 				return;
 
 			uint32_t delIndex = m_EntityToIndex[id];
+
 			m_Data[delIndex] = std::move(m_Data[m_Index - 1]);
 			m_IndexToEntity[delIndex] = m_IndexToEntity[m_Index - 1];
 			m_EntityToIndex[m_IndexToEntity[delIndex]] = delIndex;
 
-			m_IndexToEntity.erase(m_Index - 1);
-			m_EntityToIndex.erase(id);
+			m_IndexToEntity[m_Index - 1] = INVALID_VALUE;
+			m_EntityToIndex[id] = INVALID_VALUE;
 
 			m_Index--;
 		}
 
 	private:
+		static const uint32_t INVALID_VALUE = UINT32_MAX;
+
 		std::vector<T> m_Data;
-		std::unordered_map<uint32_t, uint32_t> m_EntityToIndex;
-		std::unordered_map<uint32_t, uint32_t> m_IndexToEntity;
+		std::vector<uint32_t> m_EntityToIndex;
+		std::vector<uint32_t> m_IndexToEntity;
 
 		uint32_t m_Index = 0;
 	};
