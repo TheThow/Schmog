@@ -7,12 +7,11 @@ namespace Schmog {
 
 	struct SpriteRendererComponent
 	{
-		SpriteRendererComponent() = default;
-
 		glm::vec2 TexCoord = { 0, 0 };
 		RGBa Color = {};
 		uint32_t TexIndex = 0;
+
+		SpriteRendererComponent() = default;
 	};
 
 }
-

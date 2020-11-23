@@ -1,7 +1,9 @@
 #pragma once
 #include <typeindex>
 
+#include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
+#include "Components/TagComponent.h"
 #include "Components/SpriteRendererComponent.h"
 #include "ComponentDataContainer.h"
 
@@ -15,7 +17,9 @@ namespace Schmog {
 		Scene();
 
 		Entity CreateEntity();
+		Entity CreateEntity(std::string& name);
 		Entity CreateEntity(TransformComponent& component);
+		Entity CreateEntity(TransformComponent& component, std::string& name);
 
 		void DeleteEntity(Entity& entity);
 
@@ -88,18 +92,24 @@ namespace Schmog {
 		std::unordered_map<uint32_t, uint32_t> m_ComponentMap;
 
 		ComponentDataContainer<TransformComponent> m_TransformComponentData{ MAX_ENTITY_COUNT };
+		ComponentDataContainer<TagComponent> m_TagComponentData{ MAX_ENTITY_COUNT };
 		ComponentDataContainer<SpriteRendererComponent> m_SpriteRendererComponentData{ MAX_ENTITY_COUNT };
+		ComponentDataContainer<CameraComponent> m_CameraComponentData{ MAX_ENTITY_COUNT };
 
 		std::unordered_map<std::type_index, uint32_t> m_TypeIndex =
 		{
 			{ typeid(TransformComponent), 0 },
-			{ typeid(SpriteRendererComponent), 1 }
+			{ typeid(TagComponent), 1 },
+			{ typeid(SpriteRendererComponent), 2 },
+			{ typeid(CameraComponent), 3 }
 		};
 
 		std::unordered_map<std::type_index, void*> m_TypeStorage = 
 		{
 			{ typeid(TransformComponent), &m_TransformComponentData },
-			{ typeid(SpriteRendererComponent), &m_SpriteRendererComponentData }
+			{ typeid(TagComponent), &m_CameraComponentData },
+			{ typeid(SpriteRendererComponent), &m_SpriteRendererComponentData },
+			{ typeid(CameraComponent), &m_CameraComponentData }
 		};
 	};
 

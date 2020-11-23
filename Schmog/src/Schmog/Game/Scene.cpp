@@ -14,7 +14,17 @@ namespace Schmog {
 		return CreateEntity(TransformComponent());
 	}
 
+	Entity Scene::CreateEntity(std::string& name)
+	{
+		return CreateEntity(TransformComponent(), name);
+	}
+
 	Entity Scene::CreateEntity(TransformComponent& component)
+	{
+		return CreateEntity(component, std::string("Entity"));
+	}
+
+	Entity Scene::CreateEntity(TransformComponent& component, std::string& name)
 	{
 		uint32_t index = -1;
 		for (auto it = std::begin(m_EntityIds); it != std::end(m_EntityIds); ++it)
@@ -30,6 +40,7 @@ namespace Schmog {
 
 		Entity entity = Entity(this, index);
 		AddComponent(entity, component);
+		AddComponent(entity, TagComponent(name));
 		m_EntityIds[index] = true;
 		return entity;
 	}
