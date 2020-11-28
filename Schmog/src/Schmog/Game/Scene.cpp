@@ -4,10 +4,6 @@
 
 namespace Schmog {
 
-	Scene::Scene()
-	{
-		m_EntityIds.resize(MAX_ENTITY_COUNT);
-	}
 
 	Entity Scene::CreateEntity()
 	{
@@ -26,30 +22,28 @@ namespace Schmog {
 
 	Entity Scene::CreateEntity(TransformComponent& component, std::string& name)
 	{
-		uint32_t index = -1;
-		for (auto it = std::begin(m_EntityIds); it != std::end(m_EntityIds); ++it)
-		{
-			if (!*it)
-			{
-				index = it - std::begin(m_EntityIds);
-				break;
-			}
-		}
-
-		SG_ASSERT(index != -1, "Max entities reached")
-
-		Entity entity = Entity(this, index);
-		AddComponent(entity, component);
-		AddComponent(entity, TagComponent(name));
-		m_EntityIds[index] = true;
+		Entity entity = Entity(this, m_Registry.CreateEntity(component, name));
 		return entity;
 	}
 
 	void Scene::DeleteEntity(Entity& entity)
 	{
-		m_EntityIds[entity.GetId()] = false;
-		RemoveComponent<TransformComponent>(entity);
-		RemoveComponent<SpriteRendererComponent>(entity);
+		m_Registry.DeleteEntity(entity.GetId());
+	}
+
+
+	void Scene::OnViewportResize(uint32_t width, uint32_t height)
+	{
+		m_ViewportWidth = width;
+		m_ViewportHeight = height;
+
+		// Resize our non-FixedAspectRatio cameras
+		auto cameras = m_Registry.GetComponents<CameraComponent>();
+		for (auto entity : cameras)
+		{
+			entity.Camera.SetViewportSize(width, height);
+		}
+
 	}
 
 }

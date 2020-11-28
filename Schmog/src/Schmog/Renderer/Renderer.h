@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RenderCommand.h"
-#include "Camera.h"
+#include <Schmog\Renderer\OrthographicCamera.h>
 #include "Shader.h"
 #include "Schmog/Events/ApplicationEvent.h"
 

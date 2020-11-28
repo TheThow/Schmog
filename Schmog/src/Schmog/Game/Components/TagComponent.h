@@ -5,6 +5,11 @@ namespace Schmog {
 
 	struct TagComponent
 	{
+		TagComponent()
+		{
+			Name = "Entity";
+		}
+
 		TagComponent(std::string name)
 			: Name(name) {}
 

@@ -73,7 +73,7 @@ void Sandbox2D::OnAttach()
 	std::cout << "R: " << entity2.GetId()  << " - " << trans[1].Rotation << std::endl;
 
 	auto cam = scene->CreateEntity();
-	cam.AddComponent(Schmog::CameraComponent(glm::ortho(-16, 16, -9, 9)));
+	cam.AddComponent(Schmog::CameraComponent());
 }
 
 void Sandbox2D::OnDetach()

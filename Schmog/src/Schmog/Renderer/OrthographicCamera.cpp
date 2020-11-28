@@ -1,11 +1,9 @@
 #include "sgpch.h"
-#include "Camera.h"
+#include "OrthographicCamera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Schmog {
-
-
 
 	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
 		: m_Projection(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_View(1.0f), m_Position(0.0f)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Camera.h"
+#include "OrthographicCamera.h"
 
 #include "Schmog/Events/ApplicationEvent.h"
 #include "Schmog/Events/MouseEvent.h"

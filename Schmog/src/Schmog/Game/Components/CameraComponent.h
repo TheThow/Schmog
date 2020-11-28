@@ -1,16 +1,14 @@
 #pragma once
-#include <Schmog\Game\Camera.h>
+#include <Schmog\Game\SceneCamera.h>
 
 
 namespace Schmog {
 
 	struct CameraComponent
 	{
-		Camera Camera;
+		SceneCamera Camera;
 
 		CameraComponent() = default;
-		CameraComponent(const glm::mat4& projection)
-			: Camera(projection) {}
 	};
 
 }

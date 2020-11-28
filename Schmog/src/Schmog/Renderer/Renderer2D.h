@@ -6,6 +6,8 @@
 #include "Schmog/Game/ParticleSystem.h"
 #include "Schmog/Game/Color.h"
 #include "Schmog/Game/SubTexture2D.h"
+#include <Schmog\Renderer\OrthographicCamera.h>
+
 
 namespace Schmog {
 
