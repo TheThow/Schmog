@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <vector>
 
 
 namespace Schmog {
@@ -16,6 +17,11 @@ namespace Schmog {
 			m_IndexToEntity.resize(size, INVALID_VALUE);
 		}
 
+		bool ContainsEntity(uint32_t id)
+		{
+			return m_EntityToIndex[id] != INVALID_VALUE;
+		}
+
 		T& Get(uint32_t id)
 		{
 			return m_Data[m_EntityToIndex[id]];
@@ -28,7 +34,7 @@ namespace Schmog {
 
 		uint32_t GetIdByIndex(uint32_t index)
 		{
-			SG_ASSERT(m_IndexToEntity[index] != INVALID_VALUE)
+			SG_ASSERT(m_IndexToEntity[index] != INVALID_VALUE, "Index invalid")
 			return m_IndexToEntity[index];
 		}
 
@@ -69,6 +75,25 @@ namespace Schmog {
 
 			m_Index--;
 		}
+
+		uint32_t GetSize() { return m_Index; }
+
+		typename std::vector<T>::iterator begin() {
+			return m_Data.begin();
+		}
+
+		typename std::vector<T>::iterator end() {
+			return m_Data.begin() + m_Index;
+		}
+
+		typename std::vector<T>::const_iterator begin() const {
+			return m_Data.begin();
+		}
+
+		typename std::vector<T>::const_iterator end() const {
+			return m_Data.begin() + m_Index;
+		}
+
 
 	private:
 		static const uint32_t INVALID_VALUE = UINT32_MAX;

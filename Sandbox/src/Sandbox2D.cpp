@@ -89,7 +89,7 @@ void Sandbox2D::OnUpdate()
 	//Render
 	Schmog::RenderCommand::Clear();
 
-	Schmog::Renderer2D::BeginScene(m_Camera.GetCamera());
+	Schmog::Renderer2D::BeginScene(m_Camera.GetCamera().GetVP());
 
 	Schmog::Renderer2DQuadProperties params {
 		{255,255,255,255},
@@ -153,7 +153,7 @@ void Sandbox2D::OnUpdate()
 		m_ParticleSystem->Emit(m_ParticleProps, 50);
 	}
 
-	Schmog::Renderer2D::BeginScene(m_Camera.GetCamera());
+	Schmog::Renderer2D::BeginScene(m_Camera.GetCamera().GetVP());
 
 	m_ParticleSystem->OnRender();
 

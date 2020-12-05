@@ -1,6 +1,7 @@
 #include "sgpch.h"
 #include "Entity.h"
 #include "Scene.h"
+#include "Schmog/Renderer/Renderer2D.h"
 
 namespace Schmog {
 
@@ -43,7 +44,28 @@ namespace Schmog {
 		{
 			entity.Camera.SetViewportSize(width, height);
 		}
+	}
 
+	void Scene::OnUpdate()
+	{
+		auto cameras = m_Registry.GetComponents<CameraComponent>();
+		CameraComponent camera = cameras.GetByIndex(0);
+
+		Renderer2D::BeginScene(camera.Camera.GetProjection());
+
+		auto sprites = m_Registry.GetComponents<SpriteRendererComponent>();
+
+		for (auto sprite : sprites)
+		{
+		}
+
+		auto group = m_Registry.Group<SpriteRendererComponent, TransformComponent>();
+		for (auto &[sprite, transform] : group)
+		{
+			Renderer2D::DrawQuad(transform, sprite);
+		}
+
+		Renderer2D::EndScene();
 	}
 
 }

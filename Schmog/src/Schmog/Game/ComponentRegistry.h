@@ -2,6 +2,7 @@
 
 #include <typeindex>
 #include <vector>
+#include <tuple>
 
 #include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
@@ -10,6 +11,128 @@
 #include "ComponentDataContainer.h"
 
 namespace Schmog {
+
+	template<typename ContainerGroup>
+	class GroupIterator
+	{
+	public:
+		using FirstType = typename ContainerGroup::FirstType;
+		using SecondType = typename ContainerGroup::SecondType;
+
+	public:
+		GroupIterator(ComponentDataContainer<FirstType>* first, ComponentDataContainer<SecondType>* second, uint32_t index)
+		{
+			m_First = first;
+			m_Second = second;
+			m_Index = index;
+		}
+
+		GroupIterator& operator++()
+		{
+			uint32_t entity;
+			do
+			{
+				m_Index++;
+				entity = m_First->GetIdByIndex(m_Index);
+			} while (!m_Second->ContainsEntity(entity));
+			return *this;
+		}
+
+		GroupIterator& operator++(int)
+		{
+			GroupIterator it = *this;
+			++(*this);
+			return it;
+		}
+
+		GroupIterator& operator--()
+		{
+			uint32_t entity;
+			do
+			{
+				m_Index--;
+				entity = m_First->GetIdByIndex(m_Index);
+			} while (!m_Second->ContainsEntity(entity) && m_Index >= 0);
+			return *this;
+		}
+
+		GroupIterator& operator--(int)
+		{
+			GroupIterator it = *this;
+			--(*this);
+			return it;
+		}
+
+		std::pair<FirstType&, SecondType&>& operator*()
+		{
+			FirstType& first = (*m_First).GetByIndex(m_Index);
+			uint32_t entity = (*m_First).GetIdByIndex(m_Index);
+			SecondType& second = (*m_Second).Get(entity);
+			return std::make_pair(std::ref(first), std::ref(second));
+		}
+
+		bool operator==(const GroupIterator& other) const
+		{
+			return equals(other);
+		}
+
+		bool operator!=(const GroupIterator& other) const
+		{
+			return !equals(other);
+		}
+
+	private:
+		bool equals(const GroupIterator& other) const
+		{
+			return m_First->GetData().begin() + m_Index == other.m_First->GetData().begin() + other.m_Index;
+		}
+
+	private:
+		ComponentDataContainer<FirstType>* m_First;
+		ComponentDataContainer<SecondType>* m_Second;
+		uint32_t m_Index;
+	};
+
+	template <class T, class U>
+	class ContainerGroup
+	{
+	public:
+		using FirstType = T;
+		using SecondType = U;
+		using Iterator = GroupIterator<ContainerGroup<T, U>>;
+
+	public:
+		ContainerGroup(ComponentDataContainer<T>* first, ComponentDataContainer<U>* second)
+		{
+			m_First = first;
+			m_Second = second;
+		}
+
+		Iterator begin() 
+		{
+			return Iterator(m_First, m_Second, 0);
+		}
+
+		Iterator end() 
+		{
+			return Iterator(m_First, m_Second, m_First->GetSize());
+		}
+
+		const Iterator begin() const
+		{
+			return Iterator(m_First, m_Second, 0);
+		}
+
+		const Iterator end() const
+		{
+			return Iterator(m_First, m_Second, m_First->GetSize());
+		}
+
+
+	private:
+		ComponentDataContainer<T>* m_First;
+		ComponentDataContainer<U>* m_Second;
+	};
 
 	class ComponentRegistry
 	{
@@ -58,17 +181,18 @@ namespace Schmog {
 		}
 
 		template<class T>
-		std::vector<T>& GetComponents()
+		ComponentDataContainer<T>& GetComponents()
 		{
-			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->GetData();
+			return *static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)]);
 		}
 
-		template<class T>
-		ComponentDataContainer<T>& GetComponentContainer()
+		template<class T, class U>
+		ContainerGroup<T, U> Group()
 		{
-			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)]);
+			ComponentDataContainer<T>* first = static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)]);
+			ComponentDataContainer<U>* second = static_cast<ComponentDataContainer<U>*>(m_TypeStorage[typeid(U)]);
+			return ContainerGroup<T, U>(first, second);
 		}
-
 
 	private:
 		template<class T>

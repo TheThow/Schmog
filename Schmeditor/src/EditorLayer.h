@@ -27,6 +27,8 @@ namespace Schmog {
 	private:
 		OrthographicCameraController m_Camera;
 
+		Scene m_ActiveScene;
+
 		std::shared_ptr<FrameBuffer> m_FrameBuffer;
 
 		glm::vec2 m_ViewportSize;

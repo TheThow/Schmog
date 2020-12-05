@@ -1,10 +1,6 @@
 #pragma once
 #include <typeindex>
 
-#include "Components/CameraComponent.h"
-#include "Components/TransformComponent.h"
-#include "Components/TagComponent.h"
-#include "Components/SpriteRendererComponent.h"
 #include "ComponentDataContainer.h"
 #include "ComponentRegistry.h"
 
@@ -53,18 +49,13 @@ namespace Schmog {
 		}
 
 		template<class T>
-		std::vector<T>& GetComponents()
+		ComponentDataContainer<T>& GetComponents()
 		{
 			return m_Registry.GetComponents<T>();
 		}
 
-		template<class T>
-		ComponentDataContainer<T>& GetComponentContainer()
-		{
-			return m_Registry.GetComponentContainer<T>();
-		}
-
 		void OnViewportResize(uint32_t width, uint32_t height);
+		void OnUpdate();
 
 	private:
 		ComponentRegistry m_Registry;

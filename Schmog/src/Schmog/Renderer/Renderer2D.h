@@ -8,6 +8,9 @@
 #include "Schmog/Game/SubTexture2D.h"
 #include <Schmog\Renderer\OrthographicCamera.h>
 
+#include "Schmog/Game/Components/TransformComponent.h"
+#include "Schmog/Game/Components/SpriteRendererComponent.h"
+
 
 namespace Schmog {
 
@@ -24,7 +27,7 @@ namespace Schmog {
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const OrthographicCamera camera);
+		static void BeginScene(const glm::mat4 projection);
 		static void EndScene();
 
 		static void Flush();
@@ -37,6 +40,8 @@ namespace Schmog {
 
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const std::shared_ptr<SubTexture2D> subtexture, const Renderer2DQuadProperties& parameters);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<SubTexture2D> subtexture, const Renderer2DQuadProperties& parameters);
+
+		static void Renderer2D::DrawQuad(const TransformComponent& transform, const SpriteRendererComponent& spriteComponent);
 
 		static void DrawParticles(std::vector<ParticleSystem::Particle>& particles, uint32_t maxIndex);
 

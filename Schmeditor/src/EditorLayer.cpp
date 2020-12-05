@@ -45,22 +45,12 @@ namespace Schmog {
 			m_Camera.OnUpdate();
 		}
 
-
 		Schmog::Renderer2D::ResetStats();
 
 		m_FrameBuffer->Bind();
-
 		Schmog::RenderCommand::Clear();
-		Schmog::Renderer2D::BeginScene(m_Camera.GetCamera());
 
-
-		Schmog::Renderer2D::DrawQuad({ 0, 0 },
-			{ 10, 10 },
-			renderStruct.Texture,
-			renderStruct.TextureProps
-		);
-
-		Schmog::Renderer2D::EndScene();
+		m_ActiveScene.OnUpdate();
 
 		m_FrameBuffer->Unbind();
 	}
@@ -141,6 +131,7 @@ namespace Schmog {
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
 			m_Camera.OnResize(viewportPanelSize.x, viewportPanelSize.y);
+			m_ActiveScene.OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
 		uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();

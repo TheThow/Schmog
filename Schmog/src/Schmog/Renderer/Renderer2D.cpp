@@ -114,10 +114,10 @@ namespace Schmog {
 
 	}
 
-	void Renderer2D::BeginScene(const OrthographicCamera camera)
+	void Renderer2D::BeginScene(const glm::mat4 projection)
 	{
 		s_Data.shader->Bind();
-		s_Data.shader->SetUniform("u_ViewProjection", camera.GetVP());
+		s_Data.shader->SetUniform("u_ViewProjection", projection);
 
 		ResetData();
 	}
@@ -194,6 +194,11 @@ namespace Schmog {
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<SubTexture2D> subtexture, const Renderer2DQuadProperties& parameters)
 	{
 		AddQuad(position, size, subtexture->GetTexture(), subtexture->GetTexCoords(), parameters);
+	}
+
+	void Renderer2D::DrawQuad(const TransformComponent& transform, const SpriteRendererComponent& spriteComponent)
+	{
+		AddQuad(transform.Position, transform.Scale, spriteComponent.Texture, s_Data.quadTextureCoords, {});
 	}
 
 	void Renderer2D::AddQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const glm::vec2* texCoords, const Renderer2DQuadProperties& parameters)

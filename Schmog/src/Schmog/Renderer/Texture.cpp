@@ -5,8 +5,6 @@
 #include "Platform/OpenGL/OpenGLTexture.h"
 
 
-
-
 namespace Schmog {
 
 
