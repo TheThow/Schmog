@@ -31,7 +31,8 @@ namespace Schmog {
 			1.0f
 		};
 
-		m_Camera.AddComponent(CameraComponent());
+		auto cam = m_ActiveScene.CreateEntity();
+		cam.AddComponent(CameraComponent());
 
 		auto square = m_ActiveScene.CreateEntity();
 		square.AddComponent(SpriteRendererComponent(RGBa(255, 0, 0, 255)));
@@ -133,7 +134,6 @@ namespace Schmog {
 			m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-			m_Camera.GetComponent<CameraComponent>().Camera.SetViewportSize(viewportPanelSize.x, viewportPanelSize.y);
 			m_ActiveScene.OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 

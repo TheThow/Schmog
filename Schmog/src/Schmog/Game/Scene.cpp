@@ -38,9 +38,7 @@ namespace Schmog {
 		m_ViewportWidth = width;
 		m_ViewportHeight = height;
 
-		// Resize our non-FixedAspectRatio cameras
-		auto cameras = m_Registry.GetComponents<CameraComponent>();
-		for (auto entity : cameras)
+		for (auto& entity : m_Registry.GetComponents<CameraComponent>())
 		{
 			entity.Camera.SetViewportSize(width, height);
 		}

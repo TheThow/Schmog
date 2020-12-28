@@ -26,7 +26,6 @@ namespace Schmog {
 
 	private:
 		Scene m_ActiveScene;
-		Entity m_Camera = m_ActiveScene.CreateEntity();
 
 		std::shared_ptr<FrameBuffer> m_FrameBuffer;
 
