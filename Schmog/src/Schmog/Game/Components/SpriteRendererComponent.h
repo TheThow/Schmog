@@ -10,12 +10,13 @@ namespace Schmog {
 	{
 		glm::vec2 TexCoords[4];
 		RGBa Color = {};
-		std::shared_ptr<Texture2D> Texture;
+		std::shared_ptr<Texture2D> Texture = nullptr;
 
 		SpriteRendererComponent() = default;
 
 		SpriteRendererComponent(RGBa color) {
 			Color = color;
+			Texture = nullptr;
 
 			TexCoords[0] = glm::vec2(0.0f, 0.0f);
 			TexCoords[1] = glm::vec2(1.0f, 0.0f);

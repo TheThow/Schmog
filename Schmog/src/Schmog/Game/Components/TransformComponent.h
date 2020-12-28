@@ -11,6 +11,7 @@ namespace Schmog {
 		float Rotation = 0;
 
 		TransformComponent() = default;
+		TransformComponent(const TransformComponent& other) = default;
 	};
 
 }

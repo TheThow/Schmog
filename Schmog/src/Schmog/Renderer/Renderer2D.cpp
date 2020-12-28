@@ -198,7 +198,11 @@ namespace Schmog {
 
 	void Renderer2D::DrawQuad(const TransformComponent& transform, const SpriteRendererComponent& spriteComponent)
 	{
-		AddQuad(transform.Position, transform.Scale, spriteComponent.Texture, s_Data.quadTextureCoords, {});
+		std::shared_ptr<Texture2D> tex = spriteComponent.Texture;
+		if (tex == nullptr) {
+			tex = s_Data.whiteTexture;
+		}
+		AddQuad(transform.Position, transform.Scale, tex, s_Data.quadTextureCoords, { spriteComponent.Color, 0.0f, 1.0f });
 	}
 
 	void Renderer2D::AddQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const glm::vec2* texCoords, const Renderer2DQuadProperties& parameters)

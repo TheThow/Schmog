@@ -17,7 +17,7 @@ namespace Schmog {
 	} renderStruct;
 
 
-	void ScheditorLayer::OnAttach()
+	void SchmeditorLayer::OnAttach()
 	{
 		FrameBufferSpec fbSpec;
 		fbSpec.Width = 1280;
@@ -31,20 +31,23 @@ namespace Schmog {
 			1.0f
 		};
 
-		m_Camera.SetZoomLevel(10.0f);
+		m_Camera.AddComponent<CameraComponent>(CameraComponent());
+
+		auto square = m_ActiveScene.CreateEntity();
+		square.AddComponent(SpriteRendererComponent(RGBa(255, 0, 0, 255)));
+
+		auto square2 = m_ActiveScene.CreateEntity();
+		square2.AddComponent(SpriteRendererComponent(RGBa(255, 255, 0, 255)));
+		square2.GetComponent<TransformComponent>().Position.x += 2;
+		square2.GetComponent<TransformComponent>().Scale *= 2;
 	}
 
-	void ScheditorLayer::OnDetach()
+	void SchmeditorLayer::OnDetach()
 	{
 	}
 
-	void ScheditorLayer::OnUpdate()
+	void SchmeditorLayer::OnUpdate()
 	{
-		if (m_ViewportFocused)
-		{
-			m_Camera.OnUpdate();
-		}
-
 		Schmog::Renderer2D::ResetStats();
 
 		m_FrameBuffer->Bind();
@@ -55,7 +58,7 @@ namespace Schmog {
 		m_FrameBuffer->Unbind();
 	}
 
-	void ScheditorLayer::OnImGuiRender()
+	void SchmeditorLayer::OnImGuiRender()
 	{
 
 		// Note: Switch this to true to enable dockspace
@@ -130,7 +133,7 @@ namespace Schmog {
 			m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-			m_Camera.OnResize(viewportPanelSize.x, viewportPanelSize.y);
+			m_Camera.GetComponent<CameraComponent>().Camera.SetViewportSize(viewportPanelSize.x, viewportPanelSize.y);
 			m_ActiveScene.OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
@@ -141,8 +144,7 @@ namespace Schmog {
 		ImGui::End();
 	}
 
-	void ScheditorLayer::OnEvent(Event& e)
+	void SchmeditorLayer::OnEvent(Event& e)
 	{
-		m_Camera.OnEvent(e);
 	}
 }

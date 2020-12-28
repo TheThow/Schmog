@@ -6,16 +6,16 @@
 
 namespace Schmog {
 
-	class ScheditorLayer : public Layer
+	class SchmeditorLayer : public Layer
 	{
 
 	public:
-		ScheditorLayer()
-			: Layer("Scheditor"), m_Camera(16.f / 9.f)
+		SchmeditorLayer()
+			: Layer("Schmeditor")
 		{
 
 		}
-		~ScheditorLayer() = default;
+		~SchmeditorLayer() = default;
 
 		void OnAttach() override;
 		void OnDetach() override;
@@ -25,9 +25,8 @@ namespace Schmog {
 		void OnEvent(Event& e) override;
 
 	private:
-		OrthographicCameraController m_Camera;
-
 		Scene m_ActiveScene;
+		Entity m_Camera = m_ActiveScene.CreateEntity();
 
 		std::shared_ptr<FrameBuffer> m_FrameBuffer;
 

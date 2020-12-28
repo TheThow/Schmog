@@ -14,7 +14,7 @@ namespace Schmog {
 	public:
 
 		template<class T>
-		T& AddComponent(T component) const
+		T& AddComponent(T& component) const
 		{
 			SG_CORE_ASSERT(m_Scene, "Scene is null");
 			return m_Scene->AddComponent<T>(*this, component);

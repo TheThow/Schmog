@@ -24,6 +24,7 @@ namespace Schmog {
 
 		T& Get(uint32_t id)
 		{
+			SG_ASSERT(m_EntityToIndex[id] != INVALID_VALUE, "Index invalid")
 			return m_Data[m_EntityToIndex[id]];
 		}
 

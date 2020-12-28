@@ -13,16 +13,16 @@
 
 namespace Schmog {
 
-	class Scheditor : public Schmog::Application
+	class Schmeditor : public Schmog::Application
 	{
 	public:
-		Scheditor()
-			: Application("Scheditor")
+		Schmeditor()
+			: Application("Schmeditor")
 		{
-			PushLayer(std::make_shared<ScheditorLayer>());
+			PushLayer(std::make_shared<SchmeditorLayer>());
 		}
 
-		~Scheditor()
+		~Schmeditor()
 		{
 
 		}
@@ -32,7 +32,7 @@ namespace Schmog {
 
 	std::shared_ptr<Schmog::Application> Schmog::CreateApplication()
 	{
-		return std::make_shared<Scheditor>();
+		return std::make_shared<Schmeditor>();
 	}
 
 }

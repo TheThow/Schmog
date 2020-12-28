@@ -27,14 +27,18 @@ namespace Schmog {
 			m_Index = index;
 		}
 
+		GroupIterator(const GroupIterator& other) = default;
+
 		GroupIterator& operator++()
 		{
 			uint32_t entity;
 			do
 			{
 				m_Index++;
+				if (m_First->GetSize() == m_Index)
+					break;
 				entity = m_First->GetIdByIndex(m_Index);
-			} while (!m_Second->ContainsEntity(entity));
+			} while (!m_Second->ContainsEntity(entity) && m_Index < m_First->GetSize()-1);
 			return *this;
 		}
 
@@ -51,6 +55,8 @@ namespace Schmog {
 			do
 			{
 				m_Index--;
+				if (-1 == m_Index)
+					break;
 				entity = m_First->GetIdByIndex(m_Index);
 			} while (!m_Second->ContainsEntity(entity) && m_Index >= 0);
 			return *this;
@@ -63,7 +69,7 @@ namespace Schmog {
 			return it;
 		}
 
-		std::pair<FirstType&, SecondType&>& operator*()
+		std::pair<FirstType&, SecondType&> operator*()
 		{
 			FirstType& first = (*m_First).GetByIndex(m_Index);
 			uint32_t entity = (*m_First).GetIdByIndex(m_Index);
@@ -163,7 +169,7 @@ namespace Schmog {
 		template<class T>
 		uint32_t GetEntityByIndex(uint32_t index)
 		{
-			return Entity(this, static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->GetIdByIndex(index));
+			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->GetIdByIndex(index);
 		}
 
 		template<class T>
