@@ -51,22 +51,11 @@ namespace Schmog {
 
 		Renderer2D::BeginScene(camera.Camera.GetProjection());
 
-		auto sprites = m_Registry.GetComponents<SpriteRendererComponent>();
-
 		auto group = m_Registry.Group<SpriteRendererComponent, TransformComponent>();
-
 		for (auto& [sprite, transform] : group)
 		{
 			Renderer2D::DrawQuad(transform, sprite);
 		}
-
-		//int si = 0;
-		//for (auto& sprite : m_Registry.GetComponents<SpriteRendererComponent>()) {
-		//	auto entity = m_Registry.GetEntityByIndex<SpriteRendererComponent>(si);
-		//	auto& transform = m_Registry.GetComponent<TransformComponent>(entity);
-
-		//	Renderer2D::DrawQuad(transform, sprite);
-		//}
 
 		Renderer2D::EndScene();
 	}
