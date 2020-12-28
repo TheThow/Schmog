@@ -31,7 +31,7 @@ namespace Schmog {
 			1.0f
 		};
 
-		m_Camera.AddComponent<CameraComponent>(CameraComponent());
+		m_Camera.AddComponent(CameraComponent());
 
 		auto square = m_ActiveScene.CreateEntity();
 		square.AddComponent(SpriteRendererComponent(RGBa(255, 0, 0, 255)));
