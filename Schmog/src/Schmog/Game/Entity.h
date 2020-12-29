@@ -13,11 +13,11 @@ namespace Schmog {
 
 	public:
 
-		template<class T>
-		T& AddComponent(T& component) const
+		template<class T, typename... Args>
+		T& AddComponent(Args&&... args) const
 		{
 			SG_CORE_ASSERT(m_Scene, "Scene is null");
-			return m_Scene->AddComponent<T>(*this, component);
+			return m_Scene->AddComponent<T>(*this, std::forward<Args>(args)...);
 		}
 
 		template<class T>

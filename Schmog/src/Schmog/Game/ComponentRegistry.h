@@ -148,16 +148,14 @@ namespace Schmog {
 
 		uint32_t CreateEntity();
 		uint32_t CreateEntity(std::string& name);
-		uint32_t CreateEntity(TransformComponent& component);
-		uint32_t CreateEntity(TransformComponent& component, std::string& name);
 		void DeleteEntity(uint32_t entity);
 
 
-		template<class T>
-		T& AddComponent(const uint32_t entity, T& component)
+		template<class T, typename... Args>
+		T& AddComponent(const uint32_t entity, Args&&... args)
 		{
 			AddComponentIndex<T>(entity);
-			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Add(entity, component);
+			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Add(entity, T(std::forward<Args>(args)...));
 		}
 
 		template<class T>

@@ -32,13 +32,13 @@ namespace Schmog {
 		};
 
 		auto cam = m_ActiveScene.CreateEntity();
-		cam.AddComponent(CameraComponent());
+		cam.AddComponent<CameraComponent>();
 
 		auto square = m_ActiveScene.CreateEntity();
-		square.AddComponent(SpriteRendererComponent(RGBa(255, 0, 0, 255)));
+		square.AddComponent<SpriteRendererComponent>(RGBa(255, 0, 0, 255));
 
 		auto square2 = m_ActiveScene.CreateEntity();
-		square2.AddComponent(SpriteRendererComponent(RGBa(255, 255, 0, 255)));
+		square2.AddComponent<SpriteRendererComponent>(RGBa(255, 255, 0, 255));
 		square2.GetComponent<TransformComponent>().Position.x += 2;
 		square2.GetComponent<TransformComponent>().Scale *= 2;
 	}

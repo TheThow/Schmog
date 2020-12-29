@@ -8,23 +8,12 @@ namespace Schmog {
 
 	Entity Scene::CreateEntity()
 	{
-		return CreateEntity(TransformComponent());
+		return CreateEntity(std::string("Entity"));
 	}
 
 	Entity Scene::CreateEntity(std::string& name)
 	{
-		return CreateEntity(TransformComponent(), name);
-	}
-
-	Entity Scene::CreateEntity(TransformComponent& component)
-	{
-		return CreateEntity(component, std::string("Entity"));
-	}
-
-	Entity Scene::CreateEntity(TransformComponent& component, std::string& name)
-	{
-		Entity entity = Entity(this, m_Registry.CreateEntity(component, name));
-		return entity;
+		return Entity(this, m_Registry.CreateEntity(name));
 	}
 
 	void Scene::DeleteEntity(Entity& entity)

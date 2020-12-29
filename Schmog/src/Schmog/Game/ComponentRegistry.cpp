@@ -11,20 +11,10 @@ namespace Schmog {
 
 	uint32_t ComponentRegistry::CreateEntity()
 	{
-		return CreateEntity(TransformComponent());
+		return CreateEntity(std::string("Entity"));
 	}
 
 	uint32_t ComponentRegistry::CreateEntity(std::string& name)
-	{
-		return CreateEntity(TransformComponent(), name);
-	}
-
-	uint32_t ComponentRegistry::CreateEntity(TransformComponent& component)
-	{
-		return CreateEntity(component, std::string("Entity"));
-	}
-
-	uint32_t ComponentRegistry::CreateEntity(TransformComponent& component, std::string& name)
 	{
 		uint32_t index = -1;
 		for (auto it = std::begin(m_EntityIds); it != std::end(m_EntityIds); ++it)
@@ -38,8 +28,8 @@ namespace Schmog {
 
 		SG_ASSERT(index != -1, "Max entities reached")
 
-		AddComponent(index, component);
-		AddComponent(index, TagComponent(name));
+		AddComponent<TransformComponent>(index);
+		AddComponent<TagComponent>(index, name);
 		m_EntityIds[index] = true;
 		return index;
 	}

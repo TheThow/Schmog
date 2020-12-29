@@ -13,15 +13,13 @@ namespace Schmog {
 	public:
 		Entity CreateEntity();
 		Entity CreateEntity(std::string& name);
-		Entity CreateEntity(TransformComponent& component);
-		Entity CreateEntity(TransformComponent& component, std::string& name);
 
 		void DeleteEntity(Entity& entity);
 
-		template<class T>
-		T& AddComponent(const Entity& entity, T& component)
+		template<class T, typename... Args>
+		T& AddComponent(const Entity& entity, Args&&... args)
 		{
-			return m_Registry.AddComponent<T>(entity.GetId(), component);
+			return m_Registry.AddComponent<T>(entity.GetId(), std::forward<Args>(args)...);
 		}
 
 		template<class T>
