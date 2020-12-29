@@ -5,7 +5,6 @@
 
 namespace Schmog {
 
-
 	Entity Scene::CreateEntity()
 	{
 		return CreateEntity(std::string("Entity"));
@@ -20,7 +19,6 @@ namespace Schmog {
 	{
 		m_Registry.DeleteEntity(entity.GetId());
 	}
-
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
 	{
