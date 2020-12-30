@@ -44,11 +44,12 @@ namespace Schmog {
 			return m_Data;
 		}
 
-		T& Add(uint32_t id, T& component)
+		template<typename... Args>
+		T& Add(uint32_t id, Args&&... args)
 		{
 			SG_ASSERT(id < m_Data.size(), "Index out of bounds")
 
-			m_Data[m_Index] = component;
+			m_Data[m_Index] = T(std::forward<Args>(args)...);
 			m_EntityToIndex[id] = m_Index;
 			m_IndexToEntity[m_Index] = id;
 

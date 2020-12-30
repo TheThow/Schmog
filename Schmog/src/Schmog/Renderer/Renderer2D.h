@@ -27,7 +27,8 @@ namespace Schmog {
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const glm::mat4 projection);
+		static void BeginScene(const glm::mat4& projection);
+		static void BeginScene(const glm::mat4& projection, const TransformComponent& transformComponent);
 		static void EndScene();
 
 		static void Flush();

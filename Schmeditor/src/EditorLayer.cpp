@@ -16,6 +16,30 @@ namespace Schmog {
 		Renderer2DQuadProperties TextureProps;
 	} renderStruct;
 
+	class CameraController : public NativeScript
+	{
+		void OnUpdate() override {
+			auto& transform = GetComponent<TransformComponent>();
+
+			if (Input::IsKeyPressed(KeyCode::Down))
+			{
+				transform.Position.y -= 0.5;
+			}
+			if (Input::IsKeyPressed(KeyCode::Up))
+			{
+				transform.Position.y += 0.5;
+			}
+			if (Input::IsKeyPressed(KeyCode::Left))
+			{
+				transform.Position.x -= 0.5;
+			}
+			if (Input::IsKeyPressed(KeyCode::Right))
+			{
+				transform.Position.x += 0.5;
+			}
+
+		}
+	};
 
 	void SchmeditorLayer::OnAttach()
 	{
@@ -33,13 +57,14 @@ namespace Schmog {
 
 		auto cam = m_ActiveScene.CreateEntity();
 		cam.AddComponent<CameraComponent>();
+		cam.AddComponent<NativeScriptingComponent>().Bind<CameraController>();
 
 		auto square = m_ActiveScene.CreateEntity();
 		square.AddComponent<SpriteRendererComponent>(RGBa(255, 0, 0, 255));
 
 		auto square2 = m_ActiveScene.CreateEntity();
 		square2.AddComponent<SpriteRendererComponent>(RGBa(255, 255, 0, 255));
-		square2.GetComponent<TransformComponent>().Position.x += 2;
+		square2.GetComponent<TransformComponent>().Position.x += 3;
 		square2.GetComponent<TransformComponent>().Scale *= 2;
 	}
 

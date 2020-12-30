@@ -8,6 +8,7 @@
 #include "Components/TransformComponent.h"
 #include "Components/TagComponent.h"
 #include "Components/SpriteRendererComponent.h"
+#include "Components/NativeScriptingComponent.h"
 #include "ComponentDataContainer.h"
 
 namespace Schmog {
@@ -155,7 +156,7 @@ namespace Schmog {
 		T& AddComponent(const uint32_t entity, Args&&... args)
 		{
 			AddComponentIndex<T>(entity);
-			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Add(entity, T(std::forward<Args>(args)...));
+			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Add(entity, std::forward<Args>(args)...);
 		}
 
 		template<class T>
@@ -224,13 +225,15 @@ namespace Schmog {
 		ComponentDataContainer<TagComponent> m_TagComponentData{ MAX_ENTITY_COUNT };
 		ComponentDataContainer<SpriteRendererComponent> m_SpriteRendererComponentData{ MAX_ENTITY_COUNT };
 		ComponentDataContainer<CameraComponent> m_CameraComponentData{ MAX_ENTITY_COUNT };
+		ComponentDataContainer<NativeScriptingComponent> m_NativeScriptingData{ MAX_ENTITY_COUNT };
 
 		std::unordered_map<std::type_index, uint32_t> m_TypeIndex =
 		{
 			{ typeid(TransformComponent), 0 },
 			{ typeid(TagComponent), 1 },
 			{ typeid(SpriteRendererComponent), 2 },
-			{ typeid(CameraComponent), 3 }
+			{ typeid(CameraComponent), 3 },
+			{ typeid(NativeScriptingComponent), 4 }
 		};
 
 		std::unordered_map<std::type_index, void*> m_TypeStorage =
@@ -238,9 +241,9 @@ namespace Schmog {
 			{ typeid(TransformComponent), &m_TransformComponentData },
 			{ typeid(TagComponent), &m_TagComponentData },
 			{ typeid(SpriteRendererComponent), &m_SpriteRendererComponentData },
-			{ typeid(CameraComponent), &m_CameraComponentData }
+			{ typeid(CameraComponent), &m_CameraComponentData },
+			{ typeid(NativeScriptingComponent), &m_NativeScriptingData }
 		};
 
 	};
-
 }

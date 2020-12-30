@@ -114,10 +114,20 @@ namespace Schmog {
 
 	}
 
-	void Renderer2D::BeginScene(const glm::mat4 projection)
+	void Renderer2D::BeginScene(const glm::mat4& projection)
 	{
 		s_Data.shader->Bind();
 		s_Data.shader->SetUniform("u_ViewProjection", projection);
+
+		ResetData();
+	}
+
+	void Renderer2D::BeginScene(const glm::mat4& cameraProjection, const TransformComponent& transformComponent)
+	{
+		s_Data.shader->Bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), transformComponent.Position) * glm::scale(glm::mat4(1.0f), { transformComponent.Scale, 1.0f });
+		s_Data.shader->SetUniform("u_ViewProjection", cameraProjection * glm::inverse(transform));
 
 		ResetData();
 	}
