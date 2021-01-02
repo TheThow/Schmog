@@ -3,9 +3,9 @@
 #include <memory>
 #include <stdint.h>
 
-#include "Scene.h"
-
 namespace Schmog {
+
+	class Scene;
 
 	class Entity 
 	{
