@@ -21,6 +21,14 @@ struct RGBa
 		rgba[3] = a;
 	}
 
+	RGBa(int color[4])
+	{
+		rgba[0] = ColorConvert(color[0]);
+		rgba[1] = ColorConvert(color[1]);
+		rgba[2] = ColorConvert(color[2]);
+		rgba[3] = ColorConvert(color[3]);
+	}
+
 
 	RGBa Interpolate(RGBa other, float ratio)
 	{
@@ -38,4 +46,8 @@ struct RGBa
 		rgba[3] = other.rgba[3];
 	} 
 	
+	uint8_t ColorConvert(int val)
+	{
+		return (uint8_t)std::max(std::min(255, val), 0);
+	}
 };

@@ -175,7 +175,7 @@ namespace Schmog {
 		template<class T>
 		bool HasComponent(const uint32_t entity)
 		{
-			static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->ContainsEntity(entity);
+			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->ContainsEntity(entity);
 		}
 
 		template<class T>
