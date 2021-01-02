@@ -7,10 +7,10 @@ namespace Schmog {
 
 	Entity Scene::CreateEntity()
 	{
-		return CreateEntity(std::string("Entity"));
+		return CreateEntity("Entity");
 	}
 
-	Entity Scene::CreateEntity(std::string& name)
+	Entity Scene::CreateEntity(const std::string& name)
 	{
 		return Entity(this, m_Registry.CreateEntity(name));
 	}

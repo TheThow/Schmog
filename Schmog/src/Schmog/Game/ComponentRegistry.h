@@ -141,6 +141,7 @@ namespace Schmog {
 		ComponentDataContainer<U>* m_Second;
 	};
 
+
 	class ComponentRegistry
 	{
 	public:
@@ -148,14 +149,14 @@ namespace Schmog {
 		ComponentRegistry();
 
 		uint32_t CreateEntity();
-		uint32_t CreateEntity(std::string& name);
+		uint32_t CreateEntity(const std::string& name);
 		void DeleteEntity(uint32_t entity);
+		std::vector<uint32_t> GetEntityIds();
 
 
 		template<class T, typename... Args>
 		T& AddComponent(const uint32_t entity, Args&&... args)
 		{
-			AddComponentIndex<T>(entity);
 			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Add(entity, std::forward<Args>(args)...);
 		}
 
@@ -174,15 +175,13 @@ namespace Schmog {
 		template<class T>
 		bool HasComponent(const uint32_t entity)
 		{
-			auto idx = m_TypeIndex[typeid(T)];
-			return m_ComponentMap[entity] & (1 << idx);
+			static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->ContainsEntity(entity);
 		}
 
 		template<class T>
 		void RemoveComponent(const uint32_t entity)
 		{
 			static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Remove(entity);
-			RemoveComponentIndex<T>(entity);
 		}
 
 		template<class T>
@@ -199,27 +198,12 @@ namespace Schmog {
 			return ContainerGroup<T, U>(first, second);
 		}
 
-	private:
-		template<class T>
-		void AddComponentIndex(const uint32_t entity)
-		{
-			auto idx = m_TypeIndex[typeid(T)];
-			m_ComponentMap[entity] = m_ComponentMap[entity] | (1 << idx);
-		}
-
-		template<class T>
-		void RemoveComponentIndex(const uint32_t entity)
-		{
-			auto idx = m_TypeIndex[typeid(T)];
-			m_ComponentMap[entity] = m_ComponentMap[entity] & ~(1 << idx);
-		}
-
 
 	private:
 		static const uint32_t MAX_ENTITY_COUNT = 5000;
 
 		std::vector<bool> m_EntityIds;
-		std::unordered_map<uint32_t, uint32_t> m_ComponentMap;
+		std::vector<uint32_t> m_ExistingEntities;
 
 		ComponentDataContainer<TransformComponent> m_TransformComponentData{ MAX_ENTITY_COUNT };
 		ComponentDataContainer<TagComponent> m_TagComponentData{ MAX_ENTITY_COUNT };

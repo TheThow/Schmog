@@ -10,9 +10,11 @@ namespace Schmog {
 
 	class Scene
 	{
+		friend class SceneHierachyPanel;
+
 	public:
 		Entity CreateEntity();
-		Entity CreateEntity(std::string& name);
+		Entity CreateEntity(const std::string& name);
 
 		void DeleteEntity(Entity& entity);
 

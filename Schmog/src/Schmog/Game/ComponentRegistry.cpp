@@ -11,10 +11,10 @@ namespace Schmog {
 
 	uint32_t ComponentRegistry::CreateEntity()
 	{
-		return CreateEntity(std::string("Entity"));
+		return CreateEntity("Entity");
 	}
 
-	uint32_t ComponentRegistry::CreateEntity(std::string& name)
+	uint32_t ComponentRegistry::CreateEntity(const std::string& name)
 	{
 		uint32_t index = -1;
 		for (auto it = std::begin(m_EntityIds); it != std::end(m_EntityIds); ++it)
@@ -31,6 +31,7 @@ namespace Schmog {
 		AddComponent<TransformComponent>(index);
 		AddComponent<TagComponent>(index, name);
 		m_EntityIds[index] = true;
+		m_ExistingEntities.push_back(index);
 		return index;
 	}
 
@@ -38,6 +39,14 @@ namespace Schmog {
 	{
 		m_EntityIds[entity] = false;
 		RemoveComponent<TransformComponent>(entity);
+		RemoveComponent<TagComponent>(entity);
+		RemoveComponent<CameraComponent>(entity);
+		RemoveComponent<NativeScriptingComponent>(entity);
 		RemoveComponent<SpriteRendererComponent>(entity);
+		remove(m_ExistingEntities.begin(), m_ExistingEntities.end(), entity);
+	}
+	std::vector<uint32_t> ComponentRegistry::GetEntityIds()
+	{
+		return m_ExistingEntities;
 	}
 }
