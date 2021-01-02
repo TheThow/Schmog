@@ -198,6 +198,11 @@ namespace Schmog {
 			return ContainerGroup<T, U>(first, second);
 		}
 
+		bool EntityExists(uint32_t id)
+		{
+			return m_EntityIds[id];
+		}
+
 
 	private:
 		static const uint32_t MAX_ENTITY_COUNT = 5000;

@@ -62,4 +62,14 @@ namespace Schmog {
 
 		Renderer2D::EndScene();
 	}
+
+	std::vector<uint32_t> Scene::GetEntities()
+	{
+		return m_Registry.GetEntityIds();
+	}
+
+	bool Scene::EntityExists(const Entity& entity)
+	{
+		return m_Registry.EntityExists(entity.GetId());
+	}
 }

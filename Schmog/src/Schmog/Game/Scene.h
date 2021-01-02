@@ -17,6 +17,7 @@ namespace Schmog {
 		Entity CreateEntity(const std::string& name);
 
 		void DeleteEntity(Entity& entity);
+		bool EntityExists(const Entity& entity);
 
 		template<class T, typename... Args>
 		T& AddComponent(const Entity& entity, Args&&... args)
@@ -56,6 +57,7 @@ namespace Schmog {
 
 		void OnViewportResize(uint32_t width, uint32_t height);
 		void OnUpdate();
+		std::vector<uint32_t> GetEntities();
 
 	private:
 		ComponentRegistry m_Registry;

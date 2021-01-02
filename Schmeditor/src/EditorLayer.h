@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "Schmog.h"
+#include "Panels/SceneHierachyPanel.h"
 
 namespace Schmog {
 
@@ -11,7 +12,7 @@ namespace Schmog {
 
 	public:
 		SchmeditorLayer()
-			: Layer("Schmeditor")
+			: Layer("Schmeditor"), m_ActiveScene(new Scene())
 		{
 
 		}
@@ -25,7 +26,8 @@ namespace Schmog {
 		void OnEvent(Event& e) override;
 
 	private:
-		Scene m_ActiveScene;
+		std::shared_ptr<Scene> m_ActiveScene;
+		SceneHierachyPanel m_SceneHierachyPanel;
 
 		std::shared_ptr<FrameBuffer> m_FrameBuffer;
 

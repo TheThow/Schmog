@@ -55,17 +55,19 @@ namespace Schmog {
 			1.0f
 		};
 
-		auto cam = m_ActiveScene.CreateEntity();
+		auto cam = m_ActiveScene->CreateEntity("Cam");
 		cam.AddComponent<CameraComponent>();
 		cam.AddComponent<NativeScriptingComponent>().Bind<CameraController>();
 
-		auto square = m_ActiveScene.CreateEntity();
+		auto square = m_ActiveScene->CreateEntity("Red square");
 		square.AddComponent<SpriteRendererComponent>(RGBa(255, 0, 0, 255));
 
-		auto square2 = m_ActiveScene.CreateEntity();
+		auto square2 = m_ActiveScene->CreateEntity("Yellow square");
 		square2.AddComponent<SpriteRendererComponent>(RGBa(255, 255, 0, 255));
 		square2.GetComponent<TransformComponent>().Position.x += 3;
 		square2.GetComponent<TransformComponent>().Scale *= 2;
+
+		m_SceneHierachyPanel.SetContext(m_ActiveScene);
 	}
 
 	void SchmeditorLayer::OnDetach()
@@ -79,7 +81,7 @@ namespace Schmog {
 		m_FrameBuffer->Bind();
 		Schmog::RenderCommand::Clear();
 
-		m_ActiveScene.OnUpdate();
+		m_ActiveScene->OnUpdate();
 
 		m_FrameBuffer->Unbind();
 	}
@@ -145,6 +147,7 @@ namespace Schmog {
 
 		ImGui::End();
 
+		m_SceneHierachyPanel.OnImGuiRender();
 
 		ImGui::Begin("Viewport");
 
@@ -159,7 +162,7 @@ namespace Schmog {
 			m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
-			m_ActiveScene.OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
 		uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
