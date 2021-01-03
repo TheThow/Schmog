@@ -61,8 +61,7 @@ namespace Schmog {
 
 		Renderer2D::BeginScene(camera.Camera.GetProjection(), cameraTransform);
 
-		auto group = m_Registry.Group<SpriteRendererComponent, TransformComponent>();
-		for (auto& [sprite, transform] : group)
+		for (auto& [sprite, transform] : m_Registry.Group<SpriteRendererComponent, TransformComponent>())
 		{
 			Renderer2D::DrawQuad(transform, sprite);
 		}
