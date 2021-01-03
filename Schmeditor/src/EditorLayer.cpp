@@ -17,19 +17,19 @@ namespace Schmog {
 
 			if (Input::IsKeyPressed(KeyCode::Down))
 			{
-				transform.Position.y -= 0.5;
+				transform.Position.y -= 0.5f;
 			}
 			if (Input::IsKeyPressed(KeyCode::Up))
 			{
-				transform.Position.y += 0.5;
+				transform.Position.y += 0.5f;
 			}
 			if (Input::IsKeyPressed(KeyCode::Left))
 			{
-				transform.Position.x -= 0.5;
+				transform.Position.x -= 0.5f;
 			}
 			if (Input::IsKeyPressed(KeyCode::Right))
 			{
-				transform.Position.x += 0.5;
+				transform.Position.x += 0.5f;
 			}
 
 		}
@@ -156,7 +156,7 @@ namespace Schmog {
 		}
 
 		uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::Image((void*)(uint64_t)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		ImGui::End();
 
 		ImGui::End();

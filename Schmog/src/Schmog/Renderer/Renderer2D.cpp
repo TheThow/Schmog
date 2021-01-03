@@ -126,7 +126,7 @@ namespace Schmog {
 	{
 		s_Data.shader->Bind();
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), transformComponent.Position) * glm::scale(glm::mat4(1.0f), { transformComponent.Scale, 1.0f });
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(transformComponent.Position)) * glm::scale(glm::mat4(1.0f), { transformComponent.Scale, 1.0f });
 		s_Data.shader->SetUniform("u_ViewProjection", cameraProjection * glm::inverse(transform));
 
 		ResetData();
@@ -212,7 +212,7 @@ namespace Schmog {
 		if (tex == nullptr) {
 			tex = s_Data.whiteTexture;
 		}
-		AddQuad(transform.Position, transform.Scale, tex, s_Data.quadTextureCoords, { spriteComponent.Color, transform.Rotation, 1.0f });
+		AddQuad(glm::vec3(transform.Position), glm::vec2(transform.Scale), tex, s_Data.quadTextureCoords, { spriteComponent.Color, transform.RotationDeg, 1.0f });
 	}
 
 	void Renderer2D::AddQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<Texture2D> texture, const glm::vec2* texCoords, const Renderer2DQuadProperties& parameters)
@@ -242,8 +242,8 @@ namespace Schmog {
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size, 1.0f });
 
 		//Rotation is expensive
-		if (parameters.Rotation) {
-			auto rot = glm::rotate(glm::mat4(1.0f), parameters.Rotation, glm::vec3(0, 0, 1));
+		if (parameters.RotationDeg) {
+			auto rot = glm::rotate(glm::mat4(1.0f), glm::radians((float)parameters.RotationDeg / SG_ROTATION_DEG_PRECISION), glm::vec3(0, 0, 1));
 			transform *= rot;
 		}
 

@@ -13,7 +13,7 @@ namespace Schmog {
 
 	void SceneHierachyPanel::OnImGuiRender()
 	{
-		ImGui::Begin("Scene Hierachy Panel");
+		ImGui::Begin("Scene");
 
 		for (uint32_t entityId : m_Context->GetEntities())
 		{
@@ -47,70 +47,69 @@ namespace Schmog {
 		}
 	}
 
+	template<typename T>
+	static void DrawComponent(const std::string name, Entity entity, std::function<void(T&)> uiFunction)
+	{
+		if (entity.HasComponent<T>())
+		{
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
+			if (ImGui::TreeNodeEx((void*)typeid(T).hash_code(), flags, name.c_str()))
+			{
+				T& component = entity.GetComponent<T>();
+				uiFunction(component);
+				ImGui::TreePop();
+			}
+
+			ImGui::Text("");
+		}
+	}
+
+	void DrawVec3Control()
+	{
+
+	}
+
 	void SceneHierachyPanel::DrawComponents(Entity entity)
 	{
-		if (entity.HasComponent<TagComponent>())
-		{
-			auto& tag = entity.GetComponent<TagComponent>().Name;
-			char buffer[256];
-			memset(buffer, 0, sizeof(buffer));
-			strcpy_s(buffer, sizeof(buffer), tag.c_str());
-			ImGui::Text("Tag");
-			ImGui::SameLine();
-			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
+		DrawComponent<TagComponent>("Tag", entity, [&](TagComponent& component)
 			{
-				tag = std::string(buffer);
+				auto& tag = component.Name;
+				char buffer[256];
+				memset(buffer, 0, sizeof(buffer));
+				strcpy_s(buffer, sizeof(buffer), tag.c_str());
+				if (ImGui::InputText("Tag", buffer, sizeof(buffer)))
+				{
+					tag = std::string(buffer);
+				}
 			}
-		}
+		);
 
-		ImGui::Text("");
-
-		if (entity.HasComponent<TransformComponent>())
-		{
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
-			if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), flags, "Transform"))
+		DrawComponent<TransformComponent>("Transform", entity, [&](TransformComponent& component)
 			{
-				auto& trans = entity.GetComponent<TransformComponent>();
-				ImGui::Text("Translation");
-				ImGui::InputFloat3("##Translation", &(trans.Position.x), 2);
-				ImGui::Text("Rotation");
-				ImGui::InputFloat("##Rotation", &(trans.Rotation), 0.1, 0.2, 2);
-				ImGui::Text("Scale");
-				ImGui::InputFloat2("##Scale", &(trans.Scale.x), 2);
-				ImGui::TreePop();
+				auto& trans = component;
+				ImGui::InputInt3("Translation", &(trans.Position.x));
+				ImGui::InputInt("Rotation", &(trans.RotationDeg), 500, 1000);
+				ImGui::InputInt2("Scale", &(trans.Scale.x));
 			}
-		}
+		);
 
-		ImGui::Text("");
-
-		if (entity.HasComponent<SpriteRendererComponent>())
-		{
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
-			if (ImGui::TreeNodeEx((void*)(uint64_t)typeid(SpriteRendererComponent).hash_code(), flags, "Render"))
+		DrawComponent<SpriteRendererComponent>("Drawing", entity, [&](SpriteRendererComponent& component)
 			{
-				auto& sprite = entity.GetComponent<SpriteRendererComponent>();
-				ImGui::Text("Color");
-				int color[4];
-				color[0] = sprite.Color.rgba[0];
-				color[1] = sprite.Color.rgba[1];
-				color[2] = sprite.Color.rgba[2];
-				color[3] = sprite.Color.rgba[3];
+				auto& sprite = component;
+				float color[4];
+				color[0] = (float)sprite.Color.rgba[0] / 255.f;
+				color[1] = (float)sprite.Color.rgba[1] / 255.f;
+				color[2] = (float)sprite.Color.rgba[2] / 255.f;
+				color[3] = (float)sprite.Color.rgba[3] / 255.f;
 
-				ImGui::InputInt4("##Color", &color[0]);
+				ImGui::ColorEdit4("Color", &color[0]);
 				sprite.Color = RGBa(color);
-
-				ImGui::TreePop();
 			}
-		}
+		);
 
-		ImGui::Text("");
-
-		if (entity.HasComponent<CameraComponent>())
-		{
-			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
-			if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), flags, "Camera"))
+		DrawComponent<CameraComponent>("Drawing", entity, [&](CameraComponent& component)
 			{
-				auto& cam = entity.GetComponent<CameraComponent>();
+				auto& cam = component;
 
 				const char* typeStrings[] = { "Orthographic", "Perspective" };
 				const char* currentProjection = typeStrings[(int)cam.Camera.GetProjectionType()];
@@ -137,7 +136,6 @@ namespace Schmog {
 					if (isMain)
 						cam.SetMain();
 				}
-
 
 				if (cam.Camera.GetProjectionType() == SceneCamera::CameraProjectionType::Orthographic)
 				{
@@ -168,15 +166,8 @@ namespace Schmog {
 					if (ImGui::DragFloat("Far", &perspectiveFar))
 						cam.Camera.SetPerspectiveFarClip(perspectiveFar);
 				}
-				
-				ImGui::TreePop();
 			}
-		}
-	}
-
-	uint8_t ColorConvert(int val)
-	{
-		return (uint8_t)std::max(std::min(255, val), 0);
+		);
 	}
 }
 

@@ -29,6 +29,14 @@ struct RGBa
 		rgba[3] = ColorConvert(color[3]);
 	}
 
+	RGBa(float color[4])
+	{
+		rgba[0] = ColorConvert((int)(color[0]*255));
+		rgba[1] = ColorConvert((int)(color[1]*255));
+		rgba[2] = ColorConvert((int)(color[2]*255));
+		rgba[3] = ColorConvert((int)(color[3]*255));
+	}
+
 
 	RGBa Interpolate(RGBa other, float ratio)
 	{
