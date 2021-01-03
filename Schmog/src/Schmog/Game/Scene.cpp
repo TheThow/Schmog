@@ -48,18 +48,18 @@ namespace Schmog {
 		}
 
 		// Rendering
-		CameraComponent camera;
-		TransformComponent cameraTransform;
+		CameraComponent mainCamera;
+		TransformComponent mainCameraTransform;
 		for (auto& [cam, transform] : m_Registry.Group<CameraComponent, TransformComponent>())
 		{
 			if (cam.IsMain())
 			{
-				camera = cam;
-				cameraTransform = transform;
+				mainCamera = cam;
+				mainCameraTransform = transform;
 			}
 		}
 
-		Renderer2D::BeginScene(camera.Camera.GetProjection(), cameraTransform);
+		Renderer2D::BeginScene(mainCamera.Camera.GetProjection(), mainCameraTransform);
 
 		for (auto& [sprite, transform] : m_Registry.Group<SpriteRendererComponent, TransformComponent>())
 		{

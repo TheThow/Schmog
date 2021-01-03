@@ -10,12 +10,6 @@
 
 namespace Schmog {
 
-	struct RenderInfoStruct
-	{
-		std::shared_ptr<Texture2D> Texture;
-		Renderer2DQuadProperties TextureProps;
-	} renderStruct;
-
 	class CameraController : public NativeScript
 	{
 		void OnUpdate() override {
@@ -48,16 +42,12 @@ namespace Schmog {
 		fbSpec.Height = 720;
 		m_FrameBuffer = FrameBuffer::Create(fbSpec);
 
-		renderStruct.Texture = Schmog::Texture2D::Create("assets/textures/Checkerboard.png");
-		renderStruct.TextureProps = {
-			RGBa(255, 255, 255, 255),
-			0.0f,
-			1.0f
-		};
-
 		auto cam = m_ActiveScene->CreateEntity("Cam");
 		cam.AddComponent<CameraComponent>();
 		cam.AddComponent<NativeScriptingComponent>().Bind<CameraController>();
+
+		auto cam2 = m_ActiveScene->CreateEntity("Cam 2");
+		cam2.AddComponent<CameraComponent>();
 
 		auto square = m_ActiveScene->CreateEntity("Red square");
 		square.AddComponent<SpriteRendererComponent>(RGBa(255, 0, 0, 255));

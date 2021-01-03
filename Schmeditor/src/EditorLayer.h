@@ -35,7 +35,6 @@ namespace Schmog {
 
 		bool m_ViewportFocused;
 		bool m_ViewportHovered;
-
 	};
 
 }
