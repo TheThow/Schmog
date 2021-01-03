@@ -7,6 +7,9 @@ namespace Schmog {
 	class SceneCamera : public Camera
 	{
 	public:
+		enum class ProjectionType { Orthographic = 0 };
+
+	public:
 		SceneCamera();
 		virtual ~SceneCamera() = default;
 

@@ -48,9 +48,16 @@ namespace Schmog {
 		}
 
 		// Rendering
-		auto cameras = m_Registry.GetComponents<CameraComponent>();
-		CameraComponent camera = cameras.GetByIndex(0);
-		TransformComponent cameraTransform = m_Registry.GetComponent<TransformComponent>(m_Registry.GetEntityByIndex<CameraComponent>(0));
+		CameraComponent camera;
+		TransformComponent cameraTransform;
+		for (auto& [cam, transform] : m_Registry.Group<CameraComponent, TransformComponent>())
+		{
+			if (cam.IsMain())
+			{
+				camera = cam;
+				cameraTransform = transform;
+			}
+		}
 
 		Renderer2D::BeginScene(camera.Camera.GetProjection(), cameraTransform);
 
