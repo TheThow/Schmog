@@ -239,13 +239,13 @@ namespace Schmog {
 		}
 
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size, 1.0f });
-
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position);
 		//Rotation is expensive
 		if (parameters.RotationDeg) {
 			auto rot = glm::rotate(glm::mat4(1.0f), glm::radians((float)parameters.RotationDeg / SG_ROTATION_DEG_PRECISION), glm::vec3(0, 0, 1));
 			transform *= rot;
 		}
+		transform *= glm::scale(glm::mat4(1.0f), { size, 1.0f });
 
 		for (int vi = 0; vi < 4; vi++)
 		{
