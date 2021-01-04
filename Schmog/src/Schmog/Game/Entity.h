@@ -15,6 +15,8 @@ namespace Schmog {
 		Entity() {};
 		Entity(Scene* scene, uint32_t id);
 
+		void Destroy();
+
 		template<class T, typename... Args>
 		T& AddComponent(Args&&... args) const
 		{

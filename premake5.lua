@@ -175,6 +175,7 @@ project "Schmeditor"
 	{
 		"Schmog/vendor/spdlog/include",
 		"Schmog/src",
+		"Schmeditor/src",
 		"Schmog/vendor",
 		"%{IncludeDir.glm}"
 	}

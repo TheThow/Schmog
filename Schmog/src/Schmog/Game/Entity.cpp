@@ -9,6 +9,11 @@ namespace Schmog {
 		m_Scene = scene;
 	}
 
+	void Entity::Destroy()
+	{
+		m_Scene->DeleteEntity(*this);
+	}
+
 	uint32_t Entity::GetId() const
 	{
 		return m_Id;
