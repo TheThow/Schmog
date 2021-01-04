@@ -1,6 +1,7 @@
 #include "sgpch.h"
 
 #include "ComponentRegistry.h"
+#include <algorithm>
 
 namespace Schmog {
 
@@ -43,8 +44,9 @@ namespace Schmog {
 		RemoveComponent<CameraComponent>(entity);
 		RemoveComponent<NativeScriptingComponent>(entity);
 		RemoveComponent<SpriteRendererComponent>(entity);
-		remove(m_ExistingEntities.begin(), m_ExistingEntities.end(), entity);
+		m_ExistingEntities.erase(std::remove(m_ExistingEntities.begin(), m_ExistingEntities.end(), entity), m_ExistingEntities.end());
 	}
+
 	std::vector<uint32_t> ComponentRegistry::GetEntityIds()
 	{
 		return m_ExistingEntities;
