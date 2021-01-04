@@ -15,13 +15,46 @@ namespace Schmog {
 		{
 			if (entity.HasComponent<T>())
 			{
-				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen;
-				if (ImGui::TreeNodeEx((void*)typeid(T).hash_code(), flags, name.c_str()))
+				ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+
+				float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+
+				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen 
+					| ImGuiTreeNodeFlags_AllowItemOverlap 
+					| ImGuiTreeNodeFlags_Framed 
+					| ImGuiTreeNodeFlags_SpanAvailWidth
+					| ImGuiTreeNodeFlags_FramePadding;
+				auto open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), flags, name.c_str());
+				ImGui::PopStyleVar();
+
+				bool removeComponent = false;
+				if (typeid(T) != typeid(TagComponent) && typeid(T) != typeid(TransformComponent))
+				{
+					ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+					if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
+					{
+						ImGui::OpenPopup("ComponentSettings");
+					}
+
+					if (ImGui::BeginPopup("ComponentSettings"))
+					{
+						if (ImGui::MenuItem("Remove component"))
+							removeComponent = true;
+
+						ImGui::EndPopup();
+					}
+				}
+
+				if (open)
 				{
 					T& component = entity.GetComponent<T>();
 					uiFunction(component);
 					ImGui::TreePop();
 				}
+
+				if (removeComponent)
+					entity.RemoveComponent<T>();
 
 				ImGui::Text("");
 			}
@@ -141,6 +174,64 @@ namespace Schmog {
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 
 			ImGui::InputInt("##X", &value, step);
+			ImGui::PopStyleVar();
+
+			ImGui::Columns(1);
+
+			ImGui::PopID();
+		}
+
+		static void DrawColor4Control(const std::string& label, float* value, float columnWidth = 100.0f)
+		{
+			ImGui::PushID(label.c_str());
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, columnWidth);
+			ImGui::Text(label.c_str());
+			ImGui::NextColumn();
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+			ImGui::ColorEdit4("##Color", value);
+			ImGui::PopStyleVar();
+
+			ImGui::Columns(1);
+
+			ImGui::PopID();
+		}
+
+		static void DrawDragFloat(const std::string& label, float value, std::function<void(float)> callback, float columnWidth = 100.0f)
+		{
+			ImGui::PushID(label.c_str());
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, columnWidth);
+			ImGui::Text(label.c_str());
+			ImGui::NextColumn();
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+			float changeval = value;
+			if (ImGui::DragFloat("##val", &changeval))
+				callback(changeval);
+			ImGui::PopStyleVar();
+
+			ImGui::Columns(1);
+
+			ImGui::PopID();
+		}
+
+		static void DrawCheckBox(const std::string& label, bool value, std::function<void(bool)> callback, float columnWidth = 100.0f)
+		{
+			ImGui::PushID(label.c_str());
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, columnWidth);
+			ImGui::Text(label.c_str());
+			ImGui::NextColumn();
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+			bool checked = value;
+			if (ImGui::Checkbox("##val", &checked))
+				callback(checked);
 			ImGui::PopStyleVar();
 
 			ImGui::Columns(1);

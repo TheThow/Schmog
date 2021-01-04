@@ -32,7 +32,7 @@ namespace Schmog {
 		}
 
 		template<class T>
-		T& RemoveComponent() const
+		void RemoveComponent() const
 		{
 			SG_CORE_ASSERT(m_Scene, "Scene is null");
 			return m_Scene->RemoveComponent<T>(*this);

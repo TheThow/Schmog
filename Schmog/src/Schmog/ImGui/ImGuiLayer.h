@@ -28,6 +28,7 @@ namespace Schmog {
 
 		void BlockEvents(bool block) { m_BlockEvents = block; }
 		bool EventsBlocked() { return m_BlockEvents;  }
+		void SetDarkThemeColors(); 
 
 	private:
 		bool m_BlockEvents = false;
