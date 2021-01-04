@@ -124,7 +124,7 @@ namespace Schmog {
 				auto& trans = component;
 				UiHelper::DrawVec3Control("Translation", trans.Position);
 				UiHelper::DrawVec2Control("Scale", trans.Scale, 1);
-				UiHelper::DrawIntControl("Rotation", trans.RotationDeg, 0, 500);
+				UiHelper::DrawIntControl("Rotation", trans.RotationDeg, 0, 50);
 			}
 		);
 

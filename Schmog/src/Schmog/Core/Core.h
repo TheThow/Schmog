@@ -45,4 +45,4 @@ namespace Schmog {
 
 }
 
-#define SG_ROTATION_DEG_PRECISION 100.f
+#define SG_ROTATION_DEG_PRECISION 10.f
