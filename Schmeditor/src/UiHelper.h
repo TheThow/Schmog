@@ -172,9 +172,10 @@ namespace Schmog {
 			ImGui::Text(label.c_str());
 			ImGui::NextColumn();
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-
+			ImGui::PushItemWidth(-1);
 			ImGui::InputInt("##X", &value, step);
 			ImGui::PopStyleVar();
+			ImGui::PopItemWidth();
 
 			ImGui::Columns(1);
 
