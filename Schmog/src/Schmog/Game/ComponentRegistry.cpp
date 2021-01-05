@@ -39,11 +39,12 @@ namespace Schmog {
 	void ComponentRegistry::DeleteEntity(uint32_t entity)
 	{
 		m_EntityIds[entity] = false;
-		RemoveComponent<TransformComponent>(entity);
-		RemoveComponent<TagComponent>(entity);
-		RemoveComponent<CameraComponent>(entity);
-		RemoveComponent<NativeScriptingComponent>(entity);
-		RemoveComponent<SpriteRendererComponent>(entity);
+
+		for (auto& container : m_Data)
+		{
+			container.second->Remove(entity);
+		}
+
 		m_ExistingEntities.erase(std::remove(m_ExistingEntities.begin(), m_ExistingEntities.end(), entity), m_ExistingEntities.end());
 	}
 

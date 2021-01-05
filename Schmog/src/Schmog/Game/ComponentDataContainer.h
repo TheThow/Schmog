@@ -3,11 +3,13 @@
 #include <stdint.h>
 #include <vector>
 
+#include "IDataContainer.h"
+
 
 namespace Schmog {
 
 	template<typename T>
-	class ComponentDataContainer
+	class ComponentDataContainer : public IDataContainer
 	{
 	public:
 		ComponentDataContainer(uint32_t size)

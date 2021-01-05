@@ -67,7 +67,7 @@ void Sandbox2D::OnAttach()
 	Schmog::Entity entity2 = scene->CreateEntity();
 
 	auto cam = scene->CreateEntity();
-	cam.AddComponent(Schmog::CameraComponent());
+	cam.AddComponent<Schmog::CameraComponent>();
 }
 
 void Sandbox2D::OnDetach()

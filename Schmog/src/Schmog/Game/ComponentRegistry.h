@@ -3,6 +3,7 @@
 #include <typeindex>
 #include <vector>
 #include <tuple>
+#include <unordered_map>
 
 #include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
@@ -157,44 +158,52 @@ namespace Schmog {
 		template<class T, typename... Args>
 		T& AddComponent(const uint32_t entity, Args&&... args)
 		{
-			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Add(entity, std::forward<Args>(args)...);
+			if (m_Data.find(typeid(T)) == m_Data.end())
+			{
+				ComponentDataContainer<T>* container = new ComponentDataContainer<T>{ MAX_ENTITY_COUNT };
+				m_Data.emplace(typeid(T), (IDataContainer*)container);
+			}
+			return static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)])->Add(entity, std::forward<Args>(args)...);
 		}
 
 		template<class T>
 		T& GetComponent(const uint32_t entity)
 		{
-			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Get(entity);
+			return static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)])->Get(entity);
 		}
 
 		template<class T>
 		uint32_t GetEntityByIndex(uint32_t index)
 		{
-			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->GetIdByIndex(index);
+			return static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)])->GetIdByIndex(index);
 		}
 
 		template<class T>
 		bool HasComponent(const uint32_t entity)
 		{
-			return static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->ContainsEntity(entity);
+			if (m_Data.find(typeid(T)) == m_Data.end())
+				return false;
+
+			return static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)])->ContainsEntity(entity);
 		}
 
 		template<class T>
 		void RemoveComponent(const uint32_t entity)
 		{
-			static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)])->Remove(entity);
+			static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)])->Remove(entity);
 		}
 
 		template<class T>
 		ComponentDataContainer<T>& GetComponents()
 		{
-			return *static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)]);
+			return *static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)]);
 		}
 
 		template<class T, class U>
 		ContainerGroup<T, U> Group()
 		{
-			ComponentDataContainer<T>* first = static_cast<ComponentDataContainer<T>*>(m_TypeStorage[typeid(T)]);
-			ComponentDataContainer<U>* second = static_cast<ComponentDataContainer<U>*>(m_TypeStorage[typeid(U)]);
+			ComponentDataContainer<T>* first = static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)]);
+			ComponentDataContainer<U>* second = static_cast<ComponentDataContainer<U>*>(m_Data[typeid(U)]);
 			return ContainerGroup<T, U>(first, second);
 		}
 
@@ -210,29 +219,6 @@ namespace Schmog {
 		std::vector<bool> m_EntityIds;
 		std::vector<uint32_t> m_ExistingEntities;
 
-		ComponentDataContainer<TransformComponent> m_TransformComponentData{ MAX_ENTITY_COUNT };
-		ComponentDataContainer<TagComponent> m_TagComponentData{ MAX_ENTITY_COUNT };
-		ComponentDataContainer<SpriteRendererComponent> m_SpriteRendererComponentData{ MAX_ENTITY_COUNT };
-		ComponentDataContainer<CameraComponent> m_CameraComponentData{ MAX_ENTITY_COUNT };
-		ComponentDataContainer<NativeScriptingComponent> m_NativeScriptingData{ MAX_ENTITY_COUNT };
-
-		std::unordered_map<std::type_index, uint32_t> m_TypeIndex =
-		{
-			{ typeid(TransformComponent), 0 },
-			{ typeid(TagComponent), 1 },
-			{ typeid(SpriteRendererComponent), 2 },
-			{ typeid(CameraComponent), 3 },
-			{ typeid(NativeScriptingComponent), 4 }
-		};
-
-		std::unordered_map<std::type_index, void*> m_TypeStorage =
-		{
-			{ typeid(TransformComponent), &m_TransformComponentData },
-			{ typeid(TagComponent), &m_TagComponentData },
-			{ typeid(SpriteRendererComponent), &m_SpriteRendererComponentData },
-			{ typeid(CameraComponent), &m_CameraComponentData },
-			{ typeid(NativeScriptingComponent), &m_NativeScriptingData }
-		};
-
+		std::unordered_map<std::type_index, IDataContainer*> m_Data;
 	};
 }

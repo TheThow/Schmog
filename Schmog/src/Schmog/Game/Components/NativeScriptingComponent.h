@@ -29,6 +29,8 @@ namespace Schmog {
 	class NativeScriptingComponent
 	{
 	public:
+		NativeScriptingComponent() = default;
+
 		template<typename T>
 		void Bind()
 		{
