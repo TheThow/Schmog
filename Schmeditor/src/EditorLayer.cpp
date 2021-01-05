@@ -17,19 +17,19 @@ namespace Schmog {
 
 			if (Input::IsKeyPressed(KeyCode::Down))
 			{
-				transform.Position.y -= 0.5f;
+				transform.Position.y -= 1;
 			}
 			if (Input::IsKeyPressed(KeyCode::Up))
 			{
-				transform.Position.y += 0.5f;
+				transform.Position.y += 1;
 			}
 			if (Input::IsKeyPressed(KeyCode::Left))
 			{
-				transform.Position.x -= 0.5f;
+				transform.Position.x -= 1;
 			}
 			if (Input::IsKeyPressed(KeyCode::Right))
 			{
-				transform.Position.x += 0.5f;
+				transform.Position.x += 1;
 			}
 
 		}
