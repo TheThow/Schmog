@@ -19,12 +19,13 @@ IncludeDir["Glad"] = "Schmog/vendor/Glad/include"
 IncludeDir["ImGui"] = "Schmog/vendor/imgui"
 IncludeDir["glm"] = "Schmog/vendor/glm"
 IncludeDir["stb_image"] = "Schmog/vendor/stb_image"
+IncludeDir["yaml_cpp"] = "Schmog/vendor/yaml_cpp/include"
 
 group "Dependencies"
-include "Schmog/vendor/GLFW"
-include "Schmog/vendor/Glad"
-include "Schmog/vendor/imgui"
-
+	include "Schmog/vendor/GLFW"
+	include "Schmog/vendor/Glad"
+	include "Schmog/vendor/imgui"
+	include "Schmog/vendor/yaml-cpp"
 group ""
 
 
@@ -62,7 +63,8 @@ project "Schmog"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 	
 	links
@@ -70,7 +72,8 @@ project "Schmog"
 		"GLFW",
 		"Glad",
 		"ImGui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"yaml-cpp"
 	}
 
 	filter "system:windows"

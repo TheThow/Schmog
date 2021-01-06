@@ -14,3 +14,6 @@
 	path = Schmog/vendor/glm
 	url = https://github.com/g-truc/glm.git
 	branch = master
+[submodule "Schmog/vendor/yaml-cpp"]
+	path = Schmog/vendor/yaml-cpp
+	url = https://github.com/TheCherno/yaml-cpp.git
