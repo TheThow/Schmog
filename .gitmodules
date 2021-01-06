@@ -17,3 +17,4 @@
 [submodule "Schmog/vendor/yaml-cpp"]
 	path = Schmog/vendor/yaml-cpp
 	url = https://github.com/TheCherno/yaml-cpp.git
+	branch = master
