@@ -149,6 +149,8 @@ namespace Schmog {
 
 		ComponentRegistry();
 
+		~ComponentRegistry();
+
 		uint32_t CreateEntity();
 		uint32_t CreateEntity(const std::string& name);
 		void DeleteEntity(uint32_t entity);

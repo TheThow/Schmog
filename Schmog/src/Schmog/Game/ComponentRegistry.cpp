@@ -10,6 +10,14 @@ namespace Schmog {
 		m_EntityIds.resize(MAX_ENTITY_COUNT);
 	}
 
+	ComponentRegistry::~ComponentRegistry()
+	{
+		for (auto& container : m_Data)
+		{
+			delete container.second;
+		}
+	}
+
 	uint32_t ComponentRegistry::CreateEntity()
 	{
 		return CreateEntity("Entity");
