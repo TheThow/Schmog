@@ -19,7 +19,7 @@ IncludeDir["Glad"] = "Schmog/vendor/Glad/include"
 IncludeDir["ImGui"] = "Schmog/vendor/imgui"
 IncludeDir["glm"] = "Schmog/vendor/glm"
 IncludeDir["stb_image"] = "Schmog/vendor/stb_image"
-IncludeDir["yaml_cpp"] = "Schmog/vendor/yaml_cpp/include"
+IncludeDir["yaml_cpp"] = "Schmog/vendor/yaml-cpp/include"
 
 group "Dependencies"
 	include "Schmog/vendor/GLFW"
