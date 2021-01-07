@@ -5,6 +5,8 @@
 #include "Schmog.h"
 #include "Panels/SceneHierachyPanel.h"
 
+#include "Schmog/Utils/PlatformUtils.h"
+
 namespace Schmog {
 
 	class SchmeditorLayer : public Layer
