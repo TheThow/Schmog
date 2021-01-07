@@ -180,7 +180,8 @@ project "Schmeditor"
 		"Schmog/src",
 		"Schmeditor/src",
 		"Schmog/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links

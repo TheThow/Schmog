@@ -1,8 +1,15 @@
 #pragma once
 #include <typeindex>
 
-#include "ComponentDataContainer.h"
-#include "ComponentRegistry.h"
+#include "Components/ComponentDataContainer.h"
+#include "Components/ComponentRegistry.h"
+
+#include "Schmog/Game/Components/CameraComponent.h"
+#include "Schmog/Game/Components/TransformComponent.h"
+#include "Schmog/Game/Components/TagComponent.h"
+#include "Schmog/Game/Components/SpriteRendererComponent.h"
+#include "Schmog/Game/Components/NativeScriptingComponent.h"
+
 
 namespace Schmog {
 
@@ -10,8 +17,6 @@ namespace Schmog {
 
 	class Scene
 	{
-		friend class SceneHierachyPanel;
-
 	public:
 		Entity CreateEntity();
 		Entity CreateEntity(const std::string& name);
@@ -58,6 +63,10 @@ namespace Schmog {
 		void OnViewportResize(uint32_t width, uint32_t height);
 		void OnUpdate();
 		std::vector<uint32_t> GetEntities();
+
+		void Serialize(const std::string& filename);
+		void Deserialize(const std::string& filename);
+
 
 	private:
 		ComponentRegistry m_Registry;

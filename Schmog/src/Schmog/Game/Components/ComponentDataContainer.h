@@ -49,8 +49,13 @@ namespace Schmog {
 		template<typename... Args>
 		T& Add(uint32_t id, Args&&... args)
 		{
-			SG_ASSERT(id < m_Data.size(), "Index out of bounds")
+			SG_ASSERT(id < m_Data.size(), "Index out of bounds");
 
+			if (m_EntityToIndex[id] != INVALID_VALUE)
+			{
+				m_Data[m_EntityToIndex[id]] = T(std::forward<Args>(args)...);
+				return m_Data[m_EntityToIndex[id]];
+			}
 			m_Data[m_Index] = T(std::forward<Args>(args)...);
 			m_EntityToIndex[id] = m_Index;
 			m_IndexToEntity[m_Index] = id;

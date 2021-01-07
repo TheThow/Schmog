@@ -5,11 +5,6 @@
 #include <tuple>
 #include <unordered_map>
 
-#include "Components/CameraComponent.h"
-#include "Components/TransformComponent.h"
-#include "Components/TagComponent.h"
-#include "Components/SpriteRendererComponent.h"
-#include "Components/NativeScriptingComponent.h"
 #include "ComponentDataContainer.h"
 
 namespace Schmog {
@@ -213,7 +208,6 @@ namespace Schmog {
 		{
 			return m_EntityIds[id];
 		}
-
 
 	private:
 		static const uint32_t MAX_ENTITY_COUNT = 5000;

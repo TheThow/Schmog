@@ -1,7 +1,7 @@
 #include "sgpch.h"
 
 #include "ComponentRegistry.h"
-#include <algorithm>
+
 
 namespace Schmog {
 
@@ -37,8 +37,6 @@ namespace Schmog {
 
 		SG_ASSERT(index != -1, "Max entities reached")
 
-		AddComponent<TransformComponent>(index);
-		AddComponent<TagComponent>(index, name);
 		m_EntityIds[index] = true;
 		m_ExistingEntities.push_back(index);
 		return index;

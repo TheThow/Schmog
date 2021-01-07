@@ -1,7 +1,11 @@
 #include "sgpch.h"
+
+#include <fstream>
+
 #include "Entity.h"
 #include "Scene.h"
 #include "Schmog/Renderer/Renderer2D.h"
+
 
 namespace Schmog {
 
@@ -12,7 +16,10 @@ namespace Schmog {
 
 	Entity Scene::CreateEntity(const std::string& name)
 	{
-		return Entity(this, m_Registry.CreateEntity(name));
+		auto& entity = Entity(this, m_Registry.CreateEntity(name));
+		entity.AddComponent<TransformComponent>();
+		entity.AddComponent<TagComponent>(name);
+		return entity;
 	}
 
 	void Scene::DeleteEntity(Entity& entity)
@@ -72,6 +79,74 @@ namespace Schmog {
 	std::vector<uint32_t> Scene::GetEntities()
 	{
 		return m_Registry.GetEntityIds();
+	}
+
+	void Scene::Serialize(const std::string& filename)
+	{
+		YAML::Emitter out;
+		out << YAML::BeginMap;
+		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
+		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
+
+		for (auto entity : m_Registry.GetEntityIds())
+		{
+			out << YAML::BeginMap;
+			out << YAML::Key << "Entity" << YAML::Value << entity;
+
+			if (m_Registry.HasComponent<TagComponent>(entity))
+				m_Registry.GetComponent<TagComponent>(entity).Serialize(out);
+
+			if (m_Registry.HasComponent<TransformComponent>(entity))
+				m_Registry.GetComponent<TransformComponent>(entity).Serialize(out);
+
+			if (m_Registry.HasComponent<SpriteRendererComponent>(entity))
+				m_Registry.GetComponent<SpriteRendererComponent>(entity).Serialize(out);
+
+			if (m_Registry.HasComponent<NativeScriptingComponent>(entity))
+				m_Registry.GetComponent<NativeScriptingComponent>(entity).Serialize(out);
+
+			if (m_Registry.HasComponent<CameraComponent>(entity))
+				m_Registry.GetComponent<CameraComponent>(entity).Serialize(out);
+
+			out << YAML::EndMap;
+		}
+
+		out << YAML::EndSeq;
+		out << YAML::EndMap;
+
+		std::ofstream fout(filename);
+		fout << out.c_str();
+	}
+
+	void Scene::Deserialize(const std::string& filename)
+	{
+		YAML::Node data = YAML::LoadFile(filename);
+
+		std::string sceneName = data["Scene"].as<std::string>();
+		SG_CORE_INFO("Deserializing scene '{0}'", sceneName);
+
+		YAML::Node entities = data["Entities"];
+
+		for (auto& serializedEntity : entities)
+		{
+			Entity entity = CreateEntity();
+
+			auto component = serializedEntity[TagComponent::GetSerializationName()];
+			if (component)
+				entity.GetComponent<TagComponent>().Deserialize(component);
+
+			component = serializedEntity[TransformComponent::GetSerializationName()];
+			if (component)
+				entity.GetComponent<TransformComponent>().Deserialize(component);
+
+			component = serializedEntity[SpriteRendererComponent::GetSerializationName()];
+			if (component)
+				entity.AddComponent<SpriteRendererComponent>().Deserialize(component);
+
+			component = serializedEntity[CameraComponent::GetSerializationName()];
+			if (component)
+				entity.AddComponent<CameraComponent>().Deserialize(component);
+		}
 	}
 
 	bool Scene::EntityExists(const Entity& entity)

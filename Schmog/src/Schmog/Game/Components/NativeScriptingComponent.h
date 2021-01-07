@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IComponent.h"
 
 namespace Schmog {
 
@@ -26,7 +27,7 @@ namespace Schmog {
 		friend class Scene;
 	};
 
-	class NativeScriptingComponent
+	class NativeScriptingComponent : public IComponent
 	{
 	public:
 		NativeScriptingComponent() = default;
@@ -35,6 +36,19 @@ namespace Schmog {
 		void Bind()
 		{
 			InstantiateFunction = [&]() { Instance.reset(new T()); };
+		}
+
+		void Serialize(YAML::Emitter& out) override
+		{
+		}
+
+		void Deserialize(const YAML::Node& data) override
+		{
+		}
+
+		static std::string GetSerializationName()
+		{
+			return "NativeScriptingComponent";
 		}
 
 	protected:

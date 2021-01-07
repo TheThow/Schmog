@@ -44,7 +44,7 @@ namespace Schmog {
 
 	void SceneHierachyPanel::DrawEntityNode(Entity entity)
 	{
-		auto& tag = entity.GetComponent<TagComponent>().Name;
+		auto& tag = entity.GetComponent<TagComponent>().Tag;
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
 
@@ -78,7 +78,7 @@ namespace Schmog {
 	void SceneHierachyPanel::DrawComponents(Entity entity)
 	{
 		
-		auto& tag = entity.GetComponent<TagComponent>().Name;
+		auto& tag = entity.GetComponent<TagComponent>().Tag;
 		char buffer[256];
 		memset(buffer, 0, sizeof(buffer));
 		strcpy_s(buffer, sizeof(buffer), tag.c_str());
