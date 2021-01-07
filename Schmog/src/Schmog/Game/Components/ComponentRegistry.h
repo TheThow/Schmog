@@ -155,11 +155,7 @@ namespace Schmog {
 		template<class T, typename... Args>
 		T& AddComponent(const uint32_t entity, Args&&... args)
 		{
-			if (m_Data.find(typeid(T)) == m_Data.end())
-			{
-				ComponentDataContainer<T>* container = new ComponentDataContainer<T>{ MAX_ENTITY_COUNT };
-				m_Data.emplace(typeid(T), (IDataContainer*)container);
-			}
+			CheckAndCreate<T>();
 			return static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)])->Add(entity, std::forward<Args>(args)...);
 		}
 
@@ -193,12 +189,15 @@ namespace Schmog {
 		template<class T>
 		ComponentDataContainer<T>& GetComponents()
 		{
+			CheckAndCreate<T>();
 			return *static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)]);
 		}
 
 		template<class T, class U>
 		ContainerGroup<T, U> Group()
 		{
+			CheckAndCreate<T>();
+			CheckAndCreate<U>();
 			ComponentDataContainer<T>* first = static_cast<ComponentDataContainer<T>*>(m_Data[typeid(T)]);
 			ComponentDataContainer<U>* second = static_cast<ComponentDataContainer<U>*>(m_Data[typeid(U)]);
 			return ContainerGroup<T, U>(first, second);
@@ -210,7 +209,18 @@ namespace Schmog {
 		}
 
 	private:
-		static const uint32_t MAX_ENTITY_COUNT = 5000;
+		template<class T>
+		void CheckAndCreate()
+		{
+			if (m_Data.find(typeid(T)) == m_Data.end())
+			{
+				ComponentDataContainer<T>* container = new ComponentDataContainer<T>{ MAX_ENTITY_COUNT };
+				m_Data.emplace(typeid(T), (IDataContainer*)container);
+			}
+		}
+
+	private:
+		static const uint32_t MAX_ENTITY_COUNT = 32000;
 
 		std::vector<bool> m_EntityIds;
 		std::vector<uint32_t> m_ExistingEntities;

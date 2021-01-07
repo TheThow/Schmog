@@ -25,9 +25,14 @@ namespace Schmog {
 		void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 
+
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
+
 	private:
 		std::shared_ptr<Scene> m_ActiveScene;
-		SceneHierachyPanel m_SceneHierachyPanel;
+		SceneHierachyPanel m_SceneHierarchyPanel;
 
 		std::shared_ptr<FrameBuffer> m_FrameBuffer;
 

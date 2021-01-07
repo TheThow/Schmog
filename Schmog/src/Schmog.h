@@ -31,5 +31,7 @@
 
 #include "Schmog/Game/ParticleSystem.h"
 
+#include "Schmog/Utils/PlatformUtils.h"
+
 
 

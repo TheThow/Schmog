@@ -61,7 +61,7 @@ namespace Schmog {
 		square2.GetComponent<TransformComponent>().Position.x += 3;
 		square2.GetComponent<TransformComponent>().Scale *= 2;
 
-		m_SceneHierachyPanel.SetContext(m_ActiveScene);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void SchmeditorLayer::OnDetach()
@@ -120,6 +120,18 @@ namespace Schmog {
 		{
 			if (ImGui::BeginMenu("File"))
 			{
+				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
+				// which we can't undo at the moment without finer window depth/z control.
+				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);1
+				if (ImGui::MenuItem("New", "Ctrl+N"))
+					NewScene();
+
+				if (ImGui::MenuItem("Open...", "Ctrl+O"))
+					OpenScene();
+
+				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+					SaveSceneAs();
+
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
@@ -139,7 +151,7 @@ namespace Schmog {
 
 		ImGui::End();
 
-		m_SceneHierachyPanel.OnImGuiRender();
+		m_SceneHierarchyPanel.OnImGuiRender();
 
 		ImGui::Begin("Viewport");
 
@@ -166,5 +178,34 @@ namespace Schmog {
 
 	void SchmeditorLayer::OnEvent(Event& e)
 	{
+	}
+
+	void SchmeditorLayer::NewScene()
+	{
+		m_ActiveScene = std::make_shared<Scene>();
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void SchmeditorLayer::OpenScene()
+	{
+		std::optional<std::string> filepath = FileDialogs::OpenFile("Schmog Scene (*.schmog)\0*.schmog\0");
+		if (filepath)
+		{
+			m_ActiveScene = std::make_shared<Scene>();
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+			m_ActiveScene->Deserialize(*filepath);
+
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		}
+	}
+
+	void SchmeditorLayer::SaveSceneAs()
+	{
+		std::optional<std::string> filepath = FileDialogs::SaveFile("Schmog Scene (*.schmog)\0*.schmog\0");
+		if (filepath)
+		{
+			m_ActiveScene->Serialize(*filepath);
+		}
 	}
 }
