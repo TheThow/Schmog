@@ -178,6 +178,44 @@ namespace Schmog {
 
 	void SchmeditorLayer::OnEvent(Event& e)
 	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(SG_BIND_EVENT_FN(SchmeditorLayer::OnKeyPressed));
+	}
+
+	bool SchmeditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		// Shortcuts
+		if (e.GetRepeatCount() > 0)
+			return false;
+
+		bool control = Input::IsKeyPressed(KeyCode::LeftControl) || Input::IsKeyPressed(KeyCode::RightControl);
+		bool shift = Input::IsKeyPressed(KeyCode::LeftShift) || Input::IsKeyPressed(KeyCode::RightShift);
+		switch (e.GetKeyCode())
+		{
+			case KeyCode::N:
+			{
+				if (control)
+					NewScene();
+
+				break;
+			}
+			case KeyCode::O:
+			{
+				if (control)
+					OpenScene();
+
+				break;
+			}
+			case KeyCode::S:
+			{
+				if (control && shift)
+					SaveSceneAs();
+
+				break;
+			}
+		}
+
+		return false;
 	}
 
 	void SchmeditorLayer::NewScene()

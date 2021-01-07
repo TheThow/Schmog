@@ -9,6 +9,7 @@ namespace Schmog {
 
 	void SceneHierachyPanel::SetContext(const std::shared_ptr<Scene> context)
 	{
+		m_SelectionContext = {};
 		m_Context = context;
 	}
 

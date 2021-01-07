@@ -27,6 +27,7 @@ namespace Schmog {
 		void OnImGuiRender() override;
 		void OnEvent(Event& e) override;
 
+		bool SchmeditorLayer::OnKeyPressed(KeyPressedEvent& e);
 
 		void NewScene();
 		void OpenScene();
