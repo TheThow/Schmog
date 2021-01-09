@@ -20,7 +20,6 @@ IncludeDir["ImGui"] = "Schmog/vendor/imgui"
 IncludeDir["glm"] = "Schmog/vendor/glm"
 IncludeDir["stb_image"] = "Schmog/vendor/stb_image"
 IncludeDir["yaml_cpp"] = "Schmog/vendor/yaml-cpp/include"
-IncludeDir["ImGuizmo"] = "Schmog/vendor/imguizmo"
 
 group "Dependencies"
 	include "Schmog/vendor/GLFW"
@@ -50,9 +49,6 @@ project "Schmog"
 		
 		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/stb_image/**.h",
-		
-		"%{prj.name}/vendor/imguizmo/ImGuizmo.cpp",
-		"%{prj.name}/vendor/imguizmo/ImGuizmo.h"
 	}
 	
 	defines
@@ -80,9 +76,6 @@ project "Schmog"
 		"opengl32.lib",
 		"yaml-cpp"
 	}
-
-	filter "files:Schmog/vendor/imguizmo/**.cpp"
-	flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -189,8 +182,7 @@ project "Schmeditor"
 		"Schmeditor/src",
 		"Schmog/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.ImGuizmo}"
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links
