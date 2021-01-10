@@ -35,10 +35,10 @@ namespace Schmog {
 		CameraProjectionType GetProjectionType() const { return m_ProjectionType; }
 		void SetProjectionType(CameraProjectionType type) { m_ProjectionType = type; RecalculateProjection(); }
 
-	private:
+	protected:
 		void RecalculateProjection();
 
-	private:
+	protected:
 		float m_OrthographicSize = 10.0f;
 		float m_OrthographicNear = -1.0f, m_OrthographicFar = 1.0f;
 

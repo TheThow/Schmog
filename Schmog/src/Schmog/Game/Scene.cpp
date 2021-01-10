@@ -38,6 +38,18 @@ namespace Schmog {
 		}
 	}
 
+	void Scene::OnUpdateEditor(EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera.GetViewProjection());
+
+		for (auto& [sprite, transform] : m_Registry.Group<SpriteRendererComponent, TransformComponent>())
+		{
+			Renderer2D::DrawQuad(transform, sprite);
+		}
+
+		Renderer2D::EndScene();
+	}
+
 	void Scene::OnUpdate()
 	{
 		//Scripts

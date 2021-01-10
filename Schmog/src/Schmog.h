@@ -26,6 +26,7 @@
 
 #include "Schmog/Game/Scene.h"
 #include "Schmog/Game/Entity.h"
+#include "Schmog/Game/EditorCamera.h"
 
 #include "Schmog/Core/Timestep.h"
 

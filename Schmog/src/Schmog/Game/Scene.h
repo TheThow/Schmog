@@ -1,6 +1,8 @@
 #pragma once
 #include <typeindex>
 
+#include "EditorCamera.h"
+
 #include "Components/ComponentDataContainer.h"
 #include "Components/ComponentRegistry.h"
 
@@ -61,7 +63,10 @@ namespace Schmog {
 		}
 
 		void OnViewportResize(uint32_t width, uint32_t height);
+
+		void OnUpdateEditor(EditorCamera& camera);
 		void OnUpdate();
+
 		std::vector<uint32_t> GetEntities();
 
 		void Serialize(const std::string& filename);

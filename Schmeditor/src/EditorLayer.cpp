@@ -10,30 +10,6 @@
 
 namespace Schmog {
 
-	class CameraController : public NativeScript
-	{
-		void OnUpdate() override {
-			auto& transform = GetComponent<TransformComponent>();
-
-			if (Input::IsKeyPressed(KeyCode::Down))
-			{
-				transform.Position.y -= 1;
-			}
-			if (Input::IsKeyPressed(KeyCode::Up))
-			{
-				transform.Position.y += 1;
-			}
-			if (Input::IsKeyPressed(KeyCode::Left))
-			{
-				transform.Position.x -= 1;
-			}
-			if (Input::IsKeyPressed(KeyCode::Right))
-			{
-				transform.Position.x += 1;
-			}
-
-		}
-	};
 
 	void SchmeditorLayer::OnAttach()
 	{
@@ -48,7 +24,6 @@ namespace Schmog {
 
 		auto cam = m_ActiveScene->CreateEntity("Cam");
 		cam.AddComponent<CameraComponent>();
-		cam.AddComponent<NativeScriptingComponent>().Bind<CameraController>();
 
 		auto cam2 = m_ActiveScene->CreateEntity("Cam 2");
 		cam2.AddComponent<CameraComponent>();
@@ -75,7 +50,10 @@ namespace Schmog {
 		m_FrameBuffer->Bind();
 		Schmog::RenderCommand::Clear();
 
-		m_ActiveScene->OnUpdate();
+		m_ActiveScene->OnUpdateEditor(m_EditorCamera);
+
+		if (m_ViewportFocused)
+			m_EditorCamera.OnUpdate();
 
 		m_FrameBuffer->Unbind();
 	}
@@ -166,6 +144,7 @@ namespace Schmog {
 			m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
+			m_EditorCamera.SetViewportSize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 
@@ -180,6 +159,7 @@ namespace Schmog {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressedEvent>(SG_BIND_EVENT_FN(SchmeditorLayer::OnKeyPressed));
+		m_EditorCamera.OnEvent(e);
 	}
 
 	bool SchmeditorLayer::OnKeyPressed(KeyPressedEvent& e)
