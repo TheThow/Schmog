@@ -18,8 +18,10 @@ namespace Schmog {
 		io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/opensans/OpenSans-Regular.ttf", 18.0f);
 
 		FrameBufferSpec fbSpec;
+		fbSpec.Attachments = { FrameBufferTextureFormat::RGBA8, FrameBufferTextureFormat::Depth };
 		fbSpec.Width = 1600;
 		fbSpec.Height = 900;
+
 		m_FrameBuffer = FrameBuffer::Create(fbSpec);
 
 		auto cam = m_ActiveScene->CreateEntity("Cam");
