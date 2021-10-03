@@ -12,9 +12,12 @@ namespace Schmog {
 
 		virtual const FrameBufferSpec& GetSpecification() const override { return m_FrameBufferSpec; }
 		virtual uint32_t GetColorAttachmentRendererID(uint32_t index = 0) const override { return m_ColorAttachments.at(index); };
-
+		
 		virtual void Invalidate() override;
 		virtual void Resize(const uint32_t width, const uint32_t height) override;
+		virtual int ReadPixel(uint32_t attachmentIndex, int x, int y) override;
+
+		void ClearAttachment(uint32_t attachmentIndex, int value);
 
 		virtual void Bind() override;
 		virtual void Unbind() override;

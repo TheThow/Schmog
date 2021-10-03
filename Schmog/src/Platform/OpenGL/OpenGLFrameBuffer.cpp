@@ -35,17 +35,17 @@ namespace Schmog {
 			return false;
 		}
 
-		static void AttachColorTexture(uint32_t rendererId, int samples, GLenum format, uint32_t width, uint32_t height, uint32_t index)
+		static void AttachColorTexture(uint32_t rendererId, int samples, GLenum internalFormat, GLenum format, uint32_t width, uint32_t height, uint32_t index)
 		{
 			bool multiSampled = samples > 1;
 
 			if (multiSampled)
 			{
-				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, format, width, height, GL_FALSE);
+				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, internalFormat, width, height, GL_FALSE);
 			}
 			else
 			{
-				glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+				glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, nullptr);
 
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -79,6 +79,19 @@ namespace Schmog {
 			}
 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, TextureTarget(multiSampled), rendererId, 0);
+		}
+
+
+		static GLenum SGTextureFormatToGL(FrameBufferTextureFormat format)
+		{
+			switch (format)
+			{
+			case FrameBufferTextureFormat::RGBA8:       return GL_RGBA8;
+			case FrameBufferTextureFormat::RED_INTEGER: return GL_RED_INTEGER;
+			}
+
+			assert(false);
+			return 0;
 		}
 	}
 
@@ -138,7 +151,10 @@ namespace Schmog {
 				switch (m_ColorAttachmentSpecs[i].TextureFormat)
 				{
 				case FrameBufferTextureFormat::RGBA8:
-					Utils::AttachColorTexture(m_ColorAttachments[i], m_FrameBufferSpec.Samples, GL_RGBA8, m_FrameBufferSpec.Width, m_FrameBufferSpec.Height, i);
+					Utils::AttachColorTexture(m_ColorAttachments[i], m_FrameBufferSpec.Samples, GL_RGBA8, GL_RGBA, m_FrameBufferSpec.Width, m_FrameBufferSpec.Height, i);
+					break;
+				case FrameBufferTextureFormat::RED_INTEGER:
+					Utils::AttachColorTexture(m_ColorAttachments[i], m_FrameBufferSpec.Samples, GL_R32I, GL_RED_INTEGER, m_FrameBufferSpec.Width, m_FrameBufferSpec.Height, i);
 					break;
 				}
 			}
@@ -192,5 +208,23 @@ namespace Schmog {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
+	int OpenGLFrameBuffer::ReadPixel(uint32_t attachmentIndex, int x, int y)
+	{
+		SG_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size(), "invalid index");
+
+		glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
+		int pixelData;
+		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
+		return pixelData;
+	}
+
+	void OpenGLFrameBuffer::ClearAttachment(uint32_t attachmentIndex, int value)
+	{
+		SG_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size(), "invalid index");
+
+		auto& spec = m_ColorAttachmentSpecs[attachmentIndex];
+		glClearTexImage(m_ColorAttachments[attachmentIndex], 0,
+			Utils::SGTextureFormatToGL(spec.TextureFormat), GL_INT, &value);
+	}
 
 }
