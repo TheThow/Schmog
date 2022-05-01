@@ -9,7 +9,6 @@ C++ Game Engine for 2D games
 * Drawing of colorful 2D rectangles! woohoo!
 * Cameras
 * Inputs
-* Native Scripting
 
 ![Schmog Editor](img/Schmeditor.PNG)
 
